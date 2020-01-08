@@ -2,6 +2,7 @@ package com.project.gamersgeek.di.networking
 
 import android.util.Log
 import com.project.gamersgeek.BuildConfig
+import com.project.gamersgeek.data.GamersGeekRemoteServiceModule
 import dagger.Module
 import dagger.Provides
 import okhttp3.*
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [GamersGeekRemoteServiceModule::class])
 object GamerGeekNetworkingModule {
     private const val READ_TIMEOUT_TIME: Long = 1000
     private const val CONNECTION_TIMEOUT_TIME: Long = 1000
