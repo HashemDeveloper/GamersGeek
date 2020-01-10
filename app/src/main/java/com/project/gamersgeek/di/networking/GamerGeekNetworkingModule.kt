@@ -1,6 +1,5 @@
 package com.project.gamersgeek.di.networking
 
-import android.util.Log
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.project.gamersgeek.BuildConfig
 import com.project.gamersgeek.data.GamersGeekRemoteServiceModule
@@ -36,8 +35,6 @@ object GamerGeekNetworkingModule {
                     .addHeader("Accept", "application/json")
                     .addHeader("Host", "rawg-video-games-database.p.rapidapi.com")
                     .addHeader("Content-Type", "application/json;charset=UTF-8")
-                    .addHeader("User-Agent", APP_NAME)
-                    .addHeader("X-RapidAPI-Key", API_KEY)
                     .method(originalRequest.method(), originalRequest.body())
                     .build()
                 val response: Response = chain.proceed(request)
@@ -61,7 +58,8 @@ object GamerGeekNetworkingModule {
             }
             .build()
     }
-    @Singleton
+
+    @Provides
     @Named("base_url")
     @JvmStatic
     internal fun provideBaseUrl(): String {

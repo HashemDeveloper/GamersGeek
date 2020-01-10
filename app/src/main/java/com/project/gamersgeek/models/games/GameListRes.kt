@@ -46,5 +46,5 @@ data class GameListRes(
     var gameFilter: GameListFilter,
     @SerializedName("nofollow_collections")
     @Expose
-    var noFollowCollection: @RawValue List<String> = arrayListOf()
+    var noFollowCollection: List<String> = arrayListOf()
 ): Parcelable

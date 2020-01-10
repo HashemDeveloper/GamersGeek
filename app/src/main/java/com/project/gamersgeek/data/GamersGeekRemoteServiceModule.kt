@@ -10,7 +10,7 @@ object GamersGeekRemoteServiceModule {
     @Singleton
     @Provides
     @JvmStatic
-    internal fun provideGamersGeekRemoteApi(retrofit: Retrofit): IGamersGeekApi {
-        return retrofit.create(IGamersGeekApi::class.java)
+    internal fun provideGamersGeekRemoteApi(retrofit: Retrofit): IRawgGameDbApi {
+        return retrofit.create(IRawgGameDbApi::class.java)
     }
 }
