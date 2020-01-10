@@ -17,6 +17,7 @@ object GamerGeekNetworkingModule {
     private const val READ_TIMEOUT_TIME: Long = 1000
     private const val CONNECTION_TIMEOUT_TIME: Long = 1000
     private const val API_KEY = "31a50ea584msh31135fa52e8cf43p1e368fjsn03a55f8d0822"
+    private const val APP_NAME = "GamersGeek"
     @Singleton
     @Provides
     @JvmStatic
@@ -32,6 +33,7 @@ object GamerGeekNetworkingModule {
                     .addHeader("Accept", "application/json")
                     .addHeader("Host", "rawg-video-games-database.p.rapidapi.com")
                     .addHeader("Content-Type", "application/json;charset=UTF-8")
+                    .addHeader("User-Agent", APP_NAME)
                     .addHeader("X-RapidAPI-Key", API_KEY)
                     .method(originalRequest.method(), originalRequest.body())
                     .build()
