@@ -2,9 +2,8 @@ package com.project.gamersgeek.di
 
 import android.content.Context
 import com.project.gamersgeek.GamersGeekApp
-import com.project.gamersgeek.data.GamersGeekRemoteRepo
-import com.project.gamersgeek.data.IRawgGameDbApi
-import com.project.gamersgeek.data.IRawgGameDbApiHelper
+import com.project.gamersgeek.data.remote.GamersGeekRemoteRepo
+import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

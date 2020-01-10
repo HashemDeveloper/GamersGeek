@@ -1,4 +1,4 @@
-package com.project.gamersgeek.data
+package com.project.gamersgeek.data.remote
 
 import dagger.Module
 import dagger.Provides

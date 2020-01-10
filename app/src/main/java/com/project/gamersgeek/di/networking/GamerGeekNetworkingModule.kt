@@ -2,7 +2,7 @@ package com.project.gamersgeek.di.networking
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.project.gamersgeek.BuildConfig
-import com.project.gamersgeek.data.GamersGeekRemoteServiceModule
+import com.project.gamersgeek.data.remote.GamersGeekRemoteServiceModule
 import dagger.Module
 import dagger.Provides
 import okhttp3.*
