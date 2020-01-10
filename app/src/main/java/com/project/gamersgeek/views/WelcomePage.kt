@@ -14,7 +14,6 @@ import dagger.android.support.AndroidSupportInjection
 class WelcomePage : Fragment(), Injectable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
     }
 

@@ -136,4 +136,9 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$pagingVersion"
     // material rating bar
     implementation "me.zhanghai.android.materialratingbar:library:$material_rating_bar"
+
+    // Tools
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+    implementation "com.facebook.stetho:stetho:$stetho"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho"
 }

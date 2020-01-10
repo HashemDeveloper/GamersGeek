@@ -6,8 +6,8 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface IGamersGeekApi {
-    @GET("/games")
+    @GET("/games/.json")
     suspend fun fetchAllGames(): GameListRes
-    @GET("/games/{id}")
+    @GET("/games/{id}/.json")
     suspend fun fetchGameById(@Path("id") id: Int): GamesRes
 }
