@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.project.gamersgeek.data.local.entities.Games
 
-@Database(entities = [], version = 1, exportSchema = false)
+@Database(entities = [Games::class], version = 1, exportSchema = false)
 abstract class GamerGeeksLocalDb: RoomDatabase() {
 
 
