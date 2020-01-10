@@ -1,5 +1,6 @@
-package com.project.gamersgeek.data
+package com.project.gamersgeek.data.remote
 
+import com.project.gamersgeek.data.BaseDataSource
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.utils.ResultHandler
