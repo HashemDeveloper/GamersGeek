@@ -36,7 +36,7 @@ data class Results(
     var ratingTop: Int,
     @SerializedName("ratings")
     @Expose
-    var ratingList: @RawValue List<Rating>?= arrayListOf(),
+    var ratingList: List<Rating>?= arrayListOf(),
     @SerializedName("ratings_count")
     @Expose
     var ratingCount: Int,
@@ -69,20 +69,20 @@ data class Results(
     var dominentColor: String,
     @SerializedName("platforms")
     @Expose
-    var platformList: @RawValue List<CategorizedGamePlatforms>?= arrayListOf(),
+    var platformList: List<CategorizedGamePlatforms>?= arrayListOf(),
     @SerializedName("parent_platforms")
     @Expose
-    var genericPlatformList: @RawValue List<GameGenericPlatform>?= arrayListOf(),
+    var genericPlatformList: List<GameGenericPlatform>?= arrayListOf(),
     @SerializedName("genres")
     @Expose
-    var genresList: @RawValue List<GameGenre>?= arrayListOf(),
+    var genresList: List<GameGenre>?= arrayListOf(),
     @SerializedName("stores")
     @Expose
-    var listOfStores: @RawValue List<Store>?= arrayListOf(),
+    var listOfStores: List<Store>?= arrayListOf(),
     @SerializedName("clip")
     @Expose
     var videoClip: @RawValue VideoClip,
     @SerializedName("short_screenshots")
     @Expose
-    var shortScreenShotList: @RawValue List<ShortScreenShot>?= arrayListOf()
+    var shortScreenShotList: List<ShortScreenShot>?= arrayListOf()
 ): Parcelable

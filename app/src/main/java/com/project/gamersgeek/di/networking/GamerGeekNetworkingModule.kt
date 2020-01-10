@@ -1,11 +1,12 @@
 package com.project.gamersgeek.di.networking
 
-import android.util.Log
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.project.gamersgeek.BuildConfig
 import com.project.gamersgeek.data.GamersGeekRemoteServiceModule
 import dagger.Module
 import dagger.Provides
 import okhttp3.*
+import timber.log.Timber
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
@@ -27,19 +28,18 @@ object GamerGeekNetworkingModule {
         return OkHttpClient.Builder()
             .readTimeout(READ_TIMEOUT_TIME, TimeUnit.MILLISECONDS)
             .connectTimeout(CONNECTION_TIMEOUT_TIME, TimeUnit.MILLISECONDS)
+            .addNetworkInterceptor(StethoInterceptor())
             .addInterceptor { chain: Interceptor.Chain ->
                 val originalRequest: Request = chain.request()
                 val request: Request = originalRequest.newBuilder()
                     .addHeader("Accept", "application/json")
                     .addHeader("Host", "rawg-video-games-database.p.rapidapi.com")
                     .addHeader("Content-Type", "application/json;charset=UTF-8")
-                    .addHeader("User-Agent", APP_NAME)
-                    .addHeader("X-RapidAPI-Key", API_KEY)
                     .method(originalRequest.method(), originalRequest.body())
                     .build()
                 val response: Response = chain.proceed(request)
                 if (BuildConfig.DEBUG) {
-                    Log.d("GamersGeek --->", "Code: " + response.code())
+                    Timber.tag("GamersGeek --->").d("Code: %s", response.code())
                 }
                 try {
                     if (response.code() == 401) {
@@ -47,7 +47,7 @@ object GamerGeekNetworkingModule {
                     }
                 } catch (e: Exception) {
                     if (BuildConfig.DEBUG) {
-                        Log.d("RetrofitError: ", e.localizedMessage!!)
+                        Timber.tag("RetrofitError: ").d(e.localizedMessage!!)
                     }
                 } finally {
                     if (response.body() != null) {
@@ -58,7 +58,8 @@ object GamerGeekNetworkingModule {
             }
             .build()
     }
-    @Singleton
+
+    @Provides
     @Named("base_url")
     @JvmStatic
     internal fun provideBaseUrl(): String {

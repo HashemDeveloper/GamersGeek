@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.project.gamersgeek.GamersGeekApp
 import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 
 object ApplicationInjector {
@@ -45,7 +46,9 @@ object ApplicationInjector {
                         f: Fragment,
                         savedInstanceState: Bundle?
                     ) {
-
+                        if (f is Injectable) {
+                            AndroidSupportInjection.inject(f)
+                        }
                     }
                 }, true)
         }
