@@ -1,4 +1,4 @@
-package com.project.gamersgeek.models.games
+package com.project.gamersgeek.models.platforms
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

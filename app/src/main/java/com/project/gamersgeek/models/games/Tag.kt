@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class PlatformDetails(
+data class Tag(
     @SerializedName("id")
     @Expose
     var id: Int,
@@ -16,15 +16,9 @@ data class PlatformDetails(
     @SerializedName("slug")
     @Expose
     var slug: String,
-    @SerializedName("image")
+    @SerializedName("language")
     @Expose
-    var image: String,
-    @SerializedName("year_end")
-    @Expose
-    var yearEnd: String?,
-    @SerializedName("year_start")
-    @Expose
-    var yearStart: String?,
+    var language: String,
     @SerializedName("games_count")
     @Expose
     var gamesCount: Int,
