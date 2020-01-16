@@ -67,6 +67,7 @@ ext {
     material_rating_bar = '1.4.0'
     stetho = '1.5.1'
     timberVersion = '4.7.1'
+    lottieVersion = '3.3.1'
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
