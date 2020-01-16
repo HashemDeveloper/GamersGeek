@@ -17,6 +17,7 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamers_geek_main_activity)
         this.navController = Navigation.findNavController(this, R.id.container)

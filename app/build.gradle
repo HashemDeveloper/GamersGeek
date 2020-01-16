@@ -141,4 +141,5 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation "com.facebook.stetho:stetho:$stetho"
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

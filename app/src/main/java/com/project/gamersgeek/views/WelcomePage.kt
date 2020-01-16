@@ -16,7 +16,9 @@ import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.WelcomePageViewModel
+import com.project.gamersgeek.views.widgets.GlobalLoadingBar
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_welcome_page.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,6 +28,10 @@ class WelcomePage : Fragment(), Injectable {
     private val welcomePageViewModel: WelcomePageViewModel by viewModels {
         this.viewModelFactory
     }
+    private val globalLoadingBar: GlobalLoadingBar by lazy {
+        GlobalLoadingBar(fragment_welcome_page_loading_view_id!!, activity!!)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -47,16 +53,17 @@ class WelcomePage : Fragment(), Injectable {
         return Observer {
             when (it.status) {
                 ResultHandler.Status.LOADING -> {
-
+                    this.globalLoadingBar.startLoading(true)
                 }
                 ResultHandler.Status.SUCCESS -> {
                     if (it.data is GameListRes) {
                         val gameData: GameListRes = it.data
                         Timber.d(gameData.description)
                     }
+                    this.globalLoadingBar.startLoading(false)
                 }
                 ResultHandler.Status.ERROR -> {
-
+                    this.globalLoadingBar.startLoading(false)
                 }
             }
         }

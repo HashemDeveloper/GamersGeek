@@ -5,5 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".views.WelcomePage">
 
-
+    <include
+        android:id="@+id/fragment_welcome_page_loading_view_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/global_loading_bar"
+        android:visibility="gone"
+        />
 </FrameLayout>

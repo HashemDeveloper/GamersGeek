@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/gamers_geek_app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GamersGeekMainActivity">
+        <activity android:name=".GamersGeekMainActivity"
+            android:theme="@style/Splash"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW"/>
