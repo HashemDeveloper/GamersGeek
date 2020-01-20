@@ -1,11 +1,14 @@
 package com.project.gamersgeek.di
 
 import android.content.Context
+import android.os.Bundle
+import androidx.savedstate.SavedStateRegistryOwner
 import com.project.gamersgeek.GamersGeekApp
 import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.data.local.SharedPrefService
 import com.project.gamersgeek.data.remote.GamersGeekRemoteRepo
 import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
+import com.project.gamersgeek.views.WelcomePage
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

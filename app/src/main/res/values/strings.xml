@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">GamersGeek</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="platform">Platforms</string>
+    <string name="all_games">All Games</string>
+    <string name="my_games">My Games</string>
 </resources>

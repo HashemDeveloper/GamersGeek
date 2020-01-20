@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/bottom_nav_group_id"
+        >
+        <item
+            android:id="@+id/bottom_nav_platform_id"
+            android:title="@string/platform"
+            android:icon="@drawable/platform32px"
+            />
+        <item
+            android:id="@+id/bottom_nav_all_games_id"
+            android:title="@string/all_games"
+            android:icon="@drawable/gamepad62px"
+            />
+        <item
+            android:id="@+id/bottom_nav_saved_game_id"
+            android:title="@string/my_games"
+            android:icon="@drawable/saved_games_512px"
+            />
+    </group>
+</menu>

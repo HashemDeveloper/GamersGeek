@@ -8,11 +8,11 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 
 interface IRawgGameDbApi {
-    @Headers("X-RapidAPI-Key: $API_KEY", "User-Agent: $APP_NAME")
-    @GET("/games")
+    @Headers("Content-Type: application/json","User-Agent: $APP_NAME")
+    @GET("api/games")
     suspend fun fetchAllGames(): Response<GameListRes>
-    @Headers("X-RapidAPI-Key: $API_KEY", "User-Agent: $APP_NAME")
-    @GET("/games/{id}")
+    @Headers("Content-Type: application/json","User-Agent: $APP_NAME")
+    @GET("app/games/{id}")
     suspend fun fetchGameById(@Path("id") id: Int): Response<GamesRes>
 
     companion object {

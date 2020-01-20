@@ -8,4 +8,6 @@
     <color name="light_blue">#98DBF7</color>
     <color name="light_yellow">#FAE641</color>
     <color name="vermilion_red">#FF7242</color>
+    <color name="gray_500">#9E9E9E</color>
+    <color name="gray_600">#757575</color>
 </resources>

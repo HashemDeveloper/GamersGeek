@@ -2,7 +2,6 @@ package com.project.gamersgeek.views
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_welcome_page.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class WelcomePage : Fragment(), Injectable {
+class WelcomePage: Fragment(), Injectable{
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val welcomePageViewModel: WelcomePageViewModel by viewModels {
@@ -40,6 +39,7 @@ class WelcomePage : Fragment(), Injectable {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        AndroidSupportInjection.inject(this)
         return inflater.inflate(R.layout.fragment_welcome_page, container, false)
     }
 
