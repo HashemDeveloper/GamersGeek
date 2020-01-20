@@ -96,6 +96,8 @@ dependencies {
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleExtensionVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifeCycleExtensionVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$viewModelSaveStateVersion"
+
 
     //Coroutines scopes: ViewModelScope, LifecycleScope and LiveData
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$coroutines_scopes"
@@ -142,4 +144,9 @@ dependencies {
     implementation "com.facebook.stetho:stetho:$stetho"
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+    // dagger assisted injection
+    compileOnly("com.squareup.inject:assisted-inject-annotations-dagger2:0.3.3")
+    kapt("com.squareup.inject:assisted-inject-processor-dagger2:0.3.3")
+    // material search bar
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
 }

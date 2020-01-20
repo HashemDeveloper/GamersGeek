@@ -35,6 +35,7 @@ allprojects {
 ext {
     lifecycle_version = "2.1.0"
     lifeCycleExtensionVersion = "2.1.0"
+    viewModelSaveStateVersion = "1.0.0-rc03"
     retrofitVersion = '2.7.0'
     daggerVersion = "2.23.2"
     glideVersion = '4.10.0'
@@ -68,6 +69,7 @@ ext {
     stetho = '1.5.1'
     timberVersion = '4.7.1'
     lottieVersion = '3.3.1'
+    materialSearchBar = '0.8.2'
 }
 task clean(type: Delete) {
     delete rootProject.buildDir

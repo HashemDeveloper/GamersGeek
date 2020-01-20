@@ -33,7 +33,7 @@ object GamerGeekNetworkingModule {
                 val originalRequest: Request = chain.request()
                 val request: Request = originalRequest.newBuilder()
                     .addHeader("Accept", "application/json")
-                    .addHeader("Host", "rawg-video-games-database.p.rapidapi.com")
+                    .addHeader("Host", "api.rawg.io")
                     .addHeader("Content-Type", "application/json;charset=UTF-8")
                     .method(originalRequest.method(), originalRequest.body())
                     .build()
@@ -63,6 +63,6 @@ object GamerGeekNetworkingModule {
     @Named("base_url")
     @JvmStatic
     internal fun provideBaseUrl(): String {
-        return "https://rawg-video-games-database.p.rapidapi.com/"
+        return "https://api.rawg.io/"
     }
 }
