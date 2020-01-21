@@ -4,11 +4,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/gamers_geek_nav_layout"
-    app:startDestination="@id/welcomePage">
+    app:startDestination="@id/bottom_nav_all_games_id">
 
     <fragment
-        android:id="@+id/welcomePage"
-        android:name="com.project.gamersgeek.views.WelcomePage"
+        android:id="@+id/bottom_nav_all_games_id"
+        android:name="com.project.gamersgeek.views.AllGamesPage"
         android:label="fragment_welcome_page"
-        tools:layout="@layout/fragment_welcome_page" />
+        tools:layout="@layout/fragment_all_games_page" >
+        <action
+            android:id="@+id/actionSavedGamePage"
+            app:enterAnim="@anim/fade_in_left"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in_left"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/bottom_nav_saved_game_id" />
+    </fragment>
+    <fragment
+        android:id="@+id/bottom_nav_platform_id"
+        android:name="com.project.gamersgeek.views.PlatformsPage"
+        android:label="fragment_platforms_page"
+        tools:layout="@layout/fragment_platforms_page" >
+        <action
+            android:id="@+id/actionAllGamesPage"
+            app:enterAnim="@anim/fade_in_left"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in_left"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/bottom_nav_all_games_id" />
+    </fragment>
+    <fragment
+        android:id="@+id/bottom_nav_saved_game_id"
+        android:name="com.project.gamersgeek.views.SavedGamesPage"
+        android:label="fragment_saved_games_page"
+        tools:layout="@layout/fragment_saved_games_page" />
 </navigation>

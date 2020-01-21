@@ -14,17 +14,17 @@ import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.utils.ResultHandler
-import com.project.gamersgeek.viewmodels.WelcomePageViewModel
+import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
 import com.project.gamersgeek.views.widgets.GlobalLoadingBar
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_welcome_page.*
+import kotlinx.android.synthetic.main.fragment_all_games_page.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class WelcomePage: Fragment(), Injectable{
+class AllGamesPage: Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val welcomePageViewModel: WelcomePageViewModel by viewModels {
+    private val allGamesPageViewModel: AllGamesPageViewModel by viewModels {
         this.viewModelFactory
     }
     private val globalLoadingBar: GlobalLoadingBar by lazy {
@@ -40,13 +40,13 @@ class WelcomePage: Fragment(), Injectable{
         savedInstanceState: Bundle?
     ): View? {
         AndroidSupportInjection.inject(this)
-        return inflater.inflate(R.layout.fragment_welcome_page, container, false)
+        return inflater.inflate(R.layout.fragment_all_games_page, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.welcomePageViewModel.fetchAllGames()
-        this.welcomePageViewModel.fetchAllGamesLiveData?.observe(this.activity!!, gameListLiveDataObserver())
+        this.allGamesPageViewModel.fetchAllGames()
+        this.allGamesPageViewModel.fetchAllGamesLiveData?.observe(this.activity!!, gameListLiveDataObserver())
     }
 
     private fun gameListLiveDataObserver(): Observer<ResultHandler<GameListRes?>> {

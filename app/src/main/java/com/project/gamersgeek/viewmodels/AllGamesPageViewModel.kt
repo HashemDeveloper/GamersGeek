@@ -8,7 +8,7 @@ import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.utils.gamersGeekLiveData
 import javax.inject.Inject
 
-class WelcomePageViewModel @Inject constructor(): ViewModel() {
+class AllGamesPageViewModel @Inject constructor(): ViewModel() {
     @Inject
     lateinit var iRawgGameDbApiHelper: IRawgGameDbApiHelper
     var fetchAllGamesLiveData: LiveData<ResultHandler<GameListRes?>>?= null
