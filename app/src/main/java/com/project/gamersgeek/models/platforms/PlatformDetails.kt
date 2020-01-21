@@ -30,5 +30,11 @@ data class PlatformDetails(
     var gamesCount: Int,
     @SerializedName("image_background")
     @Expose
-    var imageBackground: String
+    var imageBackground: String,
+    @SerializedName("games")
+    @Expose
+    var games: List<PlatformGames> = arrayListOf(),
+    @SerializedName("following")
+    @Expose
+    var following : Boolean
 ): Parcelable
