@@ -27,9 +27,7 @@ class AllGamesPage: Fragment(), Injectable {
     private val allGamesPageViewModel: AllGamesPageViewModel by viewModels {
         this.viewModelFactory
     }
-    private val globalLoadingBar: GlobalLoadingBar by lazy {
-        GlobalLoadingBar(fragment_welcome_page_loading_view_id!!, activity!!)
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,26 +44,5 @@ class AllGamesPage: Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.allGamesPageViewModel.fetchAllGames()
-        this.allGamesPageViewModel.fetchAllGamesLiveData?.observe(this.activity!!, gameListLiveDataObserver())
-    }
-
-    private fun gameListLiveDataObserver(): Observer<ResultHandler<GameListRes?>> {
-        return Observer {
-            when (it.status) {
-                ResultHandler.Status.LOADING -> {
-                    this.globalLoadingBar.startLoading(true)
-                }
-                ResultHandler.Status.SUCCESS -> {
-                    if (it.data is GameListRes) {
-                        val gameData: GameListRes = it.data
-                        Timber.d(gameData.description)
-                    }
-                    this.globalLoadingBar.startLoading(false)
-                }
-                ResultHandler.Status.ERROR -> {
-                    this.globalLoadingBar.startLoading(false)
-                }
-            }
-        }
     }
 }
