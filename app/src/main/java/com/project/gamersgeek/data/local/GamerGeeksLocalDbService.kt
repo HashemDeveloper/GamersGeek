@@ -5,4 +5,8 @@ import javax.inject.Inject
 
 class GamerGeeksLocalDbService @Inject constructor(context: Context) {
     private val localDb = GamerGeeksLocalDb.invoke(context)
+
+    fun getPlatformDetailsDao(): IPlatformDetailsDao {
+        return this.localDb.getPlatformDetailsDao()
+    }
 }

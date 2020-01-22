@@ -11,9 +11,9 @@ class GamersGeekRemoteRepo @Inject constructor(): IRawgGameDbApiHelper, BaseData
     @Inject
     lateinit var rawgGameDbApi: IRawgGameDbApi
 
-    override suspend fun fetchAllGames(): ResultHandler<GameListRes> {
+    override suspend fun fetchAllGames(page: Int, pageSize: Int): ResultHandler<GameListRes> {
         return getResult {
-            this.rawgGameDbApi.fetchAllGames()
+            this.rawgGameDbApi.fetchAllGames(page, pageSize)
         }
     }
 
@@ -23,9 +23,9 @@ class GamersGeekRemoteRepo @Inject constructor(): IRawgGameDbApiHelper, BaseData
        }
     }
 
-    override suspend fun fetchGamePlatforms(): ResultHandler<PlatformRes> {
+    override suspend fun fetchAllGamePlatforms(page: Int, pageSize: Int): ResultHandler<PlatformRes> {
         return getResult {
-            this.rawgGameDbApi.getAllListOfVideoGamePlatform()
+            this.rawgGameDbApi.getAllListOfVideoGamePlatform(page, pageSize)
         }
     }
 

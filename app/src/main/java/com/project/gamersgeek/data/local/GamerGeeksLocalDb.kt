@@ -4,13 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.project.gamersgeek.data.local.entities.Games
+import androidx.room.TypeConverters
+import com.project.gamersgeek.models.platforms.PlatformDetails
+import com.project.gamersgeek.utils.typeconverters.PlatformGameTypeConverter
 
-@Database(entities = [Games::class], version = 1, exportSchema = false)
+@Database(entities = [PlatformDetails::class], version = 1, exportSchema = false)
+@TypeConverters(PlatformGameTypeConverter::class)
 abstract class GamerGeeksLocalDb: RoomDatabase() {
 
-
-
+    abstract fun getPlatformDetailsDao(): IPlatformDetailsDao
 
     companion object {
         private const val DB_NAME = "GamerGeeks"
