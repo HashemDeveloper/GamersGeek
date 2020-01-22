@@ -5,6 +5,7 @@
     <color name="colorAccent">@color/vermilion_red</color>
 
     <!--In App custom colors-->
+    <color name="black">#000000</color>
     <color name="light_blue">#98DBF7</color>
     <color name="light_yellow">#FAE641</color>
     <color name="vermilion_red">#FF7242</color>
