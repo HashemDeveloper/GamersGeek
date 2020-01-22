@@ -5,10 +5,10 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.WelcomePage">
+    tools:context=".views.PlatformsPage">
 
     <com.mancj.materialsearchbar.MaterialSearchBar
-        android:id="@+id/welcome_page_search_id"
+        android:id="@+id/platform_page_search_id"
         style="@style/MaterialSearchBarLight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,37 +29,25 @@
         app:mt_speechMode="false" />
 
     <include
-        android:id="@+id/fragment_welcome_page_loading_view_id"
+        android:id="@+id/platform_page_loading_view_id"
         layout="@layout/global_loading_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/welcome_page_bottom_nav_bar_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/welcome_page_bottom_nav_bar_id"
-        style="@style/Widget.MaterialComponents.BottomNavigationView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:itemIconTint="@color/gray_600"
-        app:itemTextColor="@color/gray_600"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/platform_page_recycler_view_id"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/welcome_page_bottom_nav_bar_id"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/leftGuideLine"
         app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/leftGuideLine"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_page_search_id"
+        app:layout_constraintTop_toBottomOf="@+id/platform_page_search_id"
         app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
