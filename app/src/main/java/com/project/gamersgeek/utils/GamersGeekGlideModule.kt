@@ -19,11 +19,6 @@ import java.util.concurrent.TimeUnit
 class GamersGeekGlideModule: AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         builder.apply {
-            val circularProgressDrawable = CircularProgressDrawable(context)
-            circularProgressDrawable.strokeWidth = 5f
-            circularProgressDrawable.centerRadius = 30f
-            circularProgressDrawable.start()
-            RequestOptions().placeholder(circularProgressDrawable)
             RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
         }
         super.applyOptions(context, builder)

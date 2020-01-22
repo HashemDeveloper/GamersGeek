@@ -20,5 +20,7 @@
         <item name="android:shadowDy">0</item>
         <item name="android:shadowRadius">3</item>
     </style>
-
+    <style name="RoundImageView">
+        <item name="android:radius">4dp</item>
+    </style>
 </resources>

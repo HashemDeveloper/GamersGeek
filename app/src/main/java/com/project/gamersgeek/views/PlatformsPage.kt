@@ -56,10 +56,10 @@ class PlatformsPage : Fragment(), Injectable {
         adapter.addLoadStateListener { type, state, error ->
             when (state) {
                 PagedList.LoadState.DONE -> {
-                    Timber.e("Done")
+
                 }
                 PagedList.LoadState.LOADING -> {
-                    Timber.e("Loading")
+
                 }
                 PagedList.LoadState.ERROR -> {
 
