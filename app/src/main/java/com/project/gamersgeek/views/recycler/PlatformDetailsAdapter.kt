@@ -41,16 +41,20 @@ class PlatformDetailsAdapter: PagedListAdapter<PlatformDetails, RecyclerView.Vie
         fun bindView(data: PlatformDetails) {
             this.itemView.tag = data
             this.platformNameView?.let {
-                it.text = data.name
+                if (data.name != "Game Boy Advance") {
+                    it.text = data.name
+                }
             }
             val imageUrl: String = data.imageBackground
             val circularProgressDrawable = CircularProgressDrawable(context)
             circularProgressDrawable.strokeWidth = 5f
             circularProgressDrawable.centerRadius = 30f
             circularProgressDrawable.start()
-            GlideApp.with(this.view).load(imageUrl)
-                .placeholder(circularProgressDrawable)
-                .into(this.platformImageView!!)
+            if (data.name != "Game Boy Advance") {
+                GlideApp.with(this.view).load(imageUrl)
+                    .placeholder(circularProgressDrawable)
+                    .into(this.platformImageView!!)
+            }
         }
     }
 

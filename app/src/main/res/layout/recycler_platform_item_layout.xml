@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    >
+    android:layout_marginBottom="2dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/platform_image_view"
@@ -16,8 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/game_image_bg"
-        />
+        app:srcCompat="@drawable/game_image_bg" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftGuideline"
@@ -49,11 +47,19 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/platform_name_view_id"
+        style="@style/ShadowTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/platform"
-        style="@style/ShadowTextStyle"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/leftGuideline"
         app:layout_constraintTop_toTopOf="@+id/topGuideLine" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/view_details_bt_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuideline"
+        app:layout_constraintTop_toTopOf="@+id/topGuideLine"
+        app:srcCompat="@drawable/ic_eye_white_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

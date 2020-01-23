@@ -32,15 +32,14 @@
         android:id="@+id/platform_page_recycler_view_id"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/padding_16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
         app:layout_constraintEnd_toEndOf="@+id/leftGuideLine"
         app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/leftGuideLine"
         app:layout_constraintTop_toBottomOf="@+id/platform_page_search_id"
-        app:layout_constraintVertical_bias="1.0"
-        android:layout_marginTop="@dimen/padding_16dp"
-        />
+        app:layout_constraintVertical_bias="1.0" />
 
     <include
         android:id="@+id/platform_page_loading_view_id"
@@ -65,4 +64,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.96" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.92" />
 </androidx.constraintlayout.widget.ConstraintLayout>

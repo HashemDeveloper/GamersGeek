@@ -50,30 +50,9 @@ class PlatformsPage : Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = PlatformDetailsAdapter()
-        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         platform_page_recycler_view_id.layoutManager = LinearLayoutManager(context!!)
         platform_page_recycler_view_id.adapter = adapter
-        adapter.addLoadStateListener { type, state, error ->
-            when (state) {
-                PagedList.LoadState.DONE -> {
-
-                }
-                PagedList.LoadState.LOADING -> {
-
-                }
-                PagedList.LoadState.ERROR -> {
-
-                }
-                PagedList.LoadState.IDLE -> {
-
-                }
-                PagedList.LoadState.RETRYABLE_ERROR -> {
-
-                }
-            }
-        }
         this.platformPageViewModel.fetchGamePlatforms.observe(viewLifecycleOwner) {
-            Timber.d("Data: ${it.loadedCount}")
             adapter.submitList(it)
         }
     }
