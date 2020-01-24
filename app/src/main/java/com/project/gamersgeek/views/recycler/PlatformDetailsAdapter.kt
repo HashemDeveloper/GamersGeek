@@ -1,6 +1,7 @@
 package com.project.gamersgeek.views.recycler
 
 import android.content.Context
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.platforms.PlatformDetails
+import com.project.gamersgeek.models.platforms.PlatformGames
 import com.project.gamersgeek.utils.GlideApp
 
 class PlatformDetailsAdapter: PagedListAdapter<PlatformDetails, RecyclerView.ViewHolder>(
@@ -32,10 +34,22 @@ class PlatformDetailsAdapter: PagedListAdapter<PlatformDetails, RecyclerView.Vie
     inner class PlatformDetailsViewHolder constructor(private val view: View, private val context: Context): RecyclerView.ViewHolder(view) {
         private var platformImageView: AppCompatImageView?= null
         private var platformNameView: AppCompatTextView?= null
+        private var gamesCountView: AppCompatTextView?= null
+        private var showCaseGame1View: AppCompatTextView?= null
+        private var showCaseGame2View: AppCompatTextView?= null
+        private var gamesCountResult: AppCompatTextView?= null
+        private var gamesOneAddedResult: AppCompatTextView?= null
+        private var gamesTwoAddedResult: AppCompatTextView?= null
 
         init {
             this.platformImageView = this.view.findViewById(R.id.platform_image_view)
             this.platformNameView = this.view.findViewById(R.id.platform_name_view_id)
+            this.gamesCountView = this.view.findViewById(R.id.platform_games_count_view_id)
+            this.showCaseGame1View = this.view.findViewById(R.id.platform_show_case_game1)
+            this.showCaseGame2View = this.view.findViewById(R.id.platform_show_case_game2)
+            this.gamesCountResult = this.view.findViewById(R.id.platform_game_count_result_view_id)
+            this.gamesOneAddedResult = this.view.findViewById(R.id.platform_game1_total_added_view_id)
+            this.gamesTwoAddedResult = this.view.findViewById(R.id.platform_game2_total_added_view_id)
         }
 
         fun bindView(data: PlatformDetails) {
@@ -54,6 +68,32 @@ class PlatformDetailsAdapter: PagedListAdapter<PlatformDetails, RecyclerView.Vie
                 GlideApp.with(this.view).load(imageUrl)
                     .placeholder(circularProgressDrawable)
                     .into(this.platformImageView!!)
+                val popularGameCount: String = this.context.resources.getText(R.string.popular_games).toString()
+                this.gamesCountView?.let {
+                    it.text = popularGameCount
+                }
+                this.gamesCountResult?.let {
+                    it.text = data.gamesCount.toString()
+                }
+                val gameList: List<PlatformGames> = data.games.take(2)
+                val gameOne: String = gameList[0].name
+                val gameTwo: String = gameList[1].name
+                val gameOneAddedResult: Int = gameList[0].added
+                val gameTwoAddedResult: Int = gameList[1].added
+                this.showCaseGame1View?.let {
+                    it.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+                    it.text = gameOne
+                }
+                this.showCaseGame2View?.let {
+                    it.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+                    it.text = gameTwo
+                }
+                this.gamesOneAddedResult?.let {
+                    it.text = gameOneAddedResult.toString()
+                }
+                this.gamesTwoAddedResult?.let {
+                    it.text = gameTwoAddedResult.toString()
+                }
             }
         }
     }
