@@ -9,12 +9,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.GameListRes
+import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
@@ -25,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_platforms_page.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class PlatformsPage : Fragment(), Injectable {
+class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDetailsListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -46,11 +50,10 @@ class PlatformsPage : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = PlatformDetailsAdapter()
+        val adapter = PlatformDetailsAdapter(this)
         platform_page_recycler_view_id.layoutManager = LinearLayoutManager(context!!)
         platform_page_recycler_view_id.adapter = adapter
         this.platformPageViewModel.fetchGamePlatforms.observe(viewLifecycleOwner) {
-            Timber.d("Data: ${it.loadedCount}")
             adapter.submitList(it)
         }
     }
@@ -75,5 +78,13 @@ class PlatformsPage : Fragment(), Injectable {
                 }
             }
         }
+    }
+
+    override fun onPlatformViewClicked(platformDetails: PlatformDetails) {
+
+    }
+
+    override fun onShowGameClicked(gameId: Int, showGameType: PlatformDetailsAdapter.ShowGameType) {
+        Timber.e("GameId: $gameId")
     }
 }

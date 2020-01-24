@@ -12,14 +12,7 @@ import javax.inject.Inject
 class PlatformPageViewModel @Inject constructor(): ViewModel() {
     @Inject
     lateinit var iGamerGeekRepository: IGamerGeekRepository
-
-//    var fetchGamePlatforms: LiveData<ResultHandler<PlatformRes?>>? = null
     val fetchGamePlatforms by lazy {
         this.iGamerGeekRepository.getPlatformDetailsPagedData()
-    }
-
-    fun fetchGamePlatforms() {
-//        this.fetchGamePlatforms = this.iGamerGeekRepository.getAllGamePlatforms()
-
     }
 }

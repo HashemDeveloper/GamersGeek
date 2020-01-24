@@ -4,4 +4,7 @@
     <string name="platform">Platforms</string>
     <string name="all_games">All Games</string>
     <string name="my_games">My Games</string>
+    <string name="popular_games">Popular Games</string>
+    <string name="games_name"><u>Games</u></string>
+    <string name="added_result">Added result</string>
 </resources>

@@ -20,7 +20,7 @@ class PlatformDetailsDataSourceFactory @Inject constructor(private val iPlatform
     }
 
     companion object {
-        private const val PAGE_SIZE = 20
+        private const val PAGE_SIZE = 10
 
         fun pageListConfig() = PagedList.Config.Builder()
             .setInitialLoadSizeHint(PAGE_SIZE)
