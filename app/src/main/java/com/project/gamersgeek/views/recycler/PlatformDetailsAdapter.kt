@@ -16,11 +16,28 @@ import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformGames
 import com.project.gamersgeek.utils.GlideApp
 
-class PlatformDetailsAdapter: PagedListAdapter<PlatformDetails, RecyclerView.ViewHolder>(
+class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsListener): PagedListAdapter<PlatformDetails, RecyclerView.ViewHolder>(
     PLATFORM_DETAILS_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.recycler_platform_item_layout, parent, false)
+        val viewHolder = PlatformDetailsViewHolder(view, parent.context)
+        viewHolder.getViewPlatformDetailsBt().setOnClickListener {
+            val platformDetails: PlatformDetails = viewHolder.itemView.tag as PlatformDetails
+            this.listener.onPlatformViewClicked(platformDetails)
+        }
+        viewHolder.getShowCaseGame1View().setOnClickListener {
+            val platformDetails: PlatformDetails = viewHolder.itemView.tag as PlatformDetails
+            val gameList: List<PlatformGames> = platformDetails.games.take(2)
+            val gameId: Int = gameList[0].id
+            this.listener.onShowGameClicked(gameId, ShowGameType.VIEW_GAME1)
+        }
+        viewHolder.getShowCaseGame2View().setOnClickListener {
+            val platformDetails: PlatformDetails = viewHolder.itemView.tag as PlatformDetails
+            val gameList: List<PlatformGames> = platformDetails.games.take(2)
+            val gameId: Int = gameList[1].id
+            this.listener.onShowGameClicked(gameId, ShowGameType.VIEW_GAME2)
+        }
         return PlatformDetailsViewHolder(view, parent.context)
     }
 
@@ -33,6 +50,7 @@ class PlatformDetailsAdapter: PagedListAdapter<PlatformDetails, RecyclerView.Vie
 
     inner class PlatformDetailsViewHolder constructor(private val view: View, private val context: Context): RecyclerView.ViewHolder(view) {
         private var platformImageView: AppCompatImageView?= null
+        private var viewPlatformDetails: AppCompatImageView?= null
         private var platformNameView: AppCompatTextView?= null
         private var gamesCountView: AppCompatTextView?= null
         private var showCaseGame1View: AppCompatTextView?= null
@@ -43,6 +61,7 @@ class PlatformDetailsAdapter: PagedListAdapter<PlatformDetails, RecyclerView.Vie
 
         init {
             this.platformImageView = this.view.findViewById(R.id.platform_image_view)
+            this.viewPlatformDetails = this.view.findViewById(R.id.view_details_bt_id)
             this.platformNameView = this.view.findViewById(R.id.platform_name_view_id)
             this.gamesCountView = this.view.findViewById(R.id.platform_games_count_view_id)
             this.showCaseGame1View = this.view.findViewById(R.id.platform_show_case_game1)
@@ -96,8 +115,29 @@ class PlatformDetailsAdapter: PagedListAdapter<PlatformDetails, RecyclerView.Vie
                 }
             }
         }
+
+        fun getViewPlatformDetailsBt(): AppCompatImageView {
+            return this.viewPlatformDetails!!
+        }
+
+        fun getShowCaseGame1View(): AppCompatTextView {
+            return this.showCaseGame1View!!
+        }
+
+        fun getShowCaseGame2View(): AppCompatTextView {
+            return this.showCaseGame2View!!
+        }
     }
 
+    interface PlatformDetailsListener {
+        fun onPlatformViewClicked(platformDetails: PlatformDetails)
+        fun onShowGameClicked(gameId: Int, showGameType: ShowGameType)
+    }
+
+    enum class ShowGameType {
+        VIEW_GAME1,
+        VIEW_GAME2
+    }
 
     companion object {
         private val PLATFORM_DETAILS_COMPARATOR = object : DiffUtil.ItemCallback<PlatformDetails>() {
