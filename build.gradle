@@ -16,7 +16,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        def nav_version = "2.1.0"
+        def nav_version = "2.2.0"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
     }
 }
@@ -43,12 +43,12 @@ ext {
     mockitoVersion = "2.11.0"
     room_version = "2.2.3"
     room_compiler_version = "2.2.2"
-    materialDesignVersion = '1.2.0-alpha03'
+    materialDesignVersion = '1.2.0-alpha04'
     designSupportLib ='1.0.0'
     gsonVersion = '2.7.0'
     puglin_version = "3.5.0"
     java_version = JavaVersion.VERSION_1_8
-    nav_version = "2.1.0"
+    nav_version = "2.2.0"
     prefernce_version = "1.1.0"
     kotlin_coroutines_version = "1.2.0-alpha"
     firebase_google_analytics = "17.2.0"
@@ -71,6 +71,7 @@ ext {
     lottieVersion = '3.3.1'
     materialSearchBar = '0.8.2'
     pagingVersion = '2.1.1'
+    floatingSearchViewVersion = '2.1.1'
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
