@@ -85,6 +85,7 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
             circularProgressDrawable.start()
             if (data.name != "Game Boy Advance") {
                 GlideApp.with(this.view).load(imageUrl)
+                    .roundedCorners(this.context, 8)
                     .placeholder(circularProgressDrawable)
                     .into(this.platformImageView!!)
                 val popularGameCount: String = this.context.resources.getText(R.string.popular_games).toString()

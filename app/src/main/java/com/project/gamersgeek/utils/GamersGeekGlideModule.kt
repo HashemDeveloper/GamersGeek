@@ -1,7 +1,6 @@
 package com.project.gamersgeek.utils
 
 import android.content.Context
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
@@ -14,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import okhttp3.OkHttpClient
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
+
 
 @GlideModule
 class GamersGeekGlideModule: AppGlideModule() {
