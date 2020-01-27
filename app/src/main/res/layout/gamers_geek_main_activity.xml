@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/navigation_drawer_layout_id"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,13 +15,26 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/gamers_geek_nav_layout"
         />
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav_bar_id"
-        style="@style/Widget.MaterialComponents.BottomNavigationView"
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view_id"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:itemIconTint="@drawable/bottom_nav_bar_icon_color_selector"
-        app:itemTextColor="@drawable/bottom_nav_bar_icon_color_selector"
-        android:layout_gravity="bottom"
-        app:menu="@menu/bottom_nav_menu" />
-</FrameLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/navigation_drawer_header_layout"
+        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav_bar_id"
+            style="@style/Widget.MaterialComponents.BottomNavigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:itemIconTint="@drawable/bottom_nav_bar_icon_color_selector"
+            app:itemTextColor="@drawable/bottom_nav_bar_icon_color_selector"
+            app:menu="@menu/bottom_nav_menu"
+            android:layout_gravity="bottom"
+            />
+    </FrameLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
