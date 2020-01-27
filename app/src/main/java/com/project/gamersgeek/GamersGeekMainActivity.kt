@@ -5,8 +5,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -27,6 +25,7 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         this.navController = Navigation.findNavController(this, R.id.container)
         this.navController.setGraph(R.navigation.gamers_geek_nav_layout)
         bottom_nav_bar_id?.setupWithNavController(this.navController)
+        navigation_view_id?.setupWithNavController(this.navController)
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
