@@ -10,9 +10,14 @@ import com.project.gamersgeek.utils.gamersGeekLiveData
 import javax.inject.Inject
 
 class PlatformPageViewModel @Inject constructor(): ViewModel() {
+
     @Inject
     lateinit var iGamerGeekRepository: IGamerGeekRepository
     val fetchGamePlatforms by lazy {
         this.iGamerGeekRepository.getPlatformDetailsPagedData()
+    }
+
+    fun refresh() {
+        this.fetchGamePlatforms.value?.dataSource?.invalidate()
     }
 }

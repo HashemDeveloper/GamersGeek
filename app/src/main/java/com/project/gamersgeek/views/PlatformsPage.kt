@@ -56,6 +56,13 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
         this.platformPageViewModel.fetchGamePlatforms.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+        platform_page_swipe_to_refresh_layout_id.setOnRefreshListener {
+            this.platformPageViewModel.refresh()
+            this.platformPageViewModel.fetchGamePlatforms.observe(viewLifecycleOwner) {
+                adapter.submitList(it)
+                platform_page_swipe_to_refresh_layout_id.isRefreshing = false
+            }
+        }
     }
 
     private fun gameListLiveDataObserver(): Observer<ResultHandler<PlatformRes?>> {
