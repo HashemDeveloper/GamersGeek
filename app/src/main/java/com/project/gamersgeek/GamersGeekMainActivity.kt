@@ -54,9 +54,12 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             })
     }
 
-
-    override fun onStop() {
-        super.onStop()
+    override fun onBackPressed() {
+        if (navigation_drawer_layout_id.isDrawerOpen(GravityCompat.START)) {
+            navigation_drawer_layout_id.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
