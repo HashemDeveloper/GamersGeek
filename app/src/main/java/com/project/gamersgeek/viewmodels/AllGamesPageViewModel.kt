@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.utils.ResultHandler
-import com.project.gamersgeek.utils.gamersGeekLiveData
 import javax.inject.Inject
 
 class AllGamesPageViewModel @Inject constructor(): ViewModel() {

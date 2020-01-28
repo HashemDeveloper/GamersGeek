@@ -10,6 +10,8 @@ import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.data.local.SharedPrefService
 import com.project.gamersgeek.data.remote.GamersGeekRemoteRepo
 import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
+import com.project.neardoc.rxeventbus.IRxEventBus
+import com.project.neardoc.rxeventbus.RxEventBus
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -43,4 +45,9 @@ class ApplicationModule {
         return dbService.getPlatformDetailsDao()
     }
     //local db end
+    @Singleton
+    @Provides
+    fun provideRxEventBus(rxEventBus: RxEventBus): IRxEventBus {
+        return rxEventBus
+    }
 }
