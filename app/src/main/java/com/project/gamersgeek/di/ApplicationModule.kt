@@ -12,8 +12,8 @@ import com.project.gamersgeek.data.remote.GamersGeekRemoteRepo
 import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
 import com.project.neardoc.rxeventbus.IRxEventBus
 import com.project.neardoc.rxeventbus.RxEventBus
-import com.project.neardoc.utils.networkconnections.ConnectionStateMonitor
-import com.project.neardoc.utils.networkconnections.IConnectionStateMonitor
+import com.project.gamersgeek.utils.networkconnections.ConnectionStateMonitor
+import com.project.gamersgeek.utils.networkconnections.IConnectionStateMonitor
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
