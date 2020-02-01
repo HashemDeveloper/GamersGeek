@@ -2,13 +2,22 @@ package com.project.gamersgeek
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.gamersgeek.events.HamburgerEvent
+import com.project.gamersgeek.models.localobj.NavigationHeaderItems
+import com.project.gamersgeek.models.localobj.NavigationItems
+import com.project.gamersgeek.views.recycler.NavItemAdapter
+import com.project.neardoc.events.NetworkStateEvent
 import com.project.neardoc.rxeventbus.IRxEventBus
+import com.project.neardoc.utils.networkconnections.IConnectionStateMonitor
+import com.project.neardoc.utils.networkconnections.NearDocNetworkType
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -19,6 +28,7 @@ import kotlinx.android.synthetic.main.gamers_geek_main_activity.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 import javax.inject.Inject
 
 class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
@@ -26,8 +36,12 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var iRxEventBus: IRxEventBus
     @Inject
+    lateinit var iConnectionStateMonitor: IConnectionStateMonitor
+    @Inject
     lateinit var dispatchFragmentInjector: DispatchingAndroidInjector<Fragment>
     private lateinit var navController: NavController
+    private var navItemAdapter: NavItemAdapter?= null
+    private var isWifiConnected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme);
@@ -37,12 +51,23 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         this.navController.setGraph(R.navigation.gamers_geek_nav_layout)
         bottom_nav_bar_id?.setupWithNavController(this.navController)
         navigation_view_id?.setupWithNavController(this.navController)
-
+        navigation_view_menu_item_view_id.layoutManager = LinearLayoutManager(this)
+        this.navItemAdapter = NavItemAdapter()
+        navigation_view_menu_item_view_id.adapter = navItemAdapter
+        val navHeader = NavigationHeaderItems("", "", "HashemDev")
+        val publisher = NavigationItems(R.drawable.game_publisher_icon, "Publisher")
+        val developer = NavigationItems(R.drawable.game_developer_icon_black, "Developer")
+        val navMenuList: MutableList<Any> = arrayListOf()
+        navMenuList.add(navHeader)
+        navMenuList.add(publisher)
+        navMenuList.add(developer)
+        this.navItemAdapter?.setData(navMenuList)
     }
 
     override fun onStart() {
         super.onStart()
         setupNavDrawer()
+        monitorConnectionSetting()
     }
 
     private fun setupNavDrawer() {
@@ -64,5 +89,45 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return this.dispatchFragmentInjector
+    }
+
+    private fun monitorConnectionSetting() {
+        this.iConnectionStateMonitor.getObserver().observe(this, Observer {isNetAvailable ->
+            if (isNetAvailable) {
+                this.iConnectionStateMonitor.isConnectedNoInternetLiveData().observe(this, observeNotInternetConnectedLiveData())
+                this.iConnectionStateMonitor.isUsingWifiLiveData().observe(this, observeUsingWifiLiveData())
+                this.iConnectionStateMonitor.isUsingMobileData().observe(this, observeUsingMobileDataLiveData())
+                if (isWifiConnected) {
+                    EventBus.getDefault().postSticky(NetworkStateEvent(true, NearDocNetworkType.WIFI_DATA))
+                } else {
+                    EventBus.getDefault().postSticky(NetworkStateEvent(true, NearDocNetworkType.MOBILE_DATA))
+                }
+            } else {
+                EventBus.getDefault().postSticky(NetworkStateEvent(false, NearDocNetworkType.NO_NETWORK))
+                Toast.makeText(this, "Connection lost", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun observeUsingWifiLiveData(): Observer<Boolean> {
+        return Observer {isWifi ->
+            if (isWifi) {
+                this.isWifiConnected = true
+            }
+        }
+    }
+    private fun observeUsingMobileDataLiveData(): Observer<Boolean> {
+        return Observer {isMobileData ->
+            if (isMobileData) {
+                this.isWifiConnected = false
+            }
+        }
+    }
+    private fun observeNotInternetConnectedLiveData(): Observer<Boolean> {
+        return Observer {
+            if (BuildConfig.DEBUG) {
+                Timber.i("No Internet $it.toString()")
+            }
+        }
     }
 }

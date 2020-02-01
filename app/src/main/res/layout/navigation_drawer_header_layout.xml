@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/nav_header_background_image_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitXY"
@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/test_background_image" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/navigation_user_profile_imageView_id"
+        android:id="@+id/nav_header_user_image_view"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="152dp"
@@ -55,7 +55,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
         app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/navigation_user_profile_imageView_id"
+        app:layout_constraintStart_toEndOf="@+id/nav_header_user_image_view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 

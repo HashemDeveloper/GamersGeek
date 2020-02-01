@@ -12,6 +12,8 @@ import com.project.gamersgeek.data.remote.GamersGeekRemoteRepo
 import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
 import com.project.neardoc.rxeventbus.IRxEventBus
 import com.project.neardoc.rxeventbus.RxEventBus
+import com.project.neardoc.utils.networkconnections.ConnectionStateMonitor
+import com.project.neardoc.utils.networkconnections.IConnectionStateMonitor
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -37,6 +39,11 @@ class ApplicationModule {
     @Provides
     fun provideGamersGeekRepository(gamerGeekRepository: GamerGeekRepository): IGamerGeekRepository {
         return gamerGeekRepository
+    }
+    @Singleton
+    @Provides
+    fun provideIConnectionStateMonitor(connectionStateMonitor: ConnectionStateMonitor): IConnectionStateMonitor {
+        return connectionStateMonitor
     }
     //local db start
     @Singleton
