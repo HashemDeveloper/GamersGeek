@@ -6,7 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GamersGeekMainActivity">
+    tools:context=".GamersGeekMainActivity"
+    tools:openDrawer="start"
+    >
     <fragment
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -14,14 +16,6 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:defaultNavHost="true"
         app:navGraph="@navigation/gamers_geek_nav_layout"
-        />
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation_view_id"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/navigation_drawer_header_layout"
         />
     <FrameLayout
         android:layout_width="match_parent"
@@ -37,4 +31,16 @@
             android:layout_gravity="bottom"
             />
     </FrameLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view_id"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/navigation_view_menu_item_view_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

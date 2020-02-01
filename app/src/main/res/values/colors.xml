@@ -12,4 +12,6 @@
     <color name="vermilion_red">#FF7242</color>
     <color name="gray_500">#9E9E9E</color>
     <color name="gray_600">#757575</color>
+    <color name="gray_800">#424242</color>
+    <color name="red_900">#B71C1C</color>
 </resources>

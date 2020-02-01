@@ -34,7 +34,7 @@ allprojects {
 }
 ext {
     lifecycle_version = "2.1.0"
-    lifeCycleExtensionVersion = "2.1.0"
+    lifeCycleExtensionVersion = "2.2.0"
     viewModelSaveStateVersion = "1.0.0-rc03"
     retrofitVersion = '2.7.0'
     daggerVersion = "2.23.2"
@@ -63,7 +63,7 @@ ext {
     fluid_version = "0.3.1"
     view_animator_version = "1.1.0"
     filter_menu_version = "0.2.3"
-    coroutines_scopes = "2.2.0-rc03"
+    coroutines_scopes = "2.2.0"
     pagingVersion = '2.1.1'
     material_rating_bar = '1.4.0'
     stetho = '1.5.1'
@@ -72,6 +72,8 @@ ext {
     materialSearchBar = '0.8.2'
     pagingVersion = '2.1.1'
     floatingSearchViewVersion = '2.1.1'
+    rxJavaVersion = '2.1.4'
+    rxAndroidVersion = '2.1.1'
 }
 task clean(type: Delete) {
     delete rootProject.buildDir

@@ -13,10 +13,12 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.arlib.floatingsearchview.FloatingSearchView
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
+import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformRes
@@ -26,6 +28,7 @@ import com.project.gamersgeek.views.recycler.PlatformDetailsAdapter
 import com.project.gamersgeek.views.widgets.GlobalLoadingBar
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_platforms_page.*
+import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -56,6 +59,17 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
         this.platformPageViewModel.fetchGamePlatforms.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+        platform_page_swipe_to_refresh_layout_id.setOnRefreshListener {
+            this.platformPageViewModel.refresh()
+            this.platformPageViewModel.fetchGamePlatforms.observe(viewLifecycleOwner) {
+                adapter.submitList(it)
+                platform_page_swipe_to_refresh_layout_id.isRefreshing = false
+            }
+        }
+        setupDrawer()
+    }
+    private fun setupDrawer() {
+        this.platformPageViewModel.setupDrawer(platform_page_search_id)
     }
 
     private fun gameListLiveDataObserver(): Observer<ResultHandler<PlatformRes?>> {
