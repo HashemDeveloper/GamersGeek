@@ -14,7 +14,8 @@ import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class PlatformDetailsDataSource @Inject constructor(private val iPlatformDetailsDao: IPlatformDetailsDao,
+@Deprecated("")
+class PlatformDetailsDataSource (private val iPlatformDetailsDao: IPlatformDetailsDao,
                                                     private val iRawgGameDbApiHelper: IRawgGameDbApiHelper): PageKeyedDataSource<Int, PlatformDetails>(), CoroutineScope {
     private val job = Job()
 

@@ -19,8 +19,6 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
                                                          private val rawgGameDbApi: IRawgGameDbApi): PagedList.BoundaryCallback<PlatformDetails>(), CoroutineScope {
     private var lastRequestedPage = 1
     private val job = Job()
-    private val _networkErrors = MutableLiveData<String>()
-    val networkErrors: LiveData<String> get() = _networkErrors
     private var isRequestInProgress = false
 
     override fun onZeroItemsLoaded() {
