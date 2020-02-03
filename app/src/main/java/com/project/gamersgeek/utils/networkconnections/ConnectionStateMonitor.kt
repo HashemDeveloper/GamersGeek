@@ -1,4 +1,4 @@
-package com.project.neardoc.utils.networkconnections
+package com.project.gamersgeek.utils.networkconnections
 
 import android.content.Context
 import android.content.IntentFilter

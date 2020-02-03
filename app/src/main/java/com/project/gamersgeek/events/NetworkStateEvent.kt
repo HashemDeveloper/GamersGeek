@@ -1,12 +1,12 @@
-package com.project.neardoc.events
+package com.project.gamersgeek.events
 
-import com.project.neardoc.utils.networkconnections.NearDocNetworkType
+import com.project.gamersgeek.utils.networkconnections.GamersGeekNetworkType
 
-class NetworkStateEvent(private val networkAvailable: Boolean, private val type: NearDocNetworkType?) {
+class NetworkStateEvent(private val networkAvailable: Boolean, private val type: GamersGeekNetworkType?) {
     fun getIsNetworkAvailable(): Boolean {
         return this.networkAvailable
     }
-    fun getNetworkType(): NearDocNetworkType? {
+    fun getNetworkType(): GamersGeekNetworkType? {
         return this.type
     }
 }

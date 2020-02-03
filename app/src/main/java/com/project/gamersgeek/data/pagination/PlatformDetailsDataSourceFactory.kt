@@ -8,7 +8,8 @@ import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import javax.inject.Inject
 
-class PlatformDetailsDataSourceFactory @Inject constructor(private val iPlatformDetailsDao: IPlatformDetailsDao,
+@Deprecated("")
+class PlatformDetailsDataSourceFactory (private val iPlatformDetailsDao: IPlatformDetailsDao,
                                                            private val iRawgGameDbApiHelper: IRawgGameDbApiHelper): DataSource.Factory<Int, PlatformDetails>() {
 
     private val liveData: MutableLiveData<PlatformDetailsDataSource> = MutableLiveData()

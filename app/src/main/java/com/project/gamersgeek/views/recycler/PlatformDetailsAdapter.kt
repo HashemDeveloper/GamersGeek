@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.paging.AsyncPagedListDiffer
+import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,8 @@ import com.project.gamersgeek.R
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformGames
 import com.project.gamersgeek.utils.GlideApp
+import timber.log.Timber
+import java.lang.UnsupportedOperationException
 
 class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsListener): PagedListAdapter<PlatformDetails, RecyclerView.ViewHolder>(
     PLATFORM_DETAILS_COMPARATOR) {
@@ -42,8 +46,11 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val platformDetails: PlatformDetails = getItem(position)!!
-        platformDetails.let {
+        var platformDetails: PlatformDetails?
+        getItem(position).let {
+            platformDetails = it
+        }
+        platformDetails?.let {
             (holder as PlatformDetailsViewHolder).bindView(it)
         }
     }
