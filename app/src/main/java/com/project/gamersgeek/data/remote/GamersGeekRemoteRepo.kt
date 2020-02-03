@@ -25,7 +25,7 @@ class GamersGeekRemoteRepo @Inject constructor(): IRawgGameDbApiHelper, BaseData
 
     override suspend fun fetchAllGamePlatforms(page: Int, pageSize: Int): ResultHandler<PlatformRes> {
         return getResult {
-            this.rawgGameDbApi.getAllListOfVideoGamePlatform(page, pageSize)
+            this.rawgGameDbApi.getAllListOfVideoGamePlatform(page, pageSize, "id")
         }
     }
 

@@ -18,7 +18,7 @@ interface IRawgGameDbApi {
     suspend fun fetchGameById(@Path("id") id: Int): Response<GamesRes>
     @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
     @GET("api/platforms")
-    suspend fun getAllListOfVideoGamePlatform(@Query("page") page: Int, @Query("page_size") pageSize: Int): Response<PlatformRes>
+    suspend fun getAllListOfVideoGamePlatform(@Query("page") page: Int, @Query("page_size") pageSize: Int, @Query("ordering") ordering: String): Response<PlatformRes>
     @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
     @GET("api/platforms/{id}")
     suspend fun getPlatformDetails(@Path("id") id: Int): Response<PlatformRes>

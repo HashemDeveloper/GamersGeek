@@ -12,5 +12,6 @@ interface IPlatformDetailsDao {
     suspend fun clearPlatformDetails()
     @Transaction @Query("select * from platform_details")
     fun getPlatformDetails(): DataSource.Factory<Int, PlatformDetails>
-
+    @Transaction @Query("select * from platform_details")
+    suspend fun getAllPlatformDetails(): List<PlatformDetails>
 }

@@ -3,13 +3,16 @@ package com.project.gamersgeek
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.models.localobj.NavigationHeaderItems
 import com.project.gamersgeek.models.localobj.NavigationItems
@@ -18,6 +21,7 @@ import com.project.gamersgeek.events.NetworkStateEvent
 import com.project.neardoc.rxeventbus.IRxEventBus
 import com.project.gamersgeek.utils.networkconnections.IConnectionStateMonitor
 import com.project.gamersgeek.utils.networkconnections.GamersGeekNetworkType
+import com.project.gamersgeek.viewmodels.PlatformPageViewModel
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -30,6 +34,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val platformPageViewModel: PlatformPageViewModel by viewModels {
+        this.viewModelFactory
+    }
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     @Inject
     lateinit var iRxEventBus: IRxEventBus
@@ -96,12 +105,12 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 this.iConnectionStateMonitor.isUsingWifiLiveData().observe(this, observeUsingWifiLiveData())
                 this.iConnectionStateMonitor.isUsingMobileData().observe(this, observeUsingMobileDataLiveData())
                 if (isWifiConnected) {
-                    EventBus.getDefault().postSticky(NetworkStateEvent(true, GamersGeekNetworkType.WIFI_DATA))
+                    this.platformPageViewModel.setupNetConnection(NetworkStateEvent(true, GamersGeekNetworkType.WIFI_DATA))
                 } else {
-                    EventBus.getDefault().postSticky(NetworkStateEvent(true, GamersGeekNetworkType.MOBILE_DATA))
+                    this.platformPageViewModel.setupNetConnection(NetworkStateEvent(true, GamersGeekNetworkType.MOBILE_DATA))
                 }
             } else {
-                EventBus.getDefault().postSticky(NetworkStateEvent(false, GamersGeekNetworkType.NO_NETWORK))
+                this.platformPageViewModel.setupNetConnection(NetworkStateEvent(false, GamersGeekNetworkType.NO_NETWORK))
                 Toast.makeText(this, "Connection lost", Toast.LENGTH_SHORT).show()
             }
         })
