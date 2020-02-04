@@ -73,10 +73,20 @@ class NavItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
                     GlideApp.with(this.view).load(it.backgroundImage).into(bgImage)
                 }
                 this.userImageView?.let {uImage ->
-                    GlideApp.with(this.view).load(it.profileImage).into(uImage)
+                    if (it.profileImage.isNotEmpty()) {
+                        uImage.visibility = View.VISIBLE
+                        GlideApp.with(this.view).load(it.profileImage).into(uImage)
+                    } else {
+                        uImage.visibility = View.GONE
+                    }
                 }
                 this.usernameView?.let {name ->
-                    name.text = it.userName
+                    if (it.userName.isNotEmpty()) {
+                        name.visibility = View.VISIBLE
+                        name.text = it.userName
+                    } else {
+                        name.visibility = View.GONE
+                    }
                 }
             }
         }
