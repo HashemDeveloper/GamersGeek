@@ -68,6 +68,7 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
             adapter.submitList(it)
             platform_page_swipe_to_refresh_layout_id.isRefreshing = false
         }
+        this.platformPageViewModel.getNavBackgroundImage()
         setupDrawer()
     }
     private fun initPlatformDetailsData() {

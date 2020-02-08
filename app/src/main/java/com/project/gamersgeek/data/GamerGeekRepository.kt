@@ -6,6 +6,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
 import com.project.gamersgeek.data.pagination.PlatformDetailBoundaryCallBack
+import com.project.gamersgeek.data.pagination.PlatformDetailsDataSourceFactory
 import com.project.gamersgeek.data.remote.IRawgGameDbApi
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import javax.inject.Inject
@@ -21,9 +22,12 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
     }
 
     private fun getPlatformDetailsFromLocalDb(): LiveData<PagedList<PlatformDetails>> {
-        val dataSourceFactory: DataSource.Factory<Int, PlatformDetails> = this.iPlatformDetailsDao.getPlatformDetails()
+        val dbFactory = PlatformDetailsDataSourceFactory(this.iPlatformDetailsDao, this.iRawgGameDbApi)
+        dbFactory.create()
+        val dataSourceFactory: DataSource.Factory<Int, PlatformDetails> = this.iPlatformDetailsDao.getAllPlatformDetails()
         val platformDetailBoundaryCallBack = PlatformDetailBoundaryCallBack(this.iPlatformDetailsDao, this.iRawgGameDbApi)
         return LivePagedListBuilder(dataSourceFactory, pageListConfig())
+            .setInitialLoadKey(1)
             .setBoundaryCallback(platformDetailBoundaryCallBack)
             .build()
     }
