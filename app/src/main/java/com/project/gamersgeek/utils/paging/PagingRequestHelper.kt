@@ -30,9 +30,35 @@ class PagingRequestHelper: CoroutineScope {
         }
         return isRunningOrNot!!
     }
+
+    fun isAllRetryFailed(): Boolean {
+        var isAllRetryFailed: Boolean?= null
+        runBlocking {
+            val jobIsAllRetryFailed: Deferred<Boolean> = async { checkIfAllRetryFailed() }
+            isAllRetryFailed = jobIsAllRetryFailed.await()
+        }
+        return isAllRetryFailed!!
+    }
     @AnyThread
     fun addListener(listener: Listener): Boolean {
         return this.mListeners.add(listener)
+    }
+    private fun checkIfAllRetryFailed(): Boolean {
+        val toBeRetried: Array<RequestWrapper?> = arrayOfNulls(RequestType.values().size)
+        var retried: Boolean = false
+        synchronized(this.mLock) {
+            for (typeIndices in RequestType.values().indices) {
+                toBeRetried[typeIndices] = this.mRequestQueue[typeIndices].mFailed
+                this.mRequestQueue[typeIndices].mFailed = null
+            }
+        }
+        for (failed: RequestWrapper? in toBeRetried) {
+            failed?.let {
+                failed.retry()
+                retried = true
+            }
+        }
+        return retried
     }
     @AnyThread
     private fun isRunningOrNot(type: RequestType, request: Request): Boolean {
