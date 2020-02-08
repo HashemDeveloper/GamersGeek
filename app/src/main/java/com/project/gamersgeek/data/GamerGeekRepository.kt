@@ -22,8 +22,6 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
     }
 
     private fun getPlatformDetailsFromLocalDb(): LiveData<PagedList<PlatformDetails>> {
-        val dbFactory = PlatformDetailsDataSourceFactory(this.iPlatformDetailsDao, this.iRawgGameDbApi)
-        dbFactory.create()
         val dataSourceFactory: DataSource.Factory<Int, PlatformDetails> = this.iPlatformDetailsDao.getAllPlatformDetails()
         val platformDetailBoundaryCallBack = PlatformDetailBoundaryCallBack(this.iPlatformDetailsDao, this.iRawgGameDbApi)
         return LivePagedListBuilder(dataSourceFactory, pageListConfig())

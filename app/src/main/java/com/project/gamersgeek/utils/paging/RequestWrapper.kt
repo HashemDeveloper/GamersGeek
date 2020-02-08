@@ -15,7 +15,7 @@ class RequestWrapper constructor(private val request: Request,
     }
     fun retry() {
         launch {
-            pagingRequestHelper.runIfNotRunning(requestType, request)
+            pagingRequestHelper.runIfNotRunning(requestType) { request }
         }
     }
     fun getRequestType(): RequestType {

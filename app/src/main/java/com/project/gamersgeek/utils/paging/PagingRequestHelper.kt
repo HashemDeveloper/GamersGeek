@@ -22,7 +22,7 @@ class PagingRequestHelper: CoroutineScope {
             lockedRecordResult(requestWrapper, throwable)
         }.join()
     }
-    fun runIfNotRunning(type: RequestType, request: Request): Boolean {
+    fun runIfNotRunning(type: RequestType, request:() -> Request): Boolean {
         var isRunningOrNot: Boolean?= null
         runBlocking {
             val jobRunOrNotRunning: Deferred<Boolean> = async { isRunningOrNot(type, request)}
@@ -61,7 +61,7 @@ class PagingRequestHelper: CoroutineScope {
         return retried
     }
     @AnyThread
-    private fun isRunningOrNot(type: RequestType, request: Request): Boolean {
+    private fun isRunningOrNot(type: RequestType, request: () -> Request): Boolean {
         val hasListeners: Boolean = this@PagingRequestHelper.mListeners.isNotEmpty()
         var report: StatusReport?= null
         synchronized(this.mLock) {
@@ -69,7 +69,7 @@ class PagingRequestHelper: CoroutineScope {
             if (requestQueue.mRunning != null) {
                 return false
             }
-            requestQueue.mRunning = request
+            requestQueue.mRunning = request.invoke()
             requestQueue.mStatus = Status.RUNNING
             requestQueue.mFailed = null
             requestQueue.mLastError = null
@@ -80,7 +80,7 @@ class PagingRequestHelper: CoroutineScope {
         report?.let {
             dispatchReport(it)
         }
-        val wrapper: RequestWrapper = RequestWrapper(request, this, type)
+        val wrapper: RequestWrapper = RequestWrapper(request.invoke(), this, type)
         wrapper.run()
         return true
     }

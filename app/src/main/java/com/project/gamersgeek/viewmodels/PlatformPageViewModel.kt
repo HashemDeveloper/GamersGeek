@@ -43,10 +43,12 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
         }
     }
     fun getNavBackgroundImage() {
-        launch {
-            val platformDetails: PlatformDetails = platformDetailsDao.getPlatformDetails()
-            Timber.e("Name: ${platformDetails.name}")
-        }
+//        launch {
+//            val platformDetails: PlatformDetails = platformDetailsDao.getPlatformDetails()
+//            platformDetails.let {
+//                Timber.e("Name: ${it.name}")
+//            }
+//        }
     }
 
     fun setupDrawer(platformPageSearchId: FloatingSearchView?) {
