@@ -1,26 +1,21 @@
 package com.project.gamersgeek.viewmodels
 
 import androidx.lifecycle.*
-import androidx.paging.PagedList
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.project.gamersgeek.data.IGamerGeekRepository
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
-import com.project.gamersgeek.data.pagination.PagingDataListDispatcher
 import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.events.NetworkStateEvent
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.neardoc.rxeventbus.IRxEventBus
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
 //    val mediatorLiveData: MediatorLiveData<PagedList<PlatformDetails>> = MediatorLiveData()
     val networkLiveData: MutableLiveData<NetworkStateEvent> = MutableLiveData()
+    private val mLock = Any()
     @Inject
     lateinit var iRxEventBus: IRxEventBus
     @Inject
@@ -49,13 +44,26 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     fun retry() {
         this.platformDetailsList.retry.invoke()
     }
-    fun getNavBackgroundImage() {
-//        launch {
-//            val platformDetails: PlatformDetails = platformDetailsDao.getPlatformDetails()
-//            platformDetails.let {
-//                Timber.e("Name: ${it.name}")
-//            }
-//        }
+    fun getNavBackgroundImage(): String {
+        var backgroundImage: String?= null
+        runBlocking {
+            val jobBackgroundImage: Deferred<String> = async { getBackgroundImageLocked() }
+            backgroundImage = jobBackgroundImage.await()
+        }
+        return backgroundImage!!
+    }
+    private fun getBackgroundImageLocked(): String {
+        var backgroundImage = ""
+        launch {
+            val platformDetails: PlatformDetails? = getPlatformDetails()
+            if (platformDetails != null) {
+                backgroundImage = platformDetails.imageBackground
+            }
+        }
+        return backgroundImage
+    }
+    private suspend fun getPlatformDetails(): PlatformDetails? {
+        return platformDetailsDao.getPlatformDetails()
     }
 
     fun setupDrawer(platformPageSearchId: FloatingSearchView?) {
