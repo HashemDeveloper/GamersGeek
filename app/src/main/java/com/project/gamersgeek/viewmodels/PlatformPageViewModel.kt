@@ -15,7 +15,6 @@ import kotlin.coroutines.CoroutineContext
 class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
 //    val mediatorLiveData: MediatorLiveData<PagedList<PlatformDetails>> = MediatorLiveData()
     val networkLiveData: MutableLiveData<NetworkStateEvent> = MutableLiveData()
-    private val mLock = Any()
     @Inject
     lateinit var iRxEventBus: IRxEventBus
     @Inject
@@ -47,12 +46,12 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     fun getNavBackgroundImage(): String {
         var backgroundImage: String?= null
         runBlocking {
-            val jobBackgroundImage: Deferred<String> = async { getBackgroundImageLocked() }
+            val jobBackgroundImage: Deferred<String> = async { getBackgroundImage() }
             backgroundImage = jobBackgroundImage.await()
         }
         return backgroundImage!!
     }
-    private fun getBackgroundImageLocked(): String {
+    private fun getBackgroundImage(): String {
         var backgroundImage = ""
         launch {
             val platformDetails: PlatformDetails? = getPlatformDetails()
