@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
@@ -17,6 +18,7 @@ import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.utils.ResultHandler
+import com.project.gamersgeek.utils.paging.NetworkState
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
 import com.project.gamersgeek.views.recycler.PlatformDetailsAdapter
 import com.project.gamersgeek.views.widgets.GlobalLoadingBar
@@ -50,30 +52,37 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
         val adapter = PlatformDetailsAdapter(this)
         platform_page_recycler_view_id.layoutManager = LinearLayoutManager(context!!)
         platform_page_recycler_view_id.adapter = adapter
-        this.platformPageViewModel.networkLiveData.observe(viewLifecycleOwner) {
-            if (it.getIsNetworkAvailable()) {
-                initPlatformDetailsData()
-            } else {
-                initPlatformDetailsData()
-            }
-            this.isNetConnected = it.getIsNetworkAvailable()
-        }
-        this.platformPageViewModel.mediatorLiveData.observe(viewLifecycleOwner) {
+//        this.platformPageViewModel.networkLiveData.observe(viewLifecycleOwner) {
+////            if (it.getIsNetworkAvailable()) {
+////                initPlatformDetailsData()
+////            } else {
+////                initPlatformDetailsData()
+////            }
+////            this.isNetConnected = it.getIsNetworkAvailable()
+////        }
+        this.platformPageViewModel.platformDetailsLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+            val position = (platform_page_recycler_view_id.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+            if (position != RecyclerView.NO_POSITION) {
+                platform_page_recycler_view_id.scrollToPosition(position)
+            }
+            platform_page_swipe_to_refresh_layout_id.isRefreshing = false
+        }
+        this.platformPageViewModel.networkState.observe(viewLifecycleOwner) {
+            adapter.setNetworkState(it)
+        }
+        swipeToRefresh()
+        this.platformPageViewModel.getNavBackgroundImage()
+        setupDrawer()
+    }
+
+    private fun swipeToRefresh() {
+        this.platformPageViewModel.refreshState.observe(viewLifecycleOwner) {
+            platform_page_swipe_to_refresh_layout_id.isRefreshing = it == NetworkState.LOADING
         }
         platform_page_swipe_to_refresh_layout_id.setOnRefreshListener {
             this.platformPageViewModel.refresh()
         }
-        this.platformPageViewModel.mediatorLiveData.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            platform_page_swipe_to_refresh_layout_id.isRefreshing = false
-        }
-        this.platformPageViewModel.getNavBackgroundImage()
-        setupDrawer()
-    }
-    private fun initPlatformDetailsData() {
-        this.platformPageViewModel.refresh()
-        platform_page_swipe_to_refresh_layout_id.isRefreshing = true
     }
     private fun setupDrawer() {
         this.platformPageViewModel.setupDrawer(platform_page_search_id)

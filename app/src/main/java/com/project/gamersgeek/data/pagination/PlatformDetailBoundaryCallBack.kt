@@ -1,13 +1,14 @@
 package com.project.gamersgeek.data.pagination
 
+import androidx.annotation.MainThread
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import com.project.gamersgeek.data.fetchAndSaveData
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
 import com.project.gamersgeek.data.remote.IRawgGameDbApi
 import com.project.gamersgeek.models.platforms.PlatformDetails
-import com.project.gamersgeek.utils.paging.PagingRequestHelper
-import com.project.gamersgeek.utils.paging.Request
-import com.project.gamersgeek.utils.paging.RequestType
+import com.project.gamersgeek.utils.paging.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,15 +21,17 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
                                                          private val rawgGameDbApi: IRawgGameDbApi): PagedList.BoundaryCallback<PlatformDetails>(), CoroutineScope {
     private var lastRequestedPage = 1
     private val job = Job()
-    private val helper = PagingRequestHelper()
+    val helper = PagingRequestHelper()
+    val netWorkState = helper.createNetworkStatusLiveData()
 
-
+    @MainThread
     override fun onZeroItemsLoaded() {
         this.helper.runIfNotRunning(RequestType.INITIAL) {
             requestAndSaveData()
         }
     }
 
+    @MainThread
     override fun onItemAtEndLoaded(itemAtEnd: PlatformDetails) {
         this.helper.runIfNotRunning(RequestType.INITIAL) {
             requestAndSaveData()
@@ -51,6 +54,23 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
                 }
             }
         }
+    }
+    @MainThread
+    fun refresh(): LiveData<NetworkState> {
+        val networkState = MutableLiveData<NetworkState>()
+        networkState.value = NetworkState.LOADING
+        launch {
+            fetchAndSaveData(call = {
+                rawgGameDbApi.getAllListOfVideoGamePlatform(lastRequestedPage, PAGE_SIZE, "id")
+            }, onSuccess = {
+                saveData(it.listOfResult)
+                networkState.postValue(NetworkState.LOADED)
+            }, onError = {
+                networkState.postValue(NetworkState.error(it))
+                Timber.d(TAG, "Failed to fetch platform data: $it")
+            })
+        }
+        return networkState
     }
     private fun saveData(dataList: List<PlatformDetails>) {
         launch {

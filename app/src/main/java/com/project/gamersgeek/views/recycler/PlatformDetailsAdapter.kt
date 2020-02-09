@@ -17,12 +17,13 @@ import com.project.gamersgeek.R
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformGames
 import com.project.gamersgeek.utils.GlideApp
+import com.project.gamersgeek.utils.paging.NetworkState
 import timber.log.Timber
 import java.lang.UnsupportedOperationException
 
 class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsListener): PagedListAdapter<PlatformDetails, RecyclerView.ViewHolder>(
     PLATFORM_DETAILS_COMPARATOR) {
-
+    private var networkState: NetworkState?= null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.recycler_platform_item_layout, parent, false)
         val viewHolder = PlatformDetailsViewHolder(view, parent.context)
@@ -54,6 +55,23 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
             (holder as PlatformDetailsViewHolder).bindView(it)
         }
     }
+
+    fun setNetworkState(it: NetworkState) {
+//        val previousState: NetworkState? = this.networkState
+        val hadExtraRow: Boolean = hasExtraRow()
+        this.networkState = it
+        val hasExtraRow: Boolean = hasExtraRow()
+        if (hadExtraRow != hasExtraRow) {
+            if (hadExtraRow) {
+                notifyItemRemoved(super.getItemCount())
+            } else {
+                notifyItemInserted(super.getItemCount())
+            }
+        } else if (hasExtraRow) {
+            notifyItemChanged(itemCount - 1)
+        }
+    }
+    private fun hasExtraRow() = this.networkState != null && this.networkState != NetworkState.LOADED
 
     inner class PlatformDetailsViewHolder constructor(private val view: View, private val context: Context): RecyclerView.ViewHolder(view) {
         private var platformImageView: AppCompatImageView?= null

@@ -40,8 +40,8 @@ class PagingRequestHelper: CoroutineScope {
         return isAllRetryFailed!!
     }
     @AnyThread
-    fun addListener(listener: Listener): Boolean {
-        return this.mListeners.add(listener)
+    fun addListener(listener: () -> Listener): Boolean {
+        return this.mListeners.add(listener.invoke())
     }
     private fun checkIfAllRetryFailed(): Boolean {
         val toBeRetried: Array<RequestWrapper?> = arrayOfNulls(RequestType.values().size)
@@ -112,7 +112,7 @@ class PagingRequestHelper: CoroutineScope {
     private fun dispatchReport(statusReport: StatusReport?){
         for (listener: Listener in this.mListeners) {
             statusReport?.let {
-                listener.onStatusChange(it)
+                listener.onStatusChange({ it })
             }
         }
     }
@@ -136,6 +136,7 @@ class PagingRequestHelper: CoroutineScope {
         return this.mRequestQueue[type.ordinal].mStatus!!
     }
 
+
     override val coroutineContext: CoroutineContext
         get() = this.job + Dispatchers.IO
 
@@ -143,10 +144,10 @@ class PagingRequestHelper: CoroutineScope {
         var mFailed: RequestWrapper? = null
         var mRunning: Request?= null
         var mLastError: Throwable?= null
-        var mStatus: Status?= null
+        var mStatus: Status?= Status.SUCCESS
     }
     interface Listener {
-        fun onStatusChange(report: StatusReport)
+        fun onStatusChange(report: () -> StatusReport)
     }
     companion object {
         @JvmStatic private val TAG: String = PagingRequestHelper::class.java.canonicalName!!
