@@ -1,5 +1,6 @@
 package com.project.gamersgeek.data.pagination
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
@@ -7,6 +8,7 @@ import com.project.gamersgeek.data.fetchAndSaveData
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
 import com.project.gamersgeek.data.remote.IRawgGameDbApi
 import com.project.gamersgeek.models.platforms.PlatformDetails
+import com.project.gamersgeek.utils.paging.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,40 +21,75 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
                                                          private val rawgGameDbApi: IRawgGameDbApi): PagedList.BoundaryCallback<PlatformDetails>(), CoroutineScope {
     private var lastRequestedPage = 1
     private val job = Job()
-    private var isRequestInProgress = false
+    val helper = PagingRequestHelper()
+    val netWorkState = helper.createNetworkStatusLiveData()
 
+    @MainThread
     override fun onZeroItemsLoaded() {
-        requestAndSaveData()
+        this.helper.runIfNotRunning(RequestType.INITIAL) {
+            requestAndSaveData()
+        }
     }
 
+    @MainThread
     override fun onItemAtEndLoaded(itemAtEnd: PlatformDetails) {
-        requestAndSaveData()
+        this.helper.runIfNotRunning(RequestType.AFTER) {
+            requestAndSaveData()
+        }
     }
 
-
-    private fun requestAndSaveData() {
-        if (this.isRequestInProgress) return
-
-        this.isRequestInProgress = true
+    private fun requestAndSaveData(): Request {
+        return object : Request {
+            override fun run(requestCallback: Request.Callback) {
+                launch {
+                    fetchAndSaveData(call = {
+                        rawgGameDbApi.getAllListOfVideoGamePlatform(lastRequestedPage, PAGE_SIZE, "id")
+                    }, onSuccess = {
+                        saveData(it.listOfResult, requestCallback)
+                    }, onError = {
+                        requestCallback.recordFailure(it)
+                        Timber.d(TAG, "Failed to fetch platform data: $it")
+                    })
+                }
+            }
+        }
+    }
+    @MainThread
+    fun refresh(): LiveData<NetworkState> {
+        val networkState = MutableLiveData<NetworkState>()
+        networkState.value = NetworkState.LOADING
         launch {
             fetchAndSaveData(call = {
                 rawgGameDbApi.getAllListOfVideoGamePlatform(lastRequestedPage, PAGE_SIZE, "id")
             }, onSuccess = {
-                saveData(it.listOfResult)
+                deleteAndSaveData(it.listOfResult)
+                networkState.postValue(NetworkState.LOADED)
             }, onError = {
-                isRequestInProgress = false
+                networkState.postValue(NetworkState.error(it))
                 Timber.d(TAG, "Failed to fetch platform data: $it")
             })
         }
-
+        return networkState
     }
-    private fun saveData(dataList: List<PlatformDetails>) {
+    private fun saveData(
+        dataList: List<PlatformDetails>,
+        requestCallback: Request.Callback
+    ) {
         launch {
             iPlatformDetailsDao.insert(dataList)
             lastRequestedPage++
-            isRequestInProgress = false
+            requestCallback.recordSuccess()
         }
     }
+    private fun deleteAndSaveData(dataList: List<PlatformDetails>) {
+        launch {
+            iPlatformDetailsDao.clearPlatformDetails()
+            iPlatformDetailsDao.insert(dataList)
+            lastRequestedPage++
+        }
+    }
+
+
     override val coroutineContext: CoroutineContext
         get() = this.job + Dispatchers.IO
     companion object {
