@@ -64,7 +64,6 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
             adapter.setNetworkState(it)
         }
         swipeToRefresh()
-        this.platformPageViewModel.getNavBackgroundImage()
         setupDrawer()
     }
 

@@ -59,10 +59,19 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         this.navController.setGraph(R.navigation.gamers_geek_nav_layout)
         bottom_nav_bar_id?.setupWithNavController(this.navController)
         navigation_view_id?.setupWithNavController(this.navController)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setupNavDrawer()
+        monitorConnectionSetting()
+    }
+    private fun setupNavBarItems() {
         navigation_view_menu_item_view_id.layoutManager = LinearLayoutManager(this)
         this.navItemAdapter = NavItemAdapter()
         navigation_view_menu_item_view_id.adapter = navItemAdapter
-        val navHeader = NavigationHeaderItems("", "", "HashemDev")
+        val backgroundImage: String = this.platformPageViewModel.getNavBackgroundImage()
+        val navHeader = NavigationHeaderItems("", backgroundImage, "HashemDev")
         val publisher = NavigationItems(R.drawable.game_publisher_icon, "Publisher")
         val developer = NavigationItems(R.drawable.game_developer_icon_black, "Developer")
         val navMenuList: MutableList<Any> = arrayListOf()
@@ -72,18 +81,13 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         this.navItemAdapter?.setData(navMenuList)
     }
 
-    override fun onStart() {
-        super.onStart()
-        setupNavDrawer()
-        monitorConnectionSetting()
-    }
-
     private fun setupNavDrawer() {
         this.compositeDisposable.add(this.iRxEventBus.observable(HamburgerEvent::class.java)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {event ->
                 event?.floatingSearchView?.attachNavigationDrawerToMenuButton(navigation_drawer_layout_id)
+                setupNavBarItems()
             })
     }
 

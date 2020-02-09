@@ -15,6 +15,7 @@ import kotlin.coroutines.CoroutineContext
 class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
 //    val mediatorLiveData: MediatorLiveData<PagedList<PlatformDetails>> = MediatorLiveData()
     val networkLiveData: MutableLiveData<NetworkStateEvent> = MutableLiveData()
+    private val mLock = Any()
     @Inject
     lateinit var iRxEventBus: IRxEventBus
     @Inject
@@ -53,13 +54,22 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     }
     private fun getBackgroundImage(): String {
         var backgroundImage = ""
-        launch {
-            val platformDetails: PlatformDetails? = getPlatformDetails()
-            if (platformDetails != null) {
-                backgroundImage = platformDetails.imageBackground
+        runBlocking {
+            val platformDetails: Deferred<PlatformDetails> = async { getPlatformDetailsLocked()!! }
+            val details: PlatformDetails? = platformDetails.await()
+            if (details != null) {
+                backgroundImage = details.imageBackground
             }
         }
         return backgroundImage
+    }
+    private fun getPlatformDetailsLocked(): PlatformDetails? {
+        var platformDetails: PlatformDetails?= null
+        runBlocking {
+            val jobPlatformDetails: Deferred<PlatformDetails> = async { getPlatformDetails()!! }
+            platformDetails = jobPlatformDetails.await()
+        }
+        return platformDetails
     }
     private suspend fun getPlatformDetails(): PlatformDetails? {
         return platformDetailsDao.getPlatformDetails()
