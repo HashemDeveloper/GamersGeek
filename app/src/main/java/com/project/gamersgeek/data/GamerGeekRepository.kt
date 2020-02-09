@@ -64,6 +64,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
             .setPageSize(pageSize)
             .setPrefetchDistance(pageSize)
             .setEnablePlaceholders(true)
+            .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
             .setMaxSize(MAX_SIZE)
             .build()
     }
