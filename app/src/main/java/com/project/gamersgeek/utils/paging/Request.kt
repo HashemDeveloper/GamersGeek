@@ -18,9 +18,11 @@ interface Request {
                 throwException()
             }
         }
-        fun recordFailure() {
+        fun recordFailure(it: String) {
             if (this.mCalled.compareAndSet(false, true)) {
-                this.pagingRequestHelper.recordResult(this.requestWrapper, null)
+                if (it.isNotEmpty()) {
+                    this.pagingRequestHelper.recordResult(this.requestWrapper, Throwable(it))
+                }
             } else {
                 throwException()
             }

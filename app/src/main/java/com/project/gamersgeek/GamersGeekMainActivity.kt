@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.events.HamburgerEvent

@@ -33,7 +33,7 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
 
     @MainThread
     override fun onItemAtEndLoaded(itemAtEnd: PlatformDetails) {
-        this.helper.runIfNotRunning(RequestType.INITIAL) {
+        this.helper.runIfNotRunning(RequestType.AFTER) {
             requestAndSaveData()
         }
     }
@@ -45,10 +45,9 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
                     fetchAndSaveData(call = {
                         rawgGameDbApi.getAllListOfVideoGamePlatform(lastRequestedPage, PAGE_SIZE, "id")
                     }, onSuccess = {
-                        saveData(it.listOfResult)
-                        requestCallback.recordSuccess()
+                        saveData(it.listOfResult, requestCallback)
                     }, onError = {
-                        requestCallback.recordFailure()
+                        requestCallback.recordFailure(it)
                         Timber.d(TAG, "Failed to fetch platform data: $it")
                     })
                 }
@@ -63,7 +62,7 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
             fetchAndSaveData(call = {
                 rawgGameDbApi.getAllListOfVideoGamePlatform(lastRequestedPage, PAGE_SIZE, "id")
             }, onSuccess = {
-                saveData(it.listOfResult)
+                deleteAndSaveData(it.listOfResult)
                 networkState.postValue(NetworkState.LOADED)
             }, onError = {
                 networkState.postValue(NetworkState.error(it))
@@ -72,8 +71,19 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
         }
         return networkState
     }
-    private fun saveData(dataList: List<PlatformDetails>) {
+    private fun saveData(
+        dataList: List<PlatformDetails>,
+        requestCallback: Request.Callback
+    ) {
         launch {
+            iPlatformDetailsDao.insert(dataList)
+            lastRequestedPage++
+            requestCallback.recordSuccess()
+        }
+    }
+    private fun deleteAndSaveData(dataList: List<PlatformDetails>) {
+        launch {
+            iPlatformDetailsDao.clearPlatformDetails()
             iPlatformDetailsDao.insert(dataList)
             lastRequestedPage++
         }

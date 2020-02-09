@@ -29,11 +29,8 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     lateinit var platformDetailsDao: IPlatformDetailsDao
     private val job = Job()
 
-//    val remotePlatformDetailsLiveData by lazy {
-//        this.iGamerGeekRepository.getPlatformDetailsPagedData(this.isNetConnected)
-//    }
     private val platformDetailsList by lazy {
-          this.iGamerGeekRepository.getPlatformDetailsPagedData()
+          this.iGamerGeekRepository.getPlatformDetailsPagedData(50)
     }
 
     val platformDetailsLiveData by lazy {

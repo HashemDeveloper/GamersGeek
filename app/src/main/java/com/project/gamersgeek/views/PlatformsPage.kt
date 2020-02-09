@@ -52,14 +52,6 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
         val adapter = PlatformDetailsAdapter(this)
         platform_page_recycler_view_id.layoutManager = LinearLayoutManager(context!!)
         platform_page_recycler_view_id.adapter = adapter
-//        this.platformPageViewModel.networkLiveData.observe(viewLifecycleOwner) {
-////            if (it.getIsNetworkAvailable()) {
-////                initPlatformDetailsData()
-////            } else {
-////                initPlatformDetailsData()
-////            }
-////            this.isNetConnected = it.getIsNetworkAvailable()
-////        }
         this.platformPageViewModel.platformDetailsLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
             val position = (platform_page_recycler_view_id.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()

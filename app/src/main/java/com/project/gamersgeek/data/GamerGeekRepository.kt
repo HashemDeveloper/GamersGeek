@@ -23,11 +23,11 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
     @Inject
     lateinit var iPlatformDetailsDao: IPlatformDetailsDao
 
-    override fun getPlatformDetailsPagedData(): PagingDataListDispatcher<PlatformDetails> {
-       return getPlatformDetailsFromLocalDb()
+    override fun getPlatformDetailsPagedData(pageSize: Int): PagingDataListDispatcher<PlatformDetails> {
+       return getPlatformDetailsFromLocalDb(pageSize)
     }
 
-    private fun getPlatformDetailsFromLocalDb(): PagingDataListDispatcher<PlatformDetails> {
+    private fun getPlatformDetailsFromLocalDb(pageSize: Int): PagingDataListDispatcher<PlatformDetails> {
         val dataSourceFactory: DataSource.Factory<Int, PlatformDetails> = this.iPlatformDetailsDao.getAllPlatformDetails()
         val platformDetailBoundaryCallBack = PlatformDetailBoundaryCallBack(this.iPlatformDetailsDao, this.iRawgGameDbApi)
         val triggerRefresh = MutableLiveData<Unit>()
@@ -35,7 +35,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
             refresh(platformDetailBoundaryCallBack)
         }
         val fetchExecutor: Executor = ArchTaskExecutor.getIOThreadExecutor()
-        val livePagedList = LivePagedListBuilder(dataSourceFactory, pageListConfig())
+        val livePagedList = LivePagedListBuilder(dataSourceFactory, pageListConfig(pageSize))
             .setBoundaryCallback(platformDetailBoundaryCallBack)
             .setFetchExecutor(fetchExecutor)
             .build()
@@ -58,11 +58,13 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
 
     companion object {
         private const val PAGE_SIZE = 10
-
-        fun pageListConfig() = PagedList.Config.Builder()
-            .setInitialLoadSizeHint(PAGE_SIZE)
-            .setPageSize(PAGE_SIZE)
+        private const val INITIAL_LOAD_SIZE_HINT = PAGE_SIZE * 3
+        private const val MAX_SIZE: Int = PagedList.Config.MAX_SIZE_UNBOUNDED
+        fun pageListConfig(pageSize: Int) = PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setPrefetchDistance(pageSize)
             .setEnablePlaceholders(true)
+            .setMaxSize(MAX_SIZE)
             .build()
     }
 }

@@ -8,5 +8,5 @@ import com.project.gamersgeek.models.platforms.PlatformDetails
 
 interface IGamerGeekRepository {
 
-    fun getPlatformDetailsPagedData(): PagingDataListDispatcher<PlatformDetails>
+    fun getPlatformDetailsPagedData(pageSize: Int): PagingDataListDispatcher<PlatformDetails>
 }
