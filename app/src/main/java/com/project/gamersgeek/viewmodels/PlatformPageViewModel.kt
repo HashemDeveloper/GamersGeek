@@ -55,10 +55,12 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     private fun getBackgroundImage(): String {
         var backgroundImage = ""
         runBlocking {
-            val platformDetails: Deferred<PlatformDetails> = async { getPlatformDetailsLocked()!! }
-            val details: PlatformDetails? = platformDetails.await()
-            if (details != null) {
-                backgroundImage = details.imageBackground
+            if (getPlatformDetailsLocked() != null) {
+                val platformDetails: Deferred<PlatformDetails> = async { getPlatformDetailsLocked()!! }
+                val details: PlatformDetails? = platformDetails.await()
+                if (details != null) {
+                    backgroundImage = details.imageBackground
+                }
             }
         }
         return backgroundImage
@@ -66,8 +68,10 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     private fun getPlatformDetailsLocked(): PlatformDetails? {
         var platformDetails: PlatformDetails?= null
         runBlocking {
-            val jobPlatformDetails: Deferred<PlatformDetails> = async { getPlatformDetails()!! }
-            platformDetails = jobPlatformDetails.await()
+            if (getPlatformDetails() != null) {
+                val jobPlatformDetails: Deferred<PlatformDetails> = async { getPlatformDetails()!! }
+                platformDetails = jobPlatformDetails.await()
+            }
         }
         return platformDetails
     }

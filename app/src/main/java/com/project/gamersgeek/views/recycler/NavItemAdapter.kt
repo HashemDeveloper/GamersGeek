@@ -70,7 +70,11 @@ class NavItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         override fun bindView(item: NavigationHeaderItems) {
             item.let {
                 this.backgroundImageView?.let {bgImage ->
-                    GlideApp.with(this.view).load(it.backgroundImage).into(bgImage)
+                    if (it.backgroundImage.isNotEmpty()) {
+                        GlideApp.with(this.view).load(it.backgroundImage).into(bgImage)
+                    } else {
+                        bgImage.setImageResource(R.drawable.pc_gaming_bg)
+                    }
                 }
                 this.userImageView?.let {uImage ->
                     if (it.profileImage.isNotEmpty()) {

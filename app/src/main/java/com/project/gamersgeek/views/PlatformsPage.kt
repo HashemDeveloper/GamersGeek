@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.arlib.floatingsearchview.FloatingSearchView
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable

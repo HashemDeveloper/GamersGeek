@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.arlib.floatingsearchview.FloatingSearchView
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.models.localobj.NavigationHeaderItems
