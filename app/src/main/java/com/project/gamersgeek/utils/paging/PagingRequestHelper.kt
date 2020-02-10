@@ -18,9 +18,8 @@ class PagingRequestHelper: CoroutineScope {
     private val mListeners: CopyOnWriteArrayList<Listener> = CopyOnWriteArrayList()
 
     fun recordResult(requestWrapper: RequestWrapper, throwable: Throwable?) = runBlocking {
-        launch {
-            lockedRecordResult(requestWrapper, throwable)
-        }.join()
+        delay(5000)
+        lockedRecordResult(requestWrapper, throwable)
     }
     fun runIfNotRunning(type: RequestType, request:() -> Request): Boolean {
         var isRunningOrNot: Boolean?= null
@@ -45,11 +44,11 @@ class PagingRequestHelper: CoroutineScope {
     }
     private fun checkIfAllRetryFailed(): Boolean {
         val toBeRetried: Array<RequestWrapper?> = arrayOfNulls(RequestType.values().size)
-        var retried: Boolean = false
+        var retried = false
         synchronized(this.mLock) {
             for (typeIndices in RequestType.values().indices) {
-                toBeRetried[typeIndices] = this.mRequestQueue[typeIndices].mFailed
-                this.mRequestQueue[typeIndices].mFailed = null
+                toBeRetried[typeIndices] = this.mRequestQueue[typeIndices].getFailed()
+                this.mRequestQueue[typeIndices].setFailed(null)
             }
         }
         for (failed: RequestWrapper? in toBeRetried) {
@@ -66,12 +65,13 @@ class PagingRequestHelper: CoroutineScope {
         var report: StatusReport?= null
         synchronized(this.mLock) {
             val requestQueue: RequestQueue = this.mRequestQueue[type.ordinal]
-            if (requestQueue.mRunning != null) {
+            if (requestQueue.getRunning() != null) {
                 return false
             }
-            requestQueue.mRunning = request.invoke()
+            val invokeRequest: Request = request.invoke()
+            requestQueue.setRunning(invokeRequest)
             requestQueue.mStatus = Status.RUNNING
-            requestQueue.mFailed = null
+            requestQueue.setFailed(null)
             requestQueue.mLastError = null
             if (hasListeners) {
                 report = prepareStatusReportLocked()
@@ -80,7 +80,7 @@ class PagingRequestHelper: CoroutineScope {
         report?.let {
             dispatchReport(it)
         }
-        val wrapper: RequestWrapper = RequestWrapper(request.invoke(), this, type)
+        val wrapper = RequestWrapper(request.invoke(), this, type)
         wrapper.run()
         return true
     }
@@ -89,24 +89,27 @@ class PagingRequestHelper: CoroutineScope {
         var statusReport: StatusReport?= null
         val success: Boolean = throwable == null
         val hasListener: Boolean = this@PagingRequestHelper.mListeners.isNotEmpty()
-        synchronized(this.mLock) {
-            val requestQueue: RequestQueue = this.mRequestQueue[requestWrapper.getRequestType().ordinal]
-            requestQueue.mRunning = null
-            requestQueue.mLastError = throwable
-            if (success) {
-                requestQueue.mFailed = null
-                requestQueue.mStatus = Status.SUCCESS
-            } else {
-                requestQueue.mFailed = requestWrapper
-                requestQueue.mStatus = Status.FAILED
+        launch(Dispatchers.IO) {
+            synchronized(mLock) {
+                val requestQueue: RequestQueue = mRequestQueue[requestWrapper.getRequestType().ordinal]
+                requestQueue.setRunning(null)
+                requestQueue.mLastError = throwable
+                if (success) {
+                    requestQueue.setFailed(null)
+                    requestQueue.mStatus = Status.SUCCESS
+                } else {
+                    requestQueue.setFailed(requestWrapper)
+                    requestQueue.mStatus = Status.FAILED
+                }
+                if (hasListener) {
+                    statusReport = prepareStatusReportLocked()
+                }
             }
-            if (hasListener) {
-                statusReport = prepareStatusReportLocked()
+            statusReport?.let {
+                dispatchReport(statusReport)
             }
         }
-        statusReport?.let {
-            dispatchReport(statusReport)
-        }
+
     }
 
     private fun dispatchReport(statusReport: StatusReport?){
@@ -141,10 +144,23 @@ class PagingRequestHelper: CoroutineScope {
         get() = this.job + Dispatchers.IO
 
     internal inner class RequestQueue constructor(private val requestType: RequestType) {
-        var mFailed: RequestWrapper? = null
-        var mRunning: Request?= null
+        private var mFailed: RequestWrapper? = null
+        private var mRunning: Request?= null
         var mLastError: Throwable?= null
         var mStatus: Status?= Status.SUCCESS
+
+        fun setRunning(request: Request?) {
+            this.mRunning = request
+        }
+        fun getRunning(): Request? {
+            return this.mRunning
+        }
+        fun setFailed(wrapper: RequestWrapper?) {
+            this.mFailed = wrapper
+        }
+        fun getFailed(): RequestWrapper? {
+            return this.mFailed
+        }
     }
     interface Listener {
         fun onStatusChange(report: () -> StatusReport)

@@ -20,9 +20,11 @@ import kotlin.coroutines.CoroutineContext
 class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDetailsDao: IPlatformDetailsDao,
                                                          private val rawgGameDbApi: IRawgGameDbApi): PagedList.BoundaryCallback<PlatformDetails>(), CoroutineScope {
     private var lastRequestedPage = 1
+    private var refreshRequestPageSize = 1
     private val job = Job()
     val helper = PagingRequestHelper()
     val netWorkState = helper.createNetworkStatusLiveData()
+    private var isItemRequestSuccess = false
 
     @MainThread
     override fun onZeroItemsLoaded() {
@@ -43,7 +45,7 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
             override fun run(requestCallback: Request.Callback) {
                 launch {
                     fetchAndSaveData(call = {
-                        rawgGameDbApi.getAllListOfVideoGamePlatform(lastRequestedPage, PAGE_SIZE, "id")
+                        rawgGameDbApi.getAllListOfVideoGamePlatform(1, PAGE_SIZE, "id")
                     }, onSuccess = {
                         saveData(it.listOfResult, requestCallback)
                     }, onError = {
@@ -60,7 +62,7 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
         networkState.value = NetworkState.LOADING
         launch {
             fetchAndSaveData(call = {
-                rawgGameDbApi.getAllListOfVideoGamePlatform(lastRequestedPage, PAGE_SIZE, "id")
+                rawgGameDbApi.getAllListOfVideoGamePlatform(1, PAGE_SIZE, "id")
             }, onSuccess = {
                 deleteAndSaveData(it.listOfResult)
                 networkState.postValue(NetworkState.LOADED)
@@ -77,7 +79,6 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
     ) {
         launch {
             iPlatformDetailsDao.insert(dataList)
-            lastRequestedPage++
             requestCallback.recordSuccess()
         }
     }
@@ -85,7 +86,6 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
         launch {
             iPlatformDetailsDao.clearPlatformDetails()
             iPlatformDetailsDao.insert(dataList)
-            lastRequestedPage++
         }
     }
 
@@ -93,7 +93,7 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
     override val coroutineContext: CoroutineContext
         get() = this.job + Dispatchers.IO
     companion object {
-        private const val PAGE_SIZE = 10
+        private const val PAGE_SIZE = 30
         @JvmStatic private val TAG: String = PlatformDetailBoundaryCallBack::class.java.canonicalName!!
     }
 }
