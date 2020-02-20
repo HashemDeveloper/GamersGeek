@@ -115,7 +115,7 @@ class PagingRequestHelper: CoroutineScope {
     private fun dispatchReport(statusReport: StatusReport?){
         for (listener: Listener in this.mListeners) {
             statusReport?.let {
-                listener.onStatusChange({ it })
+                listener.onStatusChange { it }
             }
         }
     }

@@ -129,10 +129,6 @@ class ConnectionStateMonitor @Inject constructor(private val context: Context) :
 
         override fun onAvailable(network: Network) {
             connectionStateMonitor.postValue(true)
-//            val handler = Handler()
-////            handler.post {
-////                this.connectionStateMonitor.updateConnection()
-////            }
             this.connectionStateMonitor.updateConnection()
         }
 
@@ -142,10 +138,6 @@ class ConnectionStateMonitor @Inject constructor(private val context: Context) :
 
         override fun onUnavailable() {
             connectionStateMonitor.postValue(false)
-//            val handler = Handler()
-//            handler.post {
-//                this.connectionStateMonitor.updateConnection()
-//            }
             this.connectionStateMonitor.updateConnection()
         }
 
