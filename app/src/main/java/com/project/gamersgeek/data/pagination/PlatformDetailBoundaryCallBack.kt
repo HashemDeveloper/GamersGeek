@@ -19,12 +19,9 @@ import kotlin.coroutines.CoroutineContext
 
 class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDetailsDao: IPlatformDetailsDao,
                                                          private val rawgGameDbApi: IRawgGameDbApi): PagedList.BoundaryCallback<PlatformDetails>(), CoroutineScope {
-    private var lastRequestedPage = 1
-    private var refreshRequestPageSize = 1
     private val job = Job()
     val helper = PagingRequestHelper()
     val netWorkState = helper.createNetworkStatusLiveData()
-    private var isItemRequestSuccess = false
 
     @MainThread
     override fun onZeroItemsLoaded() {

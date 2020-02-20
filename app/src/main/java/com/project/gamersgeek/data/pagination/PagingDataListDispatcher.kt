@@ -2,7 +2,6 @@ package com.project.gamersgeek.data.pagination
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.project.gamersgeek.events.NetworkStateEvent
 import com.project.gamersgeek.utils.paging.NetworkState
 
 data class PagingDataListDispatcher<T>(
