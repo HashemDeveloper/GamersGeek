@@ -62,7 +62,6 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
         private const val MAX_SIZE: Int = PagedList.Config.MAX_SIZE_UNBOUNDED
         fun pageListConfig(pageSize: Int) = PagedList.Config.Builder()
             .setPageSize(pageSize)
-            .setPrefetchDistance(pageSize)
             .setEnablePlaceholders(true)
             .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
             .setMaxSize(MAX_SIZE)
