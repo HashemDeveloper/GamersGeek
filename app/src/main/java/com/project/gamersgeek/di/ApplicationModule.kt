@@ -4,10 +4,7 @@ import android.content.Context
 import com.project.gamersgeek.GamersGeekApp
 import com.project.gamersgeek.data.GamerGeekRepository
 import com.project.gamersgeek.data.IGamerGeekRepository
-import com.project.gamersgeek.data.local.GamerGeeksLocalDbService
-import com.project.gamersgeek.data.local.IPlatformDetailsDao
-import com.project.gamersgeek.data.local.ISharedPrefService
-import com.project.gamersgeek.data.local.SharedPrefService
+import com.project.gamersgeek.data.local.*
 import com.project.gamersgeek.data.remote.GamersGeekRemoteRepo
 import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
 import com.project.neardoc.rxeventbus.IRxEventBus
@@ -50,6 +47,11 @@ class ApplicationModule {
     @Provides
     fun providePlatformDetailsDb(dbService: GamerGeeksLocalDbService): IPlatformDetailsDao {
         return dbService.getPlatformDetailsDao()
+    }
+    @Singleton
+    @Provides
+    fun provideGameResultDb(dbService: GamerGeeksLocalDbService) : IGameResultDao {
+        return dbService.getGameResultDao()
     }
     //local db end
     @Singleton

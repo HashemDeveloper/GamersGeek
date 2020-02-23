@@ -9,4 +9,7 @@ class GamerGeeksLocalDbService @Inject constructor(context: Context) {
     fun getPlatformDetailsDao(): IPlatformDetailsDao {
         return this.localDb.getPlatformDetailsDao()
     }
+    fun getGameResultDao(): IGameResultDao {
+        return this.localDb.getGameResultDao()
+    }
 }
