@@ -3,7 +3,6 @@ package com.project.gamersgeek.utils.typeconverters
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformGames
 import java.lang.reflect.Type
 

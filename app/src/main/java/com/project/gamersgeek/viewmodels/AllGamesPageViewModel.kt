@@ -13,8 +13,6 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel() {
     var fetchAllGamesLiveData: LiveData<ResultHandler<GameListRes?>>?= null
 
     fun fetchAllGames() {
-//        this.fetchAllGamesLiveData = gamersGeekLiveData {
-//            this.iRawgGameDbApiHelper.fetchAllGames()
-//        }
+
     }
 }
