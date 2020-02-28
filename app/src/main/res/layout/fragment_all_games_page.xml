@@ -43,7 +43,7 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.92" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.allattentionhere.autoplayvideos.AAH_CustomRecyclerView
             android:id="@+id/all_game_recycler_view_id"
             android:layout_width="0dp"
             android:layout_height="0dp"

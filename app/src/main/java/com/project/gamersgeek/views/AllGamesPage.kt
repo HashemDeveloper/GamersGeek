@@ -43,6 +43,8 @@ class AllGamesPage: Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.allGamesPageViewModel.fetchAllGames()
+        this.allGamesPageViewModel.gameResultLiveData.observe(viewLifecycleOwner, Observer {
+            Timber.d("List: $it")
+        })
     }
 }

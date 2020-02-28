@@ -75,6 +75,7 @@ ext {
     floatingSearchViewVersion = '2.1.1'
     rxJavaVersion = '2.1.4'
     rxAndroidVersion = '2.1.1'
+    videoPlayerVersion = '0.2.0'
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
