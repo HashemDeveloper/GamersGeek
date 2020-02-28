@@ -15,7 +15,6 @@ import kotlin.coroutines.CoroutineContext
 class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
 //    val mediatorLiveData: MediatorLiveData<PagedList<PlatformDetails>> = MediatorLiveData()
     val networkLiveData: MutableLiveData<NetworkStateEvent> = MutableLiveData()
-    private val mLock = Any()
     @Inject
     lateinit var iRxEventBus: IRxEventBus
     @Inject
