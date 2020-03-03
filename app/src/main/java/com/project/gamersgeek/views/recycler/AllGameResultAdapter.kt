@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.paging.PagedListAdapter
@@ -94,6 +96,7 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
         private var gameNameView: AppCompatTextView?= null
         private var expandVideoView: AppCompatImageView?= null
         private var videoImageView: AAH_VideoImage?= null
+        private var fadeInFadeOutAnim: Animation?= null
         var isMute: Boolean?= false
         private var iconAdapter: PlatformIconAdapter?= null
 
@@ -157,6 +160,9 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
             super.pauseVideo()
             this.playBackBt?.visibility = View.VISIBLE
             this.expandVideoView?.visibility = View.VISIBLE
+            this.fadeInFadeOutAnim = AnimationUtils.loadAnimation(this.context, R.anim.anim_fade_in)
+            this.playBackBt?.animation = fadeInFadeOutAnim
+            this.expandVideoView?.animation = fadeInFadeOutAnim
             this.playBackBt?.setImageResource(R.drawable.playicon)
         }
 
@@ -164,6 +170,9 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
             super.videoStarted()
             this.playBackBt?.visibility = View.GONE
             this.expandVideoView?.visibility = View.GONE
+            this.fadeInFadeOutAnim = AnimationUtils.loadAnimation(this.context, R.anim.anim_fade_out)
+            this.playBackBt?.animation = fadeInFadeOutAnim
+            this.expandVideoView?.animation = fadeInFadeOutAnim
         }
 
         fun getVolumeBt(): AppCompatImageView? {
