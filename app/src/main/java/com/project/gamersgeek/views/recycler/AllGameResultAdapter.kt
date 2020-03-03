@@ -1,7 +1,9 @@
 package com.project.gamersgeek.views.recycler
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.allattentionhere.autoplayvideos.AAH_CustomViewHolder
+import com.allattentionhere.autoplayvideos.AAH_VideoImage
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.GameGenericPlatform
@@ -62,6 +65,7 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
                 }
             }
         }
+        holder.tapToPlayAndPause()
     }
 
     override fun onViewDetachedFromWindow(holder: GameVideoViewHolder) {
@@ -88,6 +92,8 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
         private var playBackBt: AppCompatImageView?= null
         private var iconRecyclerView: RecyclerView?= null
         private var gameNameView: AppCompatTextView?= null
+        private var expandVideoView: AppCompatImageView?= null
+        private var videoImageView: AAH_VideoImage?= null
         var isMute: Boolean?= false
         private var iconAdapter: PlatformIconAdapter?= null
 
@@ -95,6 +101,8 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
             this.volumeBt = this.view.findViewById(R.id.all_games_item_vol_bt_id)
             this.playBackBt = this.view.findViewById(R.id.all_game_items_playback_bt_id)
             this.iconRecyclerView = this.view.findViewById(R.id.game_icon_list_view_id)
+            this.expandVideoView = this.view.findViewById(R.id.all_game_expand_video_view_id)
+            this.videoImageView = this.view.findViewById(R.id.all_game_video_view_id)
             this.iconRecyclerView?.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             this.iconAdapter = PlatformIconAdapter()
             this.iconRecyclerView?.adapter = this.iconAdapter
@@ -131,27 +139,31 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
             isLooping = true
         }
 
+        @SuppressLint("ClickableViewAccessibility")
+        fun tapToPlayAndPause() = this.videoImageView?.setOnTouchListener { _, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+                isPaused = if (isPlaying) {
+                    pauseVideo()
+                    true
+                } else {
+                    playVideo()
+                    false
+                }
+            }
+            return@setOnTouchListener true
+        }
+
         override fun pauseVideo() {
             super.pauseVideo()
+            this.playBackBt?.visibility = View.VISIBLE
+            this.expandVideoView?.visibility = View.VISIBLE
             this.playBackBt?.setImageResource(R.drawable.playicon)
         }
 
         override fun videoStarted() {
             super.videoStarted()
-            this.playBackBt?.setImageResource(R.drawable.pauseicon)
-            this.isMute?.let {
-                if (it) {
-                    muteVideo()
-                    this.volumeBt?.let {v ->
-                        switchVolumeBt(it, v)
-                    }
-                } else {
-                    unmuteVideo()
-                    this.volumeBt?.let {v ->
-                        switchVolumeBt(it, v)
-                    }
-                }
-            }
+            this.playBackBt?.visibility = View.GONE
+            this.expandVideoView?.visibility = View.GONE
         }
 
         fun getVolumeBt(): AppCompatImageView? {
