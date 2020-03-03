@@ -23,7 +23,7 @@ import com.project.gamersgeek.models.platforms.GameGenericPlatform
 import com.project.gamersgeek.models.platforms.GenericPlatformDetails
 import com.project.gamersgeek.utils.GlideApp
 
-class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResultAdapter.GameVideoViewHolder>(
+class AllGameResultAdapter constructor(private val listener: GameResultClickListener): PagedListAdapter<Results, AllGameResultAdapter.GameVideoViewHolder>(
     GAME_RESULT_COMPARATOR) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameVideoViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.recycler_all_game_items_layout, parent, false)
@@ -68,6 +68,10 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
             }
         }
         holder.tapToPlayAndPause()
+        holder.getExpandVideoBt()?.setOnClickListener {
+            val gameResults: Results = holder.itemView.tag as Results
+            this.listener.onVideoClicked(gameResults, VideoItemClickType.EXPAND_VIDEO)
+        }
     }
 
     override fun onViewDetachedFromWindow(holder: GameVideoViewHolder) {
@@ -94,7 +98,7 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
         private var playBackBt: AppCompatImageView?= null
         private var iconRecyclerView: RecyclerView?= null
         private var gameNameView: AppCompatTextView?= null
-        private var expandVideoView: AppCompatImageView?= null
+        private var expandVideoBt: AppCompatImageView?= null
         private var videoImageView: AAH_VideoImage?= null
         private var fadeInFadeOutAnim: Animation?= null
         var isMute: Boolean?= false
@@ -104,7 +108,7 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
             this.volumeBt = this.view.findViewById(R.id.all_games_item_vol_bt_id)
             this.playBackBt = this.view.findViewById(R.id.all_game_items_playback_bt_id)
             this.iconRecyclerView = this.view.findViewById(R.id.game_icon_list_view_id)
-            this.expandVideoView = this.view.findViewById(R.id.all_game_expand_video_view_id)
+            this.expandVideoBt = this.view.findViewById(R.id.all_game_expand_video_bt_id)
             this.videoImageView = this.view.findViewById(R.id.all_game_video_view_id)
             this.iconRecyclerView?.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             this.iconAdapter = PlatformIconAdapter()
@@ -159,20 +163,20 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
         override fun pauseVideo() {
             super.pauseVideo()
             this.playBackBt?.visibility = View.VISIBLE
-            this.expandVideoView?.visibility = View.VISIBLE
+            this.expandVideoBt?.visibility = View.VISIBLE
             this.fadeInFadeOutAnim = AnimationUtils.loadAnimation(this.context, R.anim.anim_fade_in)
             this.playBackBt?.animation = fadeInFadeOutAnim
-            this.expandVideoView?.animation = fadeInFadeOutAnim
+            this.expandVideoBt?.animation = fadeInFadeOutAnim
             this.playBackBt?.setImageResource(R.drawable.playicon)
         }
 
         override fun videoStarted() {
             super.videoStarted()
             this.playBackBt?.visibility = View.GONE
-            this.expandVideoView?.visibility = View.GONE
+            this.expandVideoBt?.visibility = View.GONE
             this.fadeInFadeOutAnim = AnimationUtils.loadAnimation(this.context, R.anim.anim_fade_out)
             this.playBackBt?.animation = fadeInFadeOutAnim
-            this.expandVideoView?.animation = fadeInFadeOutAnim
+            this.expandVideoBt?.animation = fadeInFadeOutAnim
         }
 
         fun getVolumeBt(): AppCompatImageView? {
@@ -181,12 +185,13 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
         fun getPlayBackBt(): AppCompatImageView? {
             return this.playBackBt
         }
-        fun getIconRecyclerView(): RecyclerView? {
-            return this.iconRecyclerView
-        }
 
         fun getGameNameView(): AppCompatTextView? {
             return this.gameNameView
+        }
+
+        fun getExpandVideoBt(): AppCompatImageView? {
+            return this.expandVideoBt
         }
     }
 
@@ -196,6 +201,15 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
         } else {
             volumeBt.setImageResource(R.drawable.unmuteicon)
         }
+    }
+
+    interface GameResultClickListener {
+        fun onVideoClicked(results: Results, type: VideoItemClickType)
+    }
+
+    enum class VideoItemClickType {
+        EXPAND_VIDEO,
+        PLATFORM_ICON
     }
 
     companion object {

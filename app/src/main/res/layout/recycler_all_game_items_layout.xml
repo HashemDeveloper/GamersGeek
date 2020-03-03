@@ -56,7 +56,7 @@
                     android:layout_height="match_parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/all_game_expand_video_view_id"
+                    android:id="@+id/all_game_expand_video_bt_id"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_gravity="end"

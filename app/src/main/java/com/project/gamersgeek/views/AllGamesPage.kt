@@ -16,6 +16,7 @@ import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.GameListRes
+import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
 import com.project.gamersgeek.views.recycler.AllGameResultAdapter
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_all_games_page.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class AllGamesPage: Fragment(), Injectable {
+class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClickListener {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val allGamesPageViewModel: AllGamesPageViewModel by viewModels {
@@ -56,7 +57,7 @@ class AllGamesPage: Fragment(), Injectable {
     }
 
     private fun setupVideoRecyclerView() {
-        val allGameAdapter = AllGameResultAdapter()
+        val allGameAdapter = AllGameResultAdapter(this)
         all_game_recycler_view_id.layoutManager = LinearLayoutManager(this.context)
         all_game_recycler_view_id.setActivity(activity)
         all_game_recycler_view_id.setPlayOnlyFirstVideo(true)
@@ -79,5 +80,17 @@ class AllGamesPage: Fragment(), Injectable {
     override fun onStop() {
         super.onStop()
         all_game_recycler_view_id?.stopVideos()
+    }
+
+    override fun onVideoClicked(results: Results, type: AllGameResultAdapter.VideoItemClickType) {
+        when (type) {
+            AllGameResultAdapter.VideoItemClickType.EXPAND_VIDEO -> {
+                // enlarge video view
+                Timber.e("Enlarge video")
+            }
+            AllGameResultAdapter.VideoItemClickType.PLATFORM_ICON -> {
+                // ask navigate to store
+            }
+        }
     }
 }
