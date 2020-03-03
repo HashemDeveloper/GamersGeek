@@ -23,11 +23,12 @@ import com.project.gamersgeek.models.platforms.GameGenericPlatform
 import com.project.gamersgeek.models.platforms.GenericPlatformDetails
 import com.project.gamersgeek.utils.GlideApp
 
-class AllGameResultAdapter constructor(private val listener: GameResultClickListener): PagedListAdapter<Results, AllGameResultAdapter.GameVideoViewHolder>(
-    GAME_RESULT_COMPARATOR) {
+class AllGameResultAdapter constructor(private val gameResultClickListener: GameResultClickListener,
+                                       private val gamePlatformIconClickListener: PlatformIconAdapter.PlatformIconClickListener): PagedListAdapter<Results, AllGameResultAdapter.GameVideoViewHolder>(
+    GAME_RESULT_COMPARATOR){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameVideoViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.recycler_all_game_items_layout, parent, false)
-        return GameVideoViewHolder(view, parent.context)
+        return GameVideoViewHolder(view, parent.context, this.gamePlatformIconClickListener)
     }
 
     override fun onBindViewHolder(holder: GameVideoViewHolder, position: Int) {
@@ -70,7 +71,7 @@ class AllGameResultAdapter constructor(private val listener: GameResultClickList
         holder.tapToPlayAndPause()
         holder.getExpandVideoBt()?.setOnClickListener {
             val gameResults: Results = holder.itemView.tag as Results
-            this.listener.onVideoClicked(gameResults, VideoItemClickType.EXPAND_VIDEO)
+            this.gameResultClickListener.onVideoClicked(gameResults, VideoItemClickType.EXPAND_VIDEO)
         }
     }
 
@@ -93,7 +94,8 @@ class AllGameResultAdapter constructor(private val listener: GameResultClickList
         }
     }
 
-    inner class GameVideoViewHolder constructor(private val view: View, private val context: Context): AAH_CustomViewHolder(view) {
+    inner class GameVideoViewHolder constructor(private val view: View, private val context: Context,
+                                                private val gamePlatformIconClickListener: PlatformIconAdapter.PlatformIconClickListener): AAH_CustomViewHolder(view) {
         private var volumeBt: AppCompatImageView?= null
         private var playBackBt: AppCompatImageView?= null
         private var iconRecyclerView: RecyclerView?= null
@@ -111,7 +113,7 @@ class AllGameResultAdapter constructor(private val listener: GameResultClickList
             this.expandVideoBt = this.view.findViewById(R.id.all_game_expand_video_bt_id)
             this.videoImageView = this.view.findViewById(R.id.all_game_video_view_id)
             this.iconRecyclerView?.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-            this.iconAdapter = PlatformIconAdapter()
+            this.iconAdapter = PlatformIconAdapter(this.gamePlatformIconClickListener)
             this.iconRecyclerView?.adapter = this.iconAdapter
             this.gameNameView = this.view.findViewById(R.id.game_title_id)
         }
