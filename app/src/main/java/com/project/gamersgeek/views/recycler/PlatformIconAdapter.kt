@@ -48,34 +48,36 @@ class PlatformIconAdapter : RecyclerView.Adapter<BaseViewHolder<*>>(){
                 if ("" != platformType) {
                     when (platformType) {
                         "pc" -> {
-                            this.iconView?.visibility = View.VISIBLE
-                            this.iconView?.setImageResource(R.drawable.microsoft_windows_icon)
+                            setupIcons(R.drawable.microsoft_windows_icon, true)
                         }
                         "playstation" -> {
-                            this.iconView?.visibility = View.VISIBLE
-                            this.iconView?.setImageResource(R.drawable.play_station_icon)
+                            setupIcons(R.drawable.play_station_icon, true)
                         }
                         "xbox" -> {
-                            this.iconView?.visibility = View.VISIBLE
-                            this.iconView?.setImageResource(R.drawable.xbox_icon)
+                            setupIcons(R.drawable.xbox_icon, true)
                         }
                         "nintendo" -> {
-                            this.iconView?.visibility = View.VISIBLE
-                            this.iconView?.setImageResource(R.drawable.nintendo_icon)
+                            setupIcons(R.drawable.nintendo_icon, true)
                         }
                         "mac" -> {
-                            this.iconView?.visibility = View.VISIBLE
-                            this.iconView?.setImageResource(R.drawable.mac_icon)
+                            setupIcons(R.drawable.mac_icon, true)
                         }
                         "android" -> {
-                            this.iconView?.visibility = View.VISIBLE
-                            this.iconView?.setImageResource(R.drawable.android_icon)
+                            setupIcons(R.drawable.android_icon, true)
                         }
                         else -> {
-                            this.iconView?.visibility = View.GONE
+                           setupIcons(0, false)
                         }
                     }
                 }
+            }
+        }
+        private fun setupIcons(iconId: Int, isPlatformExists: Boolean) {
+            if (isPlatformExists) {
+                this.iconView?.visibility = View.VISIBLE
+                this.iconView?.setImageResource(iconId)
+            } else {
+                this.iconView?.visibility = View.GONE
             }
         }
     }
