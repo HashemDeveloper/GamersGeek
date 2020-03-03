@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/padding_16dp"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.Guideline
@@ -30,20 +31,21 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/all_games_items_card_view_id"
         android:layout_width="0dp"
-        android:layout_height="450dp"
-        app:cardBackgroundColor="@color/gray_800"
+        android:layout_height="350dp"
+        app:cardCornerRadius="@dimen/padding_16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/topGuideLine">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:background="@drawable/all_games_round_corner_layout"
             android:layout_height="match_parent">
 
             <FrameLayout
                 android:id="@+id/video_view_container_id"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="220dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -56,8 +58,8 @@
                     android:id="@+id/all_game_items_playback_bt_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start|bottom"
-                    android:layout_margin="8dp"
+                    android:layout_gravity="center|bottom"
+                    android:layout_margin="@dimen/padding_16dp"
                     app:srcCompat="@drawable/pauseicon" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -65,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom"
-                    android:layout_margin="8dp"
+                    android:layout_margin="@dimen/padding_16dp"
                     app:srcCompat="@drawable/unmuteicon" />
             </FrameLayout>
 
@@ -82,6 +84,7 @@
                 android:id="@+id/game_icon_list_view_id"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_margin="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/iconHolderGuideLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.60" />
+                app:layout_constraintGuide_percent="0.85" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/iconHolderBarrier"
@@ -106,14 +109,15 @@
                 android:id="@+id/game_title_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_16dp"
+                android:layout_marginStart="@dimen/padding_16dp"
+                android:layout_marginLeft="@dimen/padding_16dp"
                 android:fontFamily="@font/abril_fatface"
                 android:text="@string/games_name"
-                android:textColor="@color/white"
+                android:textColor="@color/red_900"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/iconHolderGuideLine" />
+                app:layout_constraintTop_toBottomOf="@+id/game_icon_list_view_id" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
