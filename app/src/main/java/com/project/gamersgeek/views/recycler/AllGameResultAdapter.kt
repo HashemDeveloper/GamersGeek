@@ -8,11 +8,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.allattentionhere.autoplayvideos.AAH_CustomViewHolder
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.games.Results
+import com.project.gamersgeek.models.platforms.GameGenericPlatform
+import com.project.gamersgeek.models.platforms.GenericPlatformDetails
 import com.project.gamersgeek.utils.GlideApp
 
 class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResultAdapter.GameVideoViewHolder>(
@@ -86,11 +89,15 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
         private var iconRecyclerView: RecyclerView?= null
         private var gameNameView: AppCompatTextView?= null
         var isMute: Boolean?= false
+        private var iconAdapter: PlatformIconAdapter?= null
 
         init {
             this.volumeBt = this.view.findViewById(R.id.all_games_item_vol_bt_id)
             this.playBackBt = this.view.findViewById(R.id.all_game_items_playback_bt_id)
             this.iconRecyclerView = this.view.findViewById(R.id.game_icon_list_view_id)
+            this.iconRecyclerView?.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            this.iconAdapter = PlatformIconAdapter()
+            this.iconRecyclerView?.adapter = this.iconAdapter
             this.gameNameView = this.view.findViewById(R.id.game_title_id)
         }
 
@@ -106,6 +113,20 @@ class AllGameResultAdapter constructor(): PagedListAdapter<Results, AllGameResul
                 GlideApp.with(this.view).load(it.preview)
                     .placeholder(circularProgressDrawable)
                     .into(aaH_ImageView)
+            }
+            this.gameNameView?.let {nameView ->
+               data.name.let {
+                   nameView.text = it
+               }
+            }
+            val platTypeList: MutableList<GenericPlatformDetails>? = arrayListOf()
+            for (plat: GameGenericPlatform in data.genericPlatformList!!) {
+                platTypeList?.add(plat.genericPlatformType)
+            }
+            platTypeList?.let {it ->
+                if (it.isNotEmpty()) {
+                    this.iconAdapter?.setData(it)
+                }
             }
             isLooping = true
         }
