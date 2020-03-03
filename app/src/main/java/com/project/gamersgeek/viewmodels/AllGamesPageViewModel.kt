@@ -1,8 +1,11 @@
 package com.project.gamersgeek.viewmodels
 
 import androidx.lifecycle.ViewModel
+import com.arlib.floatingsearchview.FloatingSearchView
 import com.project.gamersgeek.data.IGamerGeekRepository
 import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
+import com.project.gamersgeek.events.HamburgerEvent
+import com.project.neardoc.rxeventbus.IRxEventBus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -10,6 +13,8 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
+    @Inject
+    lateinit var iRxEventBus: IRxEventBus
     @Inject
     lateinit var iGamerGeekRepository: IGamerGeekRepository
     private val job = Job()
@@ -29,6 +34,10 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     }
     fun retry () {
         this.gameResultList.retry.invoke()
+    }
+
+    fun setupDrawer(platformPageSearchId: FloatingSearchView?) {
+        this.iRxEventBus.post(HamburgerEvent(platformPageSearchId!!))
     }
 
     override val coroutineContext: CoroutineContext
