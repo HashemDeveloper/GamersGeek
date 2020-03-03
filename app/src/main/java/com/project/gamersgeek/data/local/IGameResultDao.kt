@@ -12,4 +12,6 @@ interface IGameResultDao {
     suspend fun clearAllGameResults()
     @Query("select * from game_results")
     fun getAllGames() : DataSource.Factory<Int, Results>
+    @Transaction @Query("select * from game_results order by id")
+    suspend fun getGameResult(): Results
 }

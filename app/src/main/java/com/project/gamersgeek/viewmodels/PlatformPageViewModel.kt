@@ -3,9 +3,11 @@ package com.project.gamersgeek.viewmodels
 import androidx.lifecycle.*
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.project.gamersgeek.data.IGamerGeekRepository
+import com.project.gamersgeek.data.local.IGameResultDao
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
 import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.events.NetworkStateEvent
+import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.neardoc.rxeventbus.IRxEventBus
 import kotlinx.coroutines.*
@@ -21,6 +23,8 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     lateinit var iGamerGeekRepository: IGamerGeekRepository
     @Inject
     lateinit var platformDetailsDao: IPlatformDetailsDao
+    @Inject
+    lateinit var iGameResultDao: IGameResultDao
     private val job = Job()
 
     private val platformDetailsList by lazy {
@@ -60,6 +64,12 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
                 if (details != null) {
                     backgroundImage = details.imageBackground
                 }
+            } else if (getGameResultBlocked() != null) {
+                val jobGameResults: Deferred<Results> = async { getGameResultBlocked()!! }
+                val results: Results? = jobGameResults.await()
+                if (results != null) {
+                    backgroundImage = results.backgroundImage
+                }
             }
         }
         return backgroundImage
@@ -73,6 +83,19 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
             }
         }
         return platformDetails
+    }
+    private fun getGameResultBlocked(): Results? {
+        var gameResult: Results?= null
+        runBlocking {
+            if (getGameResultDao() != null) {
+                val jobGameResult: Deferred<Results> = async { getGameResultDao()!! }
+                gameResult = jobGameResult.await()
+            }
+        }
+        return gameResult
+    }
+    private suspend fun getGameResultDao(): Results? {
+        return this.iGameResultDao.getGameResult()
     }
     private suspend fun getPlatformDetails(): PlatformDetails? {
         return platformDetailsDao.getPlatformDetails()

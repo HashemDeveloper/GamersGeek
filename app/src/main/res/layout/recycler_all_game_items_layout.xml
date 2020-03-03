@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/padding_16dp"
+    android:layout_marginBottom="2dp"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.Guideline
@@ -35,7 +35,7 @@
         app:cardCornerRadius="@dimen/padding_16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topGuideLine">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -51,9 +51,18 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.allattentionhere.autoplayvideos.AAH_VideoImage
+                    android:id="@+id/all_game_video_view_id"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/all_game_expand_video_bt_id"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="end"
+                    android:layout_margin="@dimen/padding_16dp"
+                    app:srcCompat="@drawable/expand_video"
+                    />
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/all_game_items_playback_bt_id"
                     android:layout_width="wrap_content"
