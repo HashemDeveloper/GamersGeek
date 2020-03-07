@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.GameDetailsPage"
+    android:background="@color/black"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.96" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftGuidleLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.96" />
+
+    <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+        android:id="@+id/fragment_video_player_view_id"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/videoPlayerGuidleLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topGuideLine" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/videoPlayerGuidleLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/videoPlayerBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="fragment_video_player_view_id"
+        tools:layout_editor_absoluteY="807dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/fragment_video_game_bg_image_view_id"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_profile_white"
+        app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
+        app:layout_constraintStart_toStartOf="@+id/leftGuidleLine"
+        app:layout_constraintTop_toBottomOf="@+id/videoPlayerBarrier"
+        app:layout_constraintTop_toTopOf="@+id/videoPlayerGuidleLine" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gameDetailsGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/gameDetailsBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="gameDetailsGuideLine"
+        tools:layout_editor_absoluteY="807dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/games_name"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/cutive"
+        android:layout_marginLeft="@dimen/padding_16dp"
+        app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
+        app:layout_constraintStart_toEndOf="@+id/fragment_video_game_bg_image_view_id"
+        app:layout_constraintTop_toTopOf="@+id/videoPlayerGuidleLine"
+        app:layout_constraintVertical_bias="0.241"
+        android:layout_marginStart="@dimen/padding_16dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

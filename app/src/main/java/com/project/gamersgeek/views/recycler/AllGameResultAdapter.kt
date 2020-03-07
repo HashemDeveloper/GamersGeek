@@ -210,8 +210,7 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
     }
 
     enum class VideoItemClickType {
-        EXPAND_VIDEO,
-        PLATFORM_ICON
+        EXPAND_VIDEO
     }
 
     companion object {

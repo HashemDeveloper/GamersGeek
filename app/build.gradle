@@ -160,4 +160,5 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     //auto video player
     implementation "com.allattentionhere:autoplayvideos:$videoPlayerVersion"
+    implementation "fm.jiecao:jiecaovideoplayer:$standAloneVideo"
 }
