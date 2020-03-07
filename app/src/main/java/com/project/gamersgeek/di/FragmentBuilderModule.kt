@@ -2,6 +2,7 @@ package com.project.gamersgeek.di
 
 import com.project.gamersgeek.di.viewmodel.ViewModelModule
 import com.project.gamersgeek.views.AllGamesPage
+import com.project.gamersgeek.views.GameDetailsPage
 import com.project.gamersgeek.views.PlatformsPage
 import com.project.gamersgeek.views.SavedGamesPage
 import dagger.Module
@@ -15,4 +16,6 @@ abstract class FragmentBuilderModule {
     abstract fun contributePlatformPageFragment(): PlatformsPage
     @ContributesAndroidInjector
     abstract fun contributeSavedGamePageFragment(): SavedGamesPage
+    @ContributesAndroidInjector
+    abstract fun contributeGameDetailsPageFragment(): GameDetailsPage
 }

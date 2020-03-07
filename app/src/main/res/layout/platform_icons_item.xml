@@ -9,8 +9,8 @@
     >
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/platform_icon_view_id"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         app:srcCompat="@drawable/microsoft_windows_icon"
         />
 </LinearLayout>
