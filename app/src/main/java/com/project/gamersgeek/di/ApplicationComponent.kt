@@ -1,6 +1,7 @@
 package com.project.gamersgeek.di
 
 import com.project.gamersgeek.GamersGeekApp
+import com.project.gamersgeek.di.networking.BroadcastReceiverModule
 import com.project.gamersgeek.di.networking.GamerGeekNetworkingModule
 import com.project.gamersgeek.di.networking.RetrofitModule
 import com.project.gamersgeek.di.viewmodel.GenericUiModule
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [AndroidSupportInjectionModule::class, ApplicationModule::class, ActivityModule::class,
-    RetrofitModule::class, GamerGeekNetworkingModule::class,
+    RetrofitModule::class, GamerGeekNetworkingModule::class, BroadcastReceiverModule::class,
     ViewModelModule::class])
 interface ApplicationComponent {
     @Component.Builder
