@@ -1,6 +1,8 @@
 package com.project.gamersgeek
 
 import android.app.Application
+import android.content.Context
+import androidx.multidex.MultiDex
 import com.facebook.stetho.Stetho
 import com.project.gamersgeek.di.ApplicationInjector
 import dagger.android.AndroidInjector
@@ -24,6 +26,10 @@ class GamersGeekApp: Application(), HasAndroidInjector {
 
     }
 
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
 
     override fun androidInjector(): AndroidInjector<Any> {
        return this.dispatchingAndroidInjector

@@ -108,34 +108,13 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         this.iConnectionStateMonitor.getObserver().observe(this, Observer {isNetAvailable ->
             if (isNetAvailable) {
                 this.iConnectionStateMonitor.isConnectedNoInternetLiveData().observe(this, observeNotInternetConnectedLiveData())
-                this.iConnectionStateMonitor.isUsingWifiLiveData().observe(this, observeUsingWifiLiveData())
-                this.iConnectionStateMonitor.isUsingMobileData().observe(this, observeUsingMobileDataLiveData())
-                if (isWifiConnected) {
-                    this.platformPageViewModel.setupNetConnection(NetworkStateEvent(true, GamersGeekNetworkType.WIFI_DATA))
-                } else {
-                    this.platformPageViewModel.setupNetConnection(NetworkStateEvent(true, GamersGeekNetworkType.MOBILE_DATA))
-                }
+                this.platformPageViewModel.setupNetConnection(NetworkStateEvent(true))
             } else {
-                this.platformPageViewModel.setupNetConnection(NetworkStateEvent(false, GamersGeekNetworkType.NO_NETWORK))
-                Toast.makeText(this, "Connection lost", Toast.LENGTH_SHORT).show()
+                this.platformPageViewModel.setupNetConnection(NetworkStateEvent(false))
             }
         })
     }
 
-    private fun observeUsingWifiLiveData(): Observer<Boolean> {
-        return Observer {isWifi ->
-            if (isWifi) {
-                this.isWifiConnected = true
-            }
-        }
-    }
-    private fun observeUsingMobileDataLiveData(): Observer<Boolean> {
-        return Observer {isMobileData ->
-            if (isMobileData) {
-                this.isWifiConnected = false
-            }
-        }
-    }
     private fun observeNotInternetConnectedLiveData(): Observer<Boolean> {
         return Observer {
             if (BuildConfig.DEBUG) {

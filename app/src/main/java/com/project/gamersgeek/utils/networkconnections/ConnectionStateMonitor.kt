@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.IntentFilter
 import android.net.*
 import android.os.Build
+import android.os.Handler
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
@@ -31,14 +32,22 @@ class ConnectionStateMonitor @Inject constructor(private val context: Context) :
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             this.networkCallback =
                 NearDocNetworkCallback(
-                    this
+                    this, this.connectivityManager!!, this.context
                 )
         }
     }
 
     override fun onActive() {
         super.onActive()
-        updateConnection()
+        registerNetworkCallbacks()
+    }
+
+    override fun onInactive() {
+        super.onInactive()
+        unregisterCallbacks()
+    }
+
+    private fun registerNetworkCallbacks() {
         launch {
             withContext(Dispatchers.IO) {
                 when {
@@ -53,6 +62,21 @@ class ConnectionStateMonitor @Inject constructor(private val context: Context) :
                         connectivityManager?.registerNetworkCallback(networkRequest, networkCallback!!)
                     }
                     else -> {
+                        val isWifiConnected: Boolean = connectivityManager?.getNetworkInfo(ConnectivityManager.TYPE_WIFI)!!.isConnected
+                        val isMobileConnected: Boolean = connectivityManager?.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)!!.isConnected
+                        if (isWifiConnected || isMobileConnected) {
+                            if (PingNetwork.isOnline) {
+                                if (isWifiConnected) {
+                                    withContext(Dispatchers.Main) {
+                                        wifiConnectedLiveData.postValue(true)
+                                    }
+                                } else {
+                                    withContext(Dispatchers.Main) {
+                                        usingMobileDataLiveData.postValue(true)
+                                    }
+                                }
+                            }
+                        }
                         context.registerReceiver(gamersGeekBroadcastReceiver, IntentFilter(Constants.CONNECTIVITY_ACTION))
                     }
                 }
@@ -60,8 +84,7 @@ class ConnectionStateMonitor @Inject constructor(private val context: Context) :
         }
     }
 
-    override fun onInactive() {
-        super.onInactive()
+    private fun unregisterCallbacks() {
         launch {
             withContext(Dispatchers.IO) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -95,14 +118,10 @@ class ConnectionStateMonitor @Inject constructor(private val context: Context) :
                         if (connectivityManager!!.getNetworkCapabilities(network) != null) {
                             if (connectivityManager!!.getNetworkCapabilities(network)!!.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
                                 withContext(Dispatchers.Main) {
-                                    wifiConnectedLiveData.postValue(true)
-                                    usingMobileDataLiveData.postValue(false)
                                     Toast.makeText(context, R.string.using_wifi, Toast.LENGTH_SHORT).show()
                                 }
                             } else if (connectivityManager!!.getNetworkCapabilities(network)!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
                                 withContext(Dispatchers.Main) {
-                                    usingMobileDataLiveData.postValue(true)
-                                    wifiConnectedLiveData.postValue(false)
                                     Toast.makeText(context, R.string.using_mobile_data, Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -113,7 +132,9 @@ class ConnectionStateMonitor @Inject constructor(private val context: Context) :
                         }
 
                     } else {
-                        // handle for lower api
+                        withContext(Dispatchers.Main) {
+                            postValue(false)
+                        }
                     }
                 }
             }
@@ -124,31 +145,57 @@ class ConnectionStateMonitor @Inject constructor(private val context: Context) :
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    class NearDocNetworkCallback(private var connectionStateMonitor: ConnectionStateMonitor) :
+    class NearDocNetworkCallback(
+        private var connectionStateMonitor: ConnectionStateMonitor,
+        private var connectivityManager: ConnectivityManager,
+        private var context: Context
+    ) :
         ConnectivityManager.NetworkCallback() {
+        private var isNetCallBackRegistered: Boolean= false
+        private var isNetworkAvailable: Boolean = false
+
+        init {
+            val netCallBackHandler = Handler()
+            netCallBackHandler.postDelayed({
+               if (!this.isNetCallBackRegistered) {
+                   this.connectionStateMonitor.updateConnection()
+               }
+            }, 10000)
+        }
 
         override fun onAvailable(network: Network) {
-            connectionStateMonitor.postValue(true)
-            this.connectionStateMonitor.updateConnection()
+            this.isNetCallBackRegistered = true
+            this.isNetworkAvailable = true
+            if (this.connectivityManager.getNetworkCapabilities(network) != null) {
+                if (this.connectivityManager.getNetworkCapabilities(network)!!.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Toast.makeText(this.context, R.string.using_wifi, Toast.LENGTH_SHORT).show()
+                } else if (this.connectivityManager.getNetworkCapabilities(network)!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Toast.makeText(this.context, R.string.using_mobile_data, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         override fun onLost(network: Network) {
-            connectionStateMonitor.postValue(false)
+            this.isNetCallBackRegistered = true
+            this.connectionStateMonitor.postValue(false)
+            Toast.makeText(this.context, "Connection lost", Toast.LENGTH_SHORT).show()
         }
 
         override fun onUnavailable() {
-            connectionStateMonitor.postValue(false)
-            this.connectionStateMonitor.updateConnection()
+            this.isNetCallBackRegistered = true
+            this.connectionStateMonitor.postValue(false)
         }
 
         override fun onCapabilitiesChanged(
             network: Network,
             networkCapabilities: NetworkCapabilities
         ) {
-            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-                this.connectionStateMonitor.postValue(true)
-            } else {
+            if (!networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
                 this.connectionStateMonitor.postValue(false)
+            } else {
+                if (this.isNetworkAvailable) {
+                    this.connectionStateMonitor.postValue(true)
+                }
             }
         }
     }
