@@ -88,7 +88,7 @@
         tools:layout_editor_absoluteY="807dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textView"
+        android:id="@+id/fragment_game_details_game_title_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/games_name"
