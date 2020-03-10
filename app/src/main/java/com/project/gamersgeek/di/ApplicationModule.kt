@@ -11,6 +11,8 @@ import com.project.neardoc.rxeventbus.IRxEventBus
 import com.project.neardoc.rxeventbus.RxEventBus
 import com.project.gamersgeek.utils.networkconnections.ConnectionStateMonitor
 import com.project.gamersgeek.utils.networkconnections.IConnectionStateMonitor
+import com.project.gamersgeek.utils.networkconnections.IUpdateNetLowApiHelper
+import com.project.gamersgeek.utils.networkconnections.UpdateNetLowApiHelper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -58,5 +60,10 @@ class ApplicationModule {
     @Provides
     fun provideRxEventBus(rxEventBus: RxEventBus): IRxEventBus {
         return rxEventBus
+    }
+    @Singleton
+    @Provides
+    fun provideLowApiNetChangeHelper(updateNetLowApiHelper: UpdateNetLowApiHelper): IUpdateNetLowApiHelper {
+        return updateNetLowApiHelper
     }
 }
