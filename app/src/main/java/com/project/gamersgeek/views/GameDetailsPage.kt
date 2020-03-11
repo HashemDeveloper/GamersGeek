@@ -55,8 +55,17 @@ class GameDetailsPage : Fragment(), Injectable {
             fragment_video_player_view_id.setSource(url)
         }
         gameImage?.let {
+            var imageUri = ""
+            if ("" != it) {
+                imageUri = it
+
+            } else {
+                gameData?.videoClip?.let {p ->
+                    imageUri = p.preview
+                }
+            }
             GlideApp.with(this)
-                .load(it)
+                .load(imageUri)
                 .into(fragment_video_game_bg_image_view_id)
         }
     }
