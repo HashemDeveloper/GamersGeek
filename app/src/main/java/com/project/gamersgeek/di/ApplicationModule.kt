@@ -31,6 +31,11 @@ class ApplicationModule {
     }
     @Singleton
     @Provides
+    fun provideSharedPref(context: Context): SharedPrefService {
+        return SharedPrefService.invoke(context)
+    }
+    @Singleton
+    @Provides
     fun provideSharedPrefService(sharedPrefService: SharedPrefService): ISharedPrefService {
         return sharedPrefService
     }

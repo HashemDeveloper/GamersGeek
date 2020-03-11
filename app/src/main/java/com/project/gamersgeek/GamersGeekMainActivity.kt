@@ -1,29 +1,26 @@
 package com.project.gamersgeek
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.arlib.floatingsearchview.FloatingSearchView
+import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.events.HamburgerEvent
+import com.project.gamersgeek.events.NetworkStateEvent
 import com.project.gamersgeek.models.localobj.NavigationHeaderItems
 import com.project.gamersgeek.models.localobj.NavigationItems
-import com.project.gamersgeek.views.recycler.NavItemAdapter
-import com.project.gamersgeek.events.NetworkStateEvent
-import com.project.neardoc.rxeventbus.IRxEventBus
 import com.project.gamersgeek.utils.networkconnections.IConnectionStateMonitor
-import com.project.gamersgeek.utils.networkconnections.GamersGeekNetworkType
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
+import com.project.gamersgeek.views.recycler.NavItemAdapter
+import com.project.neardoc.rxeventbus.IRxEventBus
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -31,7 +28,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.gamers_geek_main_activity.*
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -48,9 +44,10 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var iConnectionStateMonitor: IConnectionStateMonitor
     @Inject
     lateinit var dispatchFragmentInjector: DispatchingAndroidInjector<Fragment>
+    @Inject
+    lateinit var iSharedPrefService: ISharedPrefService
     private lateinit var navController: NavController
     private var navItemAdapter: NavItemAdapter?= null
-    private var isWifiConnected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme);
@@ -66,6 +63,20 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         super.onStart()
         setupNavDrawer()
         monitorConnectionSetting()
+        monitorThemeState()
+    }
+    private fun monitorThemeState() {
+        val configuration: Configuration? = resources.configuration
+        configuration?.let {config ->
+            when (config.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    this.iSharedPrefService.setIsNightModeOn(false)
+                }
+                Configuration.UI_MODE_NIGHT_YES -> {
+                    this.iSharedPrefService.setIsNightModeOn(true)
+                }
+            }
+        }
     }
     private fun setupNavBarItems() {
         navigation_view_menu_item_view_id.layoutManager = LinearLayoutManager(this)
