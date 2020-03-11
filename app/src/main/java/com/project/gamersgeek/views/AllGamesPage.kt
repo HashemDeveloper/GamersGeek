@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.project.gamersgeek.R
@@ -82,7 +84,9 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
     override fun onVideoClicked(results: Results, type: AllGameResultAdapter.VideoItemClickType) {
         when (type) {
             AllGameResultAdapter.VideoItemClickType.EXPAND_VIDEO -> {
-
+                val gameDetailPageRouter: AllGamesPageDirections.ActionGameDetailsPage = AllGamesPageDirections.actionGameDetailsPage(results)
+                val gameResultController: NavController = findNavController()
+                gameResultController.navigate(gameDetailPageRouter)
             }
         }
     }

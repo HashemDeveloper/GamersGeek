@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.multidex.MultiDex
 import com.facebook.stetho.Stetho
 import com.project.gamersgeek.di.ApplicationInjector
+import com.project.gamersgeek.utils.theme.ThemeHelper
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -23,7 +24,7 @@ class GamersGeekApp: Application(), HasAndroidInjector {
             Timber.plant(Timber.DebugTree())
         }
         ApplicationInjector.init(this)
-
+        ThemeHelper.applyTheme(ThemeHelper.DEFAULT_MODE)
     }
 
     override fun attachBaseContext(base: Context?) {

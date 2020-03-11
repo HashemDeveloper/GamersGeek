@@ -36,12 +36,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.96" />
 
-    <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+    <com.potyvideo.library.AndExoPlayerView
         android:id="@+id/fragment_video_player_view_id"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/videoPlayerGuidleLine"
         app:layout_constraintEnd_toEndOf="parent"
+        app:andexo_play_when_ready="true"
+        app:andexo_show_controller="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/topGuideLine" />
 
@@ -64,7 +66,7 @@
         android:id="@+id/fragment_video_game_bg_image_view_id"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_profile_white"
+        app:srcCompat="@drawable/ic_profile_white"
         app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
         app:layout_constraintStart_toStartOf="@+id/leftGuidleLine"
         app:layout_constraintTop_toBottomOf="@+id/videoPlayerBarrier"
@@ -86,7 +88,7 @@
         tools:layout_editor_absoluteY="807dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textView"
+        android:id="@+id/fragment_game_details_game_title_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/games_name"

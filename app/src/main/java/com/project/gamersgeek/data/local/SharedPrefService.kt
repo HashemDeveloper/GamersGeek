@@ -2,7 +2,9 @@ package com.project.gamersgeek.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.project.gamersgeek.utils.Constants
 import javax.inject.Inject
 
 class SharedPrefService @Inject constructor(): ISharedPrefService {
@@ -36,5 +38,15 @@ class SharedPrefService @Inject constructor(): ISharedPrefService {
             this.pref = PreferenceManager.getDefaultSharedPreferences(context)
             return SharedPrefService()
         }
+    }
+
+    override fun setIsNightModeOn(isNightModeOn: Boolean) {
+       pref?.edit(commit = true) {
+           putBoolean(Constants.IS_NIGHT_MODE, isNightModeOn)
+       }
+    }
+
+    override fun getIsNightModeOn(): Boolean {
+        return pref?.getBoolean(Constants.IS_NIGHT_MODE, false)!!
     }
 }
