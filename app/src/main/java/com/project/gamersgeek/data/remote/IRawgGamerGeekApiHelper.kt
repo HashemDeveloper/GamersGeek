@@ -5,7 +5,7 @@ import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.utils.ResultHandler
 
-interface IRawgGameDbApiHelper {
+interface IRawgGamerGeekApiHelper {
     suspend fun fetchAllGames(page: Int, pageSize: Int): ResultHandler<GameListRes>
     suspend fun fetchGameById(id: Int): ResultHandler<GamesRes>
     suspend fun fetchAllGamePlatforms(page: Int, pageSize: Int): ResultHandler<PlatformRes>

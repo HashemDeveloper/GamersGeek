@@ -10,6 +10,5 @@ import com.project.gamersgeek.models.platforms.PlatformDetails
 interface IGamerGeekRepository {
 
     fun getPlatformDetailsPagedData(pageSize: Int): PagingDataListDispatcher<PlatformDetails>
-
     fun getAllGamesPagedData(pageSize: Int): PagingDataListDispatcher<Results>
 }

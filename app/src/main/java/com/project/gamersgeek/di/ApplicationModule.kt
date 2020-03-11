@@ -6,7 +6,7 @@ import com.project.gamersgeek.data.GamerGeekRepository
 import com.project.gamersgeek.data.IGamerGeekRepository
 import com.project.gamersgeek.data.local.*
 import com.project.gamersgeek.data.remote.GamersGeekRemoteRepo
-import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
+import com.project.gamersgeek.data.remote.IRawgGamerGeekApiHelper
 import com.project.neardoc.rxeventbus.IRxEventBus
 import com.project.neardoc.rxeventbus.RxEventBus
 import com.project.gamersgeek.utils.networkconnections.ConnectionStateMonitor
@@ -26,7 +26,7 @@ class ApplicationModule {
     }
     @Singleton
     @Provides
-    fun provideRawgGameDbApi(gamersGeekRemoteRepo: GamersGeekRemoteRepo): IRawgGameDbApiHelper {
+    fun provideRawgGameDbApi(gamersGeekRemoteRepo: GamersGeekRemoteRepo): IRawgGamerGeekApiHelper {
         return gamersGeekRemoteRepo
     }
     @Singleton

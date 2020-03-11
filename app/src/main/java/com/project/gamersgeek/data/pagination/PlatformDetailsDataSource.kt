@@ -5,16 +5,12 @@ import com.project.gamersgeek.BuildConfig
 import com.project.gamersgeek.data.fetchAndSaveData
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
 import com.project.gamersgeek.data.remote.IRawgGameDbApi
-import com.project.gamersgeek.data.remote.IRawgGameDbApiHelper
 import com.project.gamersgeek.models.platforms.PlatformDetails
-import com.project.gamersgeek.models.platforms.PlatformRes
-import com.project.gamersgeek.utils.ResultHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class PlatformDetailsDataSource(

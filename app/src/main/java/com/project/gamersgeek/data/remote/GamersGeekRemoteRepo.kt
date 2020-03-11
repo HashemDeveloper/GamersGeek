@@ -7,7 +7,7 @@ import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.utils.ResultHandler
 import javax.inject.Inject
 
-class GamersGeekRemoteRepo @Inject constructor(): IRawgGameDbApiHelper, BaseDataSource() {
+class GamersGeekRemoteRepo @Inject constructor(): IRawgGamerGeekApiHelper, BaseDataSource() {
     @Inject
     lateinit var rawgGameDbApi: IRawgGameDbApi
 
