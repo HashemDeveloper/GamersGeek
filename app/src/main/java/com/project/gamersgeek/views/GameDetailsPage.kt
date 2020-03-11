@@ -41,9 +41,9 @@ class GameDetailsPage : Fragment(), Injectable {
         var gameImage: String? = null
         gameData?.let {result ->
             gameTitle = result.name
+            gameImage = result.backgroundImage
             result.videoClip.let {videoClip ->
                 videoUrl = videoClip.clip
-                gameImage = videoClip.preview
             }
         }
         gameTitle?.let {
