@@ -22,4 +22,7 @@
     <style name="RoundImageView">
         <item name="android:radius">4dp</item>
     </style>
+    <style name="ProgressBarTheme">
+        <item name="android:color">@color/gray_500</item>
+    </style>
 </resources>

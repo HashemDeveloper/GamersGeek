@@ -16,4 +16,5 @@
     <string name="using_mobile_data">Switched to mobile data</string>
     <string name="user_email">User email</string>
     <string name="game_title">Game Title</string>
+    <string name="game_description">Description</string>
 </resources>

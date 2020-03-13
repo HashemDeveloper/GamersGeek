@@ -77,6 +77,7 @@ ext {
     rxAndroidVersion = '2.1.1'
     videoPlayerVersion = '0.2.0'
     magixExoPlayer = '1.0.14'
+    flowableTextView = '2.0.5'
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
