@@ -164,4 +164,5 @@ dependencies {
     //auto video player
     implementation "com.allattentionhere:autoplayvideos:$videoPlayerVersion"
     implementation "com.github.HamidrezaAmz:MagicalExoPlayer:$magixExoPlayer"
+    implementation "com.github.deano2390:FlowTextView:$flowableTextView"
 }

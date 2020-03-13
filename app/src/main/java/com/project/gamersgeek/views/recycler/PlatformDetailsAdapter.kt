@@ -1,12 +1,15 @@
 package com.project.gamersgeek.views.recycler
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.paging.AsyncPagedListDiffer
 import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
@@ -107,6 +110,7 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
             val circularProgressDrawable = CircularProgressDrawable(context)
             circularProgressDrawable.strokeWidth = 5f
             circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.setColorSchemeColors(Color.GRAY)
             circularProgressDrawable.start()
             if (data.name != "Game Boy Advance") {
                 GlideApp.with(this.view).load(imageUrl)
