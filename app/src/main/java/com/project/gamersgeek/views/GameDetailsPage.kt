@@ -135,7 +135,7 @@ class GameDetailsPage : Fragment(), Injectable {
                        }
                    }
                    ResultHandler.Status.ERROR -> {
-
+                       description_view_loading_bar_id.visibility = View.GONE
                    }
                }
             }
