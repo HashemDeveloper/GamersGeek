@@ -1,272 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".views.GameDetailsPage">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/topGuideLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.04" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottomGuideLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.96" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/leftGuidleLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/rightGuideLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.96" />
-
-    <com.potyvideo.library.AndExoPlayerView
-        android:id="@+id/fragment_video_player_view_id"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:andexo_play_when_ready="true"
-        app:andexo_show_controller="true"
-        app:layout_constraintBottom_toTopOf="@+id/videoPlayerGuidleLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topGuideLine" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/videoPlayerGuidleLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.30" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/videoPlayerBarrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="fragment_video_player_view_id"
-        tools:layout_editor_absoluteY="807dp" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/fragment_video_game_bg_image_view_id"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
-        app:layout_constraintStart_toStartOf="@+id/leftGuidleLine"
-        app:layout_constraintTop_toBottomOf="@+id/videoPlayerBarrier"
-        app:layout_constraintTop_toTopOf="@+id/videoPlayerGuidleLine"
-        app:srcCompat="@drawable/ic_profile_white" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gameDetailsGuideLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.40" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/gameDetailsBarrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top"
-        app:constraint_referenced_ids="gameDetailsGuideLine"
-        tools:layout_editor_absoluteY="807dp" />
-
-    <View
-        android:id="@+id/game_details_divider_1_id"
+    android:fillViewport="true"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_500"
-        app:layout_constraintEnd_toStartOf="@id/rightGuideLine"
-        app:layout_constraintStart_toStartOf="@id/leftGuidleLine"
-        app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".views.GameDetailsPage">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_game_details_game_title_view_id"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/padding_16dp"
-        android:layout_marginLeft="@dimen/padding_16dp"
-        android:fontFamily="@font/cutive"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
-        app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
-        app:layout_constraintStart_toEndOf="@+id/fragment_video_game_bg_image_view_id"
-        app:layout_constraintTop_toTopOf="@+id/videoPlayerGuidleLine"
-        app:layout_constraintVertical_bias="0.241" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/exceptional_image_view_id"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/padding_16dp"
-        android:src="@drawable/exceptional_icon"
-        app:layout_constraintEnd_toStartOf="@+id/recommended_image_view_id"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/recommended_image_view_id"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/padding_16dp"
-        android:src="@drawable/recommended_icon"
-        app:layout_constraintEnd_toStartOf="@+id/meh_image_view_id"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/exceptional_image_view_id"
-        app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/meh_image_view_id"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/padding_16dp"
-        android:src="@drawable/meh_icon"
-
-        app:layout_constraintEnd_toStartOf="@+id/bad_image_view_id"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/recommended_image_view_id"
-        app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/bad_image_view_id"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/padding_16dp"
-        android:src="@drawable/bad_icon"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/meh_image_view_id"
-        app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/recommeded_text_view_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/gray_500"
-        app:layout_constraintEnd_toStartOf="@+id/meh_text_view_id"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/exception_text_view_id"
-        app:layout_constraintTop_toBottomOf="@+id/recommended_image_view_id" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/meh_text_view_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/gray_500"
-        app:layout_constraintEnd_toStartOf="@+id/bad_text_view_id"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/recommeded_text_view_id"
-        app:layout_constraintTop_toBottomOf="@+id/meh_image_view_id" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/exception_text_view_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="@color/gray_500"
-        app:layout_constraintEnd_toStartOf="@+id/recommeded_text_view_id"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exceptional_image_view_id" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/bad_text_view_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/gray_500"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/meh_text_view_id"
-        app:layout_constraintTop_toBottomOf="@+id/bad_image_view_id" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/average_play_time_view_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:textColor="@color/gray_500"
-        app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
-        app:layout_constraintStart_toEndOf="@+id/fragment_video_game_bg_image_view_id"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_game_details_game_title_view_id"
-        app:layout_constraintVertical_bias="0.466" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/game_details_released_view_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/gray_500"
-        app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
-        app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_game_details_game_title_view_id"
-        app:layout_constraintVertical_bias="0.466" />
-    <uk.co.deanwild.flowtextview.FlowTextView
-        android:id="@+id/description_view_id"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/game_description"
-        android:textColor="@color/gray_500"
-        android:inputType="textMultiLine"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionGuideLine"
-        app:layout_constraintVertical_bias="0.0">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/game_bg_view_1"
-            android:layout_width="200dp"
-            android:layout_height="130dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            tools:layout_editor_absoluteY="425dp"
-            android:padding="8dp"
-            />
-        <ProgressBar
-            android:id="@+id/description_view_loading_bar_id"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topGuideLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            style="?android:attr/progressBarStyleSmall"
-            android:indeterminateDrawable="@drawable/dr_custom_progressbar"
-            />
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftGuidleLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <com.potyvideo.library.AndExoPlayerView
+            android:id="@+id/fragment_video_player_view_id"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:andexo_play_when_ready="true"
+            app:andexo_show_controller="true"
+            app:layout_constraintBottom_toTopOf="@+id/videoPlayerGuidleLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/topGuideLine" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/videoPlayerGuidleLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.30" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/videoPlayerBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="fragment_video_player_view_id"
+            tools:layout_editor_absoluteY="807dp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/fragment_video_game_bg_image_view_id"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/leftGuidleLine"
+            app:layout_constraintTop_toBottomOf="@+id/videoPlayerBarrier"
+            app:layout_constraintTop_toTopOf="@+id/videoPlayerGuidleLine"
+            app:srcCompat="@drawable/ic_profile_white" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gameDetailsGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.40" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/gameDetailsBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="gameDetailsGuideLine"
+            tools:layout_editor_absoluteY="807dp" />
+
+        <View
+            android:id="@+id/game_details_divider_1_id"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_500"
+            app:layout_constraintEnd_toStartOf="@id/rightGuideLine"
+            app:layout_constraintStart_toStartOf="@id/leftGuidleLine"
+            app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_game_details_game_title_view_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_16dp"
+            android:layout_marginLeft="@dimen/padding_16dp"
+            android:fontFamily="@font/cutive"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
+            app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
+            app:layout_constraintStart_toEndOf="@+id/fragment_video_game_bg_image_view_id"
+            app:layout_constraintTop_toTopOf="@+id/videoPlayerGuidleLine"
+            app:layout_constraintVertical_bias="0.241" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/exceptional_image_view_id"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/padding_16dp"
+            android:src="@drawable/exceptional_icon"
+            app:layout_constraintEnd_toStartOf="@+id/recommended_image_view_id"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/recommended_image_view_id"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/padding_16dp"
+            android:src="@drawable/recommended_icon"
+            app:layout_constraintEnd_toStartOf="@+id/meh_image_view_id"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/exceptional_image_view_id"
+            app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/meh_image_view_id"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/padding_16dp"
+            android:src="@drawable/meh_icon"
+
+            app:layout_constraintEnd_toStartOf="@+id/bad_image_view_id"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/recommended_image_view_id"
+            app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/bad_image_view_id"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/padding_16dp"
+            android:src="@drawable/bad_icon"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/meh_image_view_id"
+            app:layout_constraintTop_toTopOf="@+id/gameDetailsGuideLine" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/recommeded_text_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_500"
+            app:layout_constraintEnd_toStartOf="@+id/meh_text_view_id"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/exception_text_view_id"
+            app:layout_constraintTop_toBottomOf="@+id/recommended_image_view_id" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/meh_text_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_500"
+            app:layout_constraintEnd_toStartOf="@+id/bad_text_view_id"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/recommeded_text_view_id"
+            app:layout_constraintTop_toBottomOf="@+id/meh_image_view_id" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/exception_text_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/gray_500"
+            app:layout_constraintEnd_toStartOf="@+id/recommeded_text_view_id"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exceptional_image_view_id" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/bad_text_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_500"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/meh_text_view_id"
+            app:layout_constraintTop_toBottomOf="@+id/bad_image_view_id" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/average_play_time_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/gray_500"
+            app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
+            app:layout_constraintStart_toEndOf="@+id/fragment_video_game_bg_image_view_id"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_game_details_game_title_view_id"
+            app:layout_constraintVertical_bias="0.466" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/game_details_released_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_500"
+            app:layout_constraintBottom_toTopOf="@+id/gameDetailsGuideLine"
+            app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_game_details_game_title_view_id"
+            app:layout_constraintVertical_bias="0.466" />
+
+        <uk.co.deanwild.flowtextview.FlowTextView
+            android:id="@+id/description_view_id"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/game_description"
+            android:textColor="@color/gray_500"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.466"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionGuideLine"
+            app:layout_constraintVertical_bias="0.0">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/game_bg_view_1"
+                android:layout_width="200dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                tools:layout_editor_absoluteY="425dp"
+                android:padding="8dp"
+                />
+            <ProgressBar
+                android:id="@+id/description_view_loading_bar_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                style="?android:attr/progressBarStyleSmall"
+                android:indeterminateDrawable="@drawable/dr_custom_progressbar"
+                />
+        </uk.co.deanwild.flowtextview.FlowTextView>
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/game_details_esrb_rating_view_id"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/rated_every_one"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true" />
-    </uk.co.deanwild.flowtextview.FlowTextView>
+            android:src="@drawable/rated_every_one"
+            app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
+            app:layout_constraintEnd_toStartOf="@+id/rightGuideLine" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/descriptionGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.50" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/descriptionGuideLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.50" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

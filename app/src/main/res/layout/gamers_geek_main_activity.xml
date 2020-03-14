@@ -9,17 +9,19 @@
     tools:context=".GamersGeekMainActivity"
     tools:openDrawer="start"
     >
-    <fragment
-        android:id="@+id/container"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/gamers_geek_nav_layout"
-        />
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+        <fragment
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/gamers_geek_nav_layout"
+            />
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_bar_id"
             style="@style/Widget.MaterialComponents.BottomNavigationView"
@@ -28,9 +30,12 @@
             app:itemIconTint="@drawable/bottom_nav_bar_icon_color_selector"
             app:itemTextColor="@drawable/bottom_nav_bar_icon_color_selector"
             app:menu="@menu/bottom_nav_menu"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
             android:layout_gravity="bottom"
+            app:layout_insetEdge="bottom"
+            app:labelVisibilityMode="selected"
             />
-    </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_id"
         android:layout_width="wrap_content"
