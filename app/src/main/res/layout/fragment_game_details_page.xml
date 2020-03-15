@@ -47,20 +47,18 @@
             android:id="@+id/fragment_video_player_view_id"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:andexo_play_when_ready="true"
-            app:andexo_show_controller="true"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/videoPlayerGuidleLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/topGuideLine" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/videoPlayerGuidleLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.32" />
+            app:layout_constraintGuide_percent="0.28" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/videoPlayerBarrier"
