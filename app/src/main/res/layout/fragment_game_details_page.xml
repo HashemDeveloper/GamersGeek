@@ -6,12 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:orientation="vertical"
     >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
-        tools:context=".views.GameDetailsPage">
+        tools:context=".views.GameDetailsPage"
+        >
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/topGuideLine"
@@ -225,42 +227,59 @@
             app:layout_constraintTop_toBottomOf="@+id/fragment_game_details_game_title_view_id"
             app:layout_constraintVertical_bias="0.466" />
 
-        <uk.co.deanwild.flowtextview.FlowTextView
-            android:id="@+id/description_view_id"
+<!--        <uk.co.deanwild.flowtextview.FlowTextView-->
+<!--            android:id="@+id/description_view_id"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:inputType="textMultiLine"-->
+<!--            android:scrollbars="vertical"-->
+<!--            android:text="@string/game_description"-->
+<!--            android:textColor="@color/gray_500"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.466"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/descriptionGuideLine"-->
+<!--            app:layout_constraintVertical_bias="0.0">-->
+
+<!--            <androidx.appcompat.widget.AppCompatImageView-->
+<!--                android:id="@+id/game_bg_view_1"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="130dp"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentLeft="true"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginLeft="16dp"-->
+<!--                android:padding="8dp"-->
+<!--                tools:layout_editor_absoluteY="425dp" />-->
+
+<!--            <ProgressBar-->
+<!--                android:id="@+id/description_view_loading_bar_id"-->
+<!--                style="?android:attr/progressBarStyleSmall"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:indeterminateDrawable="@drawable/dr_custom_progressbar"-->
+<!--                android:visibility="gone" />-->
+<!--        </uk.co.deanwild.flowtextview.FlowTextView>-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/game_details_information_recyclerview_id"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:inputType="textMultiLine"
-            android:scrollbars="vertical"
-            android:text="@string/game_description"
-            android:textColor="@color/gray_500"
-            app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
+            app:layout_constraintBottom_toTopOf="@+id/appCompatImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.466"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descriptionGuideLine"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/game_bg_view_1"
-                android:layout_width="200dp"
-                android:layout_height="130dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:padding="8dp"
-                tools:layout_editor_absoluteY="425dp" />
-
-            <ProgressBar
-                android:id="@+id/description_view_loading_bar_id"
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:indeterminateDrawable="@drawable/dr_custom_progressbar"
-                android:visibility="gone" />
-        </uk.co.deanwild.flowtextview.FlowTextView>
-
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rightGuideLine" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/descriptionGuideLine"
             android:layout_width="wrap_content"
