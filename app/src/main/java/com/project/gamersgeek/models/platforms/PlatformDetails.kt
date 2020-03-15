@@ -47,7 +47,7 @@ data class PlatformDetails(
     @ColumnInfo(name = "games")
     @SerializedName("games")
     @Expose
-    var games: List<PlatformGames> = arrayListOf(),
+    var games: List<PlatformGames>? = arrayListOf(),
     @ColumnInfo(name = "following")
     @SerializedName("following")
     @Expose

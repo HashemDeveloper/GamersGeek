@@ -36,15 +36,19 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
         }
         viewHolder.getShowCaseGame1View().setOnClickListener {
             val platformDetails: PlatformDetails = viewHolder.itemView.tag as PlatformDetails
-            val gameList: List<PlatformGames> = platformDetails.games.take(2)
-            val gameId: Int = gameList[0].id
-            this.listener.onShowGameClicked(gameId, ShowGameType.VIEW_GAME1)
+            platformDetails.games?.let {list ->
+                val gameList: List<PlatformGames> = list.take(2)
+                val gameId: Int = gameList[0].id
+                this.listener.onShowGameClicked(gameId, ShowGameType.VIEW_GAME1)
+            }
         }
         viewHolder.getShowCaseGame2View().setOnClickListener {
             val platformDetails: PlatformDetails = viewHolder.itemView.tag as PlatformDetails
-            val gameList: List<PlatformGames> = platformDetails.games.take(2)
-            val gameId: Int = gameList[1].id
-            this.listener.onShowGameClicked(gameId, ShowGameType.VIEW_GAME2)
+            platformDetails.games?.let { list ->
+                val gameList: List<PlatformGames> = list.take(2)
+                val gameId: Int = gameList[1].id
+                this.listener.onShowGameClicked(gameId, ShowGameType.VIEW_GAME2)
+            }
         }
         return PlatformDetailsViewHolder(view, parent.context)
     }
@@ -124,24 +128,26 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
                 this.gamesCountResult?.let {
                     it.text = data.gamesCount.toString()
                 }
-                val gameList: List<PlatformGames> = data.games.take(2)
-                val gameOne: String = gameList[0].name
-                val gameTwo: String = gameList[1].name
-                val gameOneAddedResult: Int = gameList[0].added
-                val gameTwoAddedResult: Int = gameList[1].added
-                this.showCaseGame1View?.let {
-                    it.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-                    it.text = gameOne
-                }
-                this.showCaseGame2View?.let {
-                    it.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-                    it.text = gameTwo
-                }
-                this.gamesOneAddedResult?.let {
-                    it.text = gameOneAddedResult.toString()
-                }
-                this.gamesTwoAddedResult?.let {
-                    it.text = gameTwoAddedResult.toString()
+                data.games?.let {list ->
+                    val gameList: List<PlatformGames> = list.take(2)
+                    val gameOne: String = gameList[0].name
+                    val gameTwo: String = gameList[1].name
+                    val gameOneAddedResult: Int = gameList[0].added
+                    val gameTwoAddedResult: Int = gameList[1].added
+                    this.showCaseGame1View?.let {
+                        it.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+                        it.text = gameOne
+                    }
+                    this.showCaseGame2View?.let {
+                        it.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+                        it.text = gameTwo
+                    }
+                    this.gamesOneAddedResult?.let {
+                        it.text = gameOneAddedResult.toString()
+                    }
+                    this.gamesTwoAddedResult?.let {
+                        it.text = gameTwoAddedResult.toString()
+                    }
                 }
             }
         }
