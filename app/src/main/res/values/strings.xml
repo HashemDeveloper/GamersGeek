@@ -19,4 +19,7 @@
     <string name="game_description">Description</string>
     <string name="developers">Developers</string>
     <string name="genres">Genres</string>
+    <string name="pc_requirements">PC Requirements</string>
+    <string name="minimum">Minimum</string>
+    <string name="recommended">Recommended</string>
 </resources>

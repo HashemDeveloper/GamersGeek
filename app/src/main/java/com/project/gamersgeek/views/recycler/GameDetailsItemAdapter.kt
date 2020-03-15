@@ -2,21 +2,29 @@ package com.project.gamersgeek.views.recycler
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.project.gamersgeek.R
+import com.project.gamersgeek.models.platforms.CategorizedGamePlatforms
+import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.views.recycler.items.GameDevAndGenres
+import com.project.gamersgeek.views.recycler.items.PcRequirements
 import com.project.gamersgeek.views.recycler.items.RawDescriptions
 import com.project.gamersgeek.views.recycler.items.ScreenShots
 import uk.co.deanwild.flowtextview.FlowTextView
-import java.lang.IllegalArgumentException
+
 
 class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
     private var data: MutableList<Any> = arrayListOf()
@@ -35,6 +43,10 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
                val devAndGenView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_dev_gernres_main_layout, parent, false)
                DevAndGenresViewHolder(parent.context, devAndGenView)
            }
+           PC_REQUIREMENTS -> {
+               val pcRequirementView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_pc_requirements_layout, parent, false)
+               PcRequirementViewHolder(pcRequirementView)
+           }
            else -> throw IllegalArgumentException("Unsupported view")
        }
     }
@@ -45,6 +57,7 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             is RawDescViewHolder -> holder.bindView(items as RawDescriptions)
             is ScreenShotViewHolder -> holder.bindView(items as ScreenShots)
             is DevAndGenresViewHolder -> holder.bindView(items as GameDevAndGenres)
+            is PcRequirementViewHolder -> holder.bindView(items as PcRequirements)
         }
     }
 
@@ -53,6 +66,7 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             is RawDescriptions -> FLO_TEXT_VIEW
             is ScreenShots -> SCREEN_SHOTS
             is GameDevAndGenres -> DEVELOPERS_GENRES
+            is PcRequirements -> PC_REQUIREMENTS
             else -> throw IllegalArgumentException("Invalid index position $position")
         }
     }
@@ -119,6 +133,51 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         override fun bindView(item: GameDevAndGenres) {
 
         }
+    }
+
+    inner class PcRequirementViewHolder(private val view: View): BaseViewHolder<PcRequirements>(view) {
+        private var titleView: AppCompatTextView?= null
+        private var minimumReqView: AppCompatTextView?= null
+        private var recommendedView: AppCompatTextView?= null
+
+        init {
+            this.titleView = view.findViewById(R.id.game_details_pc_requirements_title_view_id)
+            this.minimumReqView = this.view.findViewById(R.id.game_details_pc_requirements_minimum_view_id)
+            this.recommendedView = this.view.findViewById(R.id.game_details_pc_requirement_recommended_view_id)
+        }
+        override fun bindView(item: PcRequirements) {
+            for (platformList: CategorizedGamePlatforms in item.platformList) {
+                platformList.requirementsInEnglish?.let {req ->
+                    this.titleView?.let {
+                        it.visibility = View.VISIBLE
+                    }
+                    val minimumReq = "${Constants.fromHtml(req.minimium)}"
+                    val recommendedReq = "${Constants.fromHtml(req.recommended)}"
+                    val minimumSentenceFirstWord: String = Constants.getFirstWord(minimumReq)
+                    val recommendedSenFirstWord: String = Constants.getFirstWord(recommendedReq)
+                    val minimumFirstWordEndIndex: Int = minimumSentenceFirstWord.length
+                    val recommendedFirstWordEndIndex: Int = recommendedSenFirstWord.length
+                    this.minimumReqView?.let {
+                        it.visibility = View.VISIBLE
+                        boldFirstWord(minimumFirstWordEndIndex, minimumReq, it)
+                    }
+                    this.recommendedView?.let {
+                        it.visibility = View.VISIBLE
+                        boldFirstWord(recommendedFirstWordEndIndex, recommendedReq, it)
+                    }
+                }
+            }
+        }
+    }
+    private fun boldFirstWord(end: Int, sentence: String, textView: AppCompatTextView) {
+        val fancySentence = SpannableStringBuilder(sentence)
+        fancySentence.setSpan(
+            StyleSpan(Typeface.BOLD),
+            0,
+            end,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        textView.text = fancySentence
     }
 
     companion object {

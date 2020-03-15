@@ -26,6 +26,7 @@ import com.project.gamersgeek.viewmodels.GameDetailsPageViewModel
 import com.project.gamersgeek.views.GameDetailsPageArgs.fromBundle
 import com.project.gamersgeek.views.recycler.GameDetailsItemAdapter
 import com.project.gamersgeek.views.recycler.items.GameDevAndGenres
+import com.project.gamersgeek.views.recycler.items.PcRequirements
 import com.project.gamersgeek.views.recycler.items.RawDescriptions
 import com.project.gamersgeek.views.recycler.items.ScreenShots
 import dagger.android.support.AndroidSupportInjection
@@ -116,6 +117,11 @@ class GameDetailsPage : Fragment(), Injectable {
                                        val devAndGenres = GameDevAndGenres(devList, genresList)
                                        gameDetailsDataList.add(devAndGenres)
                                    }
+                               }
+                               // adds platfor details to display pc requirements
+                               gameData?.platformList?.let {platformList ->
+                                   val pcRequirements = PcRequirements(platformList)
+                                   gameDetailsDataList.add(pcRequirements)
                                }
 
                                this.gameDetailsItemAdapter?.setGameDetailsData(gameDetailsDataList)
