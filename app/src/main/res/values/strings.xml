@@ -17,4 +17,11 @@
     <string name="user_email">User email</string>
     <string name="game_title">Game Title</string>
     <string name="game_description">Description</string>
+    <string name="developers">Developers</string>
+    <string name="genres">Genres</string>
+    <string name="pc_requirements">PC Requirements</string>
+    <string name="minimum">Minimum</string>
+    <string name="recommended">Recommended</string>
+    <string name="developer_company_name">Developer Company Name</string>
+    <string name="website_link">Website Link</string>
 </resources>

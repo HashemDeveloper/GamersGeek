@@ -6,21 +6,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.games.Results
+import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.utils.RatingType
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.GameDetailsPageViewModel
 import com.project.gamersgeek.views.GameDetailsPageArgs.fromBundle
+import com.project.gamersgeek.views.recycler.GameDetailsItemAdapter
+import com.project.gamersgeek.views.recycler.items.*
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_game_details_page.*
 import javax.inject.Inject
@@ -36,7 +41,7 @@ class GameDetailsPage : Fragment(), Injectable {
     private val gameDetailsViewModel: GameDetailsPageViewModel by activityViewModels {
         this.viewModelFactory
     }
-
+    private var gameDetailsItemAdapter: GameDetailsItemAdapter?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,23 +53,30 @@ class GameDetailsPage : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lifecycle.addObserver(fragment_video_player_view_id)
+        game_details_information_recyclerview_id.layoutManager = LinearLayoutManager(this.context!!)
+        this.gameDetailsItemAdapter = GameDetailsItemAdapter()
+        game_details_information_recyclerview_id.adapter = this.gameDetailsItemAdapter
         setupGameData()
     }
 
     private fun setupGameData() {
-        description_view_id.textColor = ContextCompat.getColor(this.context!!, R.color.gray_500)
-        description_view_id.setTextSize(32f)
         val gameData: Results? = gameDetails
         var gameTitle: String?= null
-        var videoUrl: String? = null
+        var videoIdOfYoutube: String? = null
         var gameImage: String? = null
         var gameId: Int?= null
+        var screenShots: ScreenShots?= null
         gameData?.let {result ->
             gameId = result.id
             gameTitle = result.name
             gameImage = result.backgroundImage
             result.videoClip.let {videoClip ->
-                videoUrl = videoClip.clip
+                videoIdOfYoutube = videoClip.video
+            }
+            // adds screen shots
+            result.shortScreenShotList?.let {
+                screenShots = ScreenShots(it)
             }
         }
         gameId?.let {
@@ -78,21 +90,44 @@ class GameDetailsPage : Fragment(), Injectable {
                        description_view_loading_bar_id.visibility = View.VISIBLE
                    }
                    ResultHandler.Status.SUCCESS -> {
+                       description_view_loading_bar_id.visibility = View.GONE
                        if (resultHandler.data is GamesRes) {
                            val gameRes: GamesRes? = resultHandler.data
+                           val gameDetailsDataList: MutableList<Any> = arrayListOf()
                            gameRes?.let {res ->
                                val playTime = "Play Time ${res.playTime} hrs"
                                average_play_time_view_id.text = playTime
                                game_details_released_view_id.text = res.released
-                               description_view_loading_bar_id.visibility = View.GONE
-                               description_view_id.text = res.descriptionRaw
                                circularProgressDrawable.strokeWidth = 5f
                                circularProgressDrawable.centerRadius = 30f
                                circularProgressDrawable.setColorSchemeColors(Color.GRAY)
                                circularProgressDrawable.start()
-                               GlideApp.with(this).load(res.backgroundImageAdditional)
-                                   .placeholder(circularProgressDrawable)
-                                   .into(game_bg_view_1)
+                               // adds description view items
+                               val rawDescriptions = RawDescriptions(res.descriptionRaw, res.backgroundImageAdditional)
+                               gameDetailsDataList.add(0, rawDescriptions)
+                               // adds screen shots
+                               screenShots?.let {s ->
+                                   gameDetailsDataList.add(1, s)
+                               }
+                               // ads developer info and genres
+                               res.developers?.let {devList ->
+                                   res.genres?.let {genresList ->
+                                       val devAndGenres = GameDevAndGenres(devList, genresList)
+                                       gameDetailsDataList.add(devAndGenres)
+                                   }
+                               }
+                               // adds platfor details to display pc requirements
+                               gameData?.platformList?.let {platformList ->
+                                   val pcRequirements = PcRequirements(platformList)
+                                   gameDetailsDataList.add(pcRequirements)
+                               }
+
+                               // ads footer
+                               val gameDetailsFooter = GameDetailsFooter(res.website, res.esrbRating.name)
+                               gameDetailsDataList.add(gameDetailsFooter)
+
+                               this.gameDetailsItemAdapter?.setGameDetailsData(gameDetailsDataList)
+
                                res.ratingList?.let { ratingList ->
                                    var exceptionalPercentile: Int?= null
                                    var recommendedPercentile: Int?= null
@@ -135,7 +170,7 @@ class GameDetailsPage : Fragment(), Injectable {
                        }
                    }
                    ResultHandler.Status.ERROR -> {
-
+                       description_view_loading_bar_id.visibility = View.GONE
                    }
                }
             }
@@ -145,8 +180,13 @@ class GameDetailsPage : Fragment(), Injectable {
                 it.text = gameTitle
             }
         }
-        videoUrl?.let {url ->
-            fragment_video_player_view_id.setSource(url)
+        videoIdOfYoutube?.let { videoId ->
+            fragment_video_player_view_id.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                override fun onReady(youTubePlayer: YouTubePlayer) {
+                    fragment_video_player_view_id.enterFullScreen()
+                   youTubePlayer.loadVideo(videoId, 0f)
+                }
+            })
         }
         gameImage?.let {
             var imageUri = ""

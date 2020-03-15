@@ -17,8 +17,8 @@ data class CategorizedGamePlatforms(
     var releasedAt: String,
     @SerializedName("requirements_en")
     @Expose
-    var requirementsInEnglish: Requirements,
+    var requirementsInEnglish: Requirements?,
     @SerializedName("requirements_ru")
     @Expose
-    var requirementsInRussian: Requirements
+    var requirementsInRussian: Requirements?
 ): Parcelable

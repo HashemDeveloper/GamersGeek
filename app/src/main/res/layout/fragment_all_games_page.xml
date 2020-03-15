@@ -47,7 +47,7 @@
             android:id="@+id/all_game_recycler_view_id"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
+            app:layout_constraintBottom_toBottomOf="@+id/all_game_search_view_id"
             app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
             app:layout_constraintStart_toStartOf="@+id/leftGuideLine"
             app:layout_constraintTop_toTopOf="@+id/topGuideLine" />
