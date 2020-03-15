@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class RawDescriptions(var description: String, var additionalImage: String): Parcelable
+data class RawDescriptions(val description: String, val additionalImage: String): Parcelable

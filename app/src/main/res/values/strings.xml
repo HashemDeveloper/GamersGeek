@@ -17,4 +17,6 @@
     <string name="user_email">User email</string>
     <string name="game_title">Game Title</string>
     <string name="game_description">Description</string>
+    <string name="developers">Developers</string>
+    <string name="genres">Genres</string>
 </resources>

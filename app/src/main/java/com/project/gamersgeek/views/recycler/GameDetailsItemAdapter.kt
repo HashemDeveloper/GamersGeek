@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.project.gamersgeek.R
 import com.project.gamersgeek.utils.GlideApp
+import com.project.gamersgeek.views.recycler.items.GameDevAndGenres
 import com.project.gamersgeek.views.recycler.items.RawDescriptions
 import com.project.gamersgeek.views.recycler.items.ScreenShots
 import uk.co.deanwild.flowtextview.FlowTextView
@@ -30,6 +31,10 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
                val screenShotView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_screenshots_recyclerview, parent, false)
                ScreenShotViewHolder(parent.context, screenShotView)
            }
+           DEVELOPERS_GENRES -> {
+               val devAndGenView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_dev_gernres_main_layout, parent, false)
+               DevAndGenresViewHolder(parent.context, devAndGenView)
+           }
            else -> throw IllegalArgumentException("Unsupported view")
        }
     }
@@ -39,6 +44,7 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         when (holder) {
             is RawDescViewHolder -> holder.bindView(items as RawDescriptions)
             is ScreenShotViewHolder -> holder.bindView(items as ScreenShots)
+            is DevAndGenresViewHolder -> holder.bindView(items as GameDevAndGenres)
         }
     }
 
@@ -46,6 +52,7 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         return when (this.data[position]) {
             is RawDescriptions -> FLO_TEXT_VIEW
             is ScreenShots -> SCREEN_SHOTS
+            is GameDevAndGenres -> DEVELOPERS_GENRES
             else -> throw IllegalArgumentException("Invalid index position $position")
         }
     }
@@ -104,6 +111,13 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
            item.screenShotList?.let {
                this.screenshotAdapter?.setData(it)
            }
+        }
+    }
+
+    inner class DevAndGenresViewHolder(private val context: Context, private val view: View): BaseViewHolder<GameDevAndGenres>(view) {
+
+        override fun bindView(item: GameDevAndGenres) {
+
         }
     }
 

@@ -15,6 +15,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
+import com.project.gamersgeek.models.developer.Developer
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.games.ShortScreenShot
@@ -24,6 +25,7 @@ import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.GameDetailsPageViewModel
 import com.project.gamersgeek.views.GameDetailsPageArgs.fromBundle
 import com.project.gamersgeek.views.recycler.GameDetailsItemAdapter
+import com.project.gamersgeek.views.recycler.items.GameDevAndGenres
 import com.project.gamersgeek.views.recycler.items.RawDescriptions
 import com.project.gamersgeek.views.recycler.items.ScreenShots
 import dagger.android.support.AndroidSupportInjection
@@ -104,9 +106,18 @@ class GameDetailsPage : Fragment(), Injectable {
                                // adds description view items
                                val rawDescriptions = RawDescriptions(res.descriptionRaw, res.backgroundImageAdditional)
                                gameDetailsDataList.add(0, rawDescriptions)
+                               // adds screen shots
                                screenShots?.let {s ->
                                    gameDetailsDataList.add(1, s)
                                }
+                               // ads developer info and genres
+                               res.developers?.let {devList ->
+                                   res.genres?.let {genresList ->
+                                       val devAndGenres = GameDevAndGenres(devList, genresList)
+                                       gameDetailsDataList.add(devAndGenres)
+                                   }
+                               }
+
                                this.gameDetailsItemAdapter?.setGameDetailsData(gameDetailsDataList)
 
                                res.ratingList?.let { ratingList ->

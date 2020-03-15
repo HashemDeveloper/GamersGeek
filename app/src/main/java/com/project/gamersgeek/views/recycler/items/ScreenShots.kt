@@ -5,4 +5,4 @@ import com.project.gamersgeek.models.games.ShortScreenShot
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ScreenShots(var screenShotList: List<ShortScreenShot>?): Parcelable
+data class ScreenShots(val screenShotList: List<ShortScreenShot>?): Parcelable
