@@ -161,7 +161,7 @@ data class GamesRes(
     var publishers: @RawValue List<Publisher>?= arrayListOf(),
     @SerializedName("esrb_rating")
     @Expose
-    var esrbRating: @RawValue EsRbRating,
+    var esrbRating: @RawValue EsRbRating?,
     @SerializedName("clip")
     @Expose
     var clip: @RawValue VideoClip,

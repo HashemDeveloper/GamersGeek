@@ -123,7 +123,11 @@ class GameDetailsPage : Fragment(), Injectable {
                                }
 
                                // ads footer
-                               val gameDetailsFooter = GameDetailsFooter(res.website, res.esrbRating.name)
+                               var esrbRatingName = ""
+                               res.esrbRating?.let {es ->
+                                   esrbRatingName = es.slug
+                               }
+                               val gameDetailsFooter = GameDetailsFooter(res.website, esrbRatingName)
                                gameDetailsDataList.add(gameDetailsFooter)
 
                                this.gameDetailsItemAdapter?.setGameDetailsData(gameDetailsDataList)

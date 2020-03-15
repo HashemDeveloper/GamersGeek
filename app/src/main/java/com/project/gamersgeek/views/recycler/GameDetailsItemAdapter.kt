@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.platforms.CategorizedGamePlatforms
 import com.project.gamersgeek.utils.Constants
+import com.project.gamersgeek.utils.EsrbRatingType
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.views.recycler.items.*
 import uk.co.deanwild.flowtextview.FlowTextView
@@ -207,9 +208,21 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             this.esrbRatingView?.let { v ->
                 item.esrbRating?.let { rating ->
                     when (rating) {
-                        "Teen" -> {
-
+                        EsrbRatingType.EVERYONE_PLUS_10.getType() -> {
+                           v.setImageResource(R.drawable.rated_over_ten_esrbpng)
                         }
+                        EsrbRatingType.EVERYONE.getType() -> {
+                           v.setImageResource(R.drawable.rated_every_one)
+                        }
+                        EsrbRatingType.TEEN.getType() -> {
+                           v.setImageResource(R.drawable.rated_teen_esrb)
+                        }
+                        EsrbRatingType.MATURE.getType() -> {
+                            v.setImageResource(R.drawable.rated_mature_esrb)
+                        }
+                        EsrbRatingType.ADULTS_ONLY.getType() -> {
+                           v.setImageResource(R.drawable.rated_adult_only_esrbpng)
+                        } else -> ""
                     }
                 }
             }
@@ -223,4 +236,5 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         private const val PC_REQUIREMENTS = 3
         private const val FOOTER = 4
     }
+
 }
