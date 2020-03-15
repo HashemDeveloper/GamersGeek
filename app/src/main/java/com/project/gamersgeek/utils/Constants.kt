@@ -10,6 +10,7 @@ class Constants {
     companion object {
         const val IS_NIGHT_MODE: String = "IS NIGHT MODE"
         const val CONNECTIVITY_ACTION: String = "android.net.conn.CONNECTIVITY_CHANGE"
+        const val YOUTUBE_VIDEO_URL: String = "https://www.youtube.com/watch?v="
 
         fun getFirstWord(input: String): String {
             for (i in input.indices) {

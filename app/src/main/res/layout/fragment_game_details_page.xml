@@ -43,7 +43,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.96" />
 
-        <com.potyvideo.library.AndExoPlayerView
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
             android:id="@+id/fragment_video_player_view_id"
             android:layout_width="0dp"
             android:layout_height="0dp"

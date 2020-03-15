@@ -6,19 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
-import com.project.gamersgeek.models.developer.Developer
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.games.Results
-import com.project.gamersgeek.models.games.ShortScreenShot
+import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.utils.RatingType
 import com.project.gamersgeek.utils.ResultHandler
@@ -56,6 +56,7 @@ class GameDetailsPage : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lifecycle.addObserver(fragment_video_player_view_id)
         game_details_information_recyclerview_id.layoutManager = LinearLayoutManager(this.context!!)
         this.gameDetailsItemAdapter = GameDetailsItemAdapter()
         game_details_information_recyclerview_id.adapter = this.gameDetailsItemAdapter
@@ -65,7 +66,7 @@ class GameDetailsPage : Fragment(), Injectable {
     private fun setupGameData() {
         val gameData: Results? = gameDetails
         var gameTitle: String?= null
-        var videoUrl: String? = null
+        var videoIdOfYoutube: String? = null
         var gameImage: String? = null
         var gameId: Int?= null
         var screenShots: ScreenShots?= null
@@ -74,7 +75,7 @@ class GameDetailsPage : Fragment(), Injectable {
             gameTitle = result.name
             gameImage = result.backgroundImage
             result.videoClip.let {videoClip ->
-                videoUrl = videoClip.clip
+                videoIdOfYoutube = videoClip.video
             }
             // adds screen shots
             result.shortScreenShotList?.let {
@@ -178,8 +179,12 @@ class GameDetailsPage : Fragment(), Injectable {
                 it.text = gameTitle
             }
         }
-        videoUrl?.let {url ->
-            fragment_video_player_view_id.setSource(url)
+        videoIdOfYoutube?.let { videoId ->
+            fragment_video_player_view_id.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                override fun onReady(youTubePlayer: YouTubePlayer) {
+                   youTubePlayer.loadVideo(videoId, 0f)
+                }
+            })
         }
         gameImage?.let {
             var imageUri = ""

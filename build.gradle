@@ -78,6 +78,7 @@ ext {
     videoPlayerVersion = '0.2.0'
     magixExoPlayer = '1.0.14'
     flowableTextView = '2.0.5'
+    youtubePlayerVersion = '10.0.5'
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
