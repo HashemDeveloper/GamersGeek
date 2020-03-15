@@ -2,10 +2,6 @@ package com.project.gamersgeek.views.recycler
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Typeface
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +15,7 @@ import com.project.gamersgeek.R
 import com.project.gamersgeek.models.platforms.CategorizedGamePlatforms
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.GlideApp
-import com.project.gamersgeek.views.recycler.items.GameDevAndGenres
-import com.project.gamersgeek.views.recycler.items.PcRequirements
-import com.project.gamersgeek.views.recycler.items.RawDescriptions
-import com.project.gamersgeek.views.recycler.items.ScreenShots
+import com.project.gamersgeek.views.recycler.items.*
 import uk.co.deanwild.flowtextview.FlowTextView
 
 
@@ -47,6 +40,10 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
                val pcRequirementView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_pc_requirements_layout, parent, false)
                PcRequirementViewHolder(pcRequirementView)
            }
+           FOOTER -> {
+               val footerView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_footer_layout, parent, false)
+               FooterViewHolder(footerView)
+           }
            else -> throw IllegalArgumentException("Unsupported view")
        }
     }
@@ -58,6 +55,7 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             is ScreenShotViewHolder -> holder.bindView(items as ScreenShots)
             is DevAndGenresViewHolder -> holder.bindView(items as GameDevAndGenres)
             is PcRequirementViewHolder -> holder.bindView(items as PcRequirements)
+            is FooterViewHolder -> holder.bindView(items as GameDetailsFooter)
         }
     }
 
@@ -67,6 +65,7 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             is ScreenShots -> SCREEN_SHOTS
             is GameDevAndGenres -> DEVELOPERS_GENRES
             is PcRequirements -> PC_REQUIREMENTS
+            is GameDetailsFooter -> FOOTER
             else -> throw IllegalArgumentException("Invalid index position $position")
         }
     }
@@ -178,25 +177,43 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
                     val recommendedFirstWordEndIndex: Int = recommendedSenFirstWord.length
                     this.minimumReqView?.let {
                         it.visibility = View.VISIBLE
-                        boldFirstWord(minimumFirstWordEndIndex, minimumReq, it)
+                        Constants.boldFirstWord(minimumFirstWordEndIndex, minimumReq, it)
                     }
                     this.recommendedView?.let {
                         it.visibility = View.VISIBLE
-                        boldFirstWord(recommendedFirstWordEndIndex, recommendedReq, it)
+                        Constants.boldFirstWord(recommendedFirstWordEndIndex, recommendedReq, it)
                     }
                 }
             }
         }
     }
-    private fun boldFirstWord(end: Int, sentence: String, textView: AppCompatTextView) {
-        val fancySentence = SpannableStringBuilder(sentence)
-        fancySentence.setSpan(
-            StyleSpan(Typeface.BOLD),
-            0,
-            end,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        textView.text = fancySentence
+
+    inner class FooterViewHolder(private val view: View): BaseViewHolder<GameDetailsFooter>(view) {
+        private var websiteLinkView: AppCompatTextView?= null
+        private var esrbRatingView: AppCompatImageView?= null
+        private var saveGameBt: AppCompatImageView?= null
+
+        init {
+            this.websiteLinkView = this.view.findViewById(R.id.game_details_footer_website_link_view_id)
+            this.esrbRatingView = this.view.findViewById(R.id.game_details_footer_esrb_rating_view_id)
+            this.saveGameBt = this.view.findViewById(R.id.game_details_footer_save_game_bt_id)
+        }
+        override fun bindView(item: GameDetailsFooter) {
+           this.websiteLinkView?.let { v ->
+               item.websiteUrl?.let {url ->
+                   v.text = url
+               }
+           }
+            this.esrbRatingView?.let { v ->
+                item.esrbRating?.let { rating ->
+                    when (rating) {
+                        "Teen" -> {
+
+                        }
+                    }
+                }
+            }
+        }
     }
 
     companion object {

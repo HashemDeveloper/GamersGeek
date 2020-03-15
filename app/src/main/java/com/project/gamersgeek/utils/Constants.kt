@@ -1,9 +1,10 @@
 package com.project.gamersgeek.utils
 
+import android.graphics.Typeface
 import android.os.Build
-import android.text.Html
-import android.text.SpannableString
-import android.text.Spanned
+import android.text.*
+import android.text.style.StyleSpan
+import androidx.appcompat.widget.AppCompatTextView
 
 
 class Constants {
@@ -19,6 +20,16 @@ class Constants {
                 }
             }
             return input
+        }
+        fun boldFirstWord(end: Int, sentence: String, textView: AppCompatTextView) {
+            val fancySentence = SpannableStringBuilder(sentence)
+            fancySentence.setSpan(
+                StyleSpan(Typeface.BOLD),
+                0,
+                end,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            textView.text = fancySentence
         }
         fun fromHtml(html: String?): Spanned? {
             return when {

@@ -11,10 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
@@ -27,10 +25,7 @@ import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.GameDetailsPageViewModel
 import com.project.gamersgeek.views.GameDetailsPageArgs.fromBundle
 import com.project.gamersgeek.views.recycler.GameDetailsItemAdapter
-import com.project.gamersgeek.views.recycler.items.GameDevAndGenres
-import com.project.gamersgeek.views.recycler.items.PcRequirements
-import com.project.gamersgeek.views.recycler.items.RawDescriptions
-import com.project.gamersgeek.views.recycler.items.ScreenShots
+import com.project.gamersgeek.views.recycler.items.*
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_game_details_page.*
 import javax.inject.Inject
@@ -127,6 +122,10 @@ class GameDetailsPage : Fragment(), Injectable {
                                    gameDetailsDataList.add(pcRequirements)
                                }
 
+                               // ads footer
+                               val gameDetailsFooter = GameDetailsFooter(res.website, res.esrbRating.name)
+                               gameDetailsDataList.add(gameDetailsFooter)
+
                                this.gameDetailsItemAdapter?.setGameDetailsData(gameDetailsDataList)
 
                                res.ratingList?.let { ratingList ->
@@ -184,6 +183,7 @@ class GameDetailsPage : Fragment(), Injectable {
         videoIdOfYoutube?.let { videoId ->
             fragment_video_player_view_id.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
                 override fun onReady(youTubePlayer: YouTubePlayer) {
+                    fragment_video_player_view_id.enterFullScreen()
                    youTubePlayer.loadVideo(videoId, 0f)
                 }
             })
