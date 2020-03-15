@@ -21,9 +21,10 @@
         android:textColor="@color/gray_500"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/dividerGuideline"
+        android:layout_marginLeft="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/game_details_genres_title_view_id"
@@ -33,24 +34,32 @@
         android:textColor="@color/gray_500"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="8dp"
         app:layout_constraintStart_toStartOf="@+id/dividerGuideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/game_details_developer_recyclerview_id"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toStartOf="@+id/dividerGuideline"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/game_details_dev_title_view_id" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/game_details_genres_recycler_view_id"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/dividerGuideline"
         app:layout_constraintTop_toBottomOf="@+id/game_details_genres_title_view_id" />
 

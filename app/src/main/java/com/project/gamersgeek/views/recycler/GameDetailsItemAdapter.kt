@@ -129,9 +129,28 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
     }
 
     inner class DevAndGenresViewHolder(private val context: Context, private val view: View): BaseViewHolder<GameDevAndGenres>(view) {
+        private var devRecyclerView: RecyclerView?= null
+        private var genreRecyclerView: RecyclerView?= null
+        private var devListAdapter: DeveloperListAdapter?= null
+        private var genListAdapter: GenreListAdapter?= null
 
+        init {
+            this.devRecyclerView = this.view.findViewById(R.id.game_details_developer_recyclerview_id)
+            this.genreRecyclerView = this.view.findViewById(R.id.game_details_genres_recycler_view_id)
+            this.devRecyclerView?.layoutManager = LinearLayoutManager(this.context)
+            this.genreRecyclerView?.layoutManager = LinearLayoutManager(this.context)
+            this.devListAdapter = DeveloperListAdapter()
+            this.genListAdapter = GenreListAdapter()
+            this.devRecyclerView?.adapter = this.devListAdapter
+            this.genreRecyclerView?.adapter = this.genListAdapter
+        }
         override fun bindView(item: GameDevAndGenres) {
-
+            item.devList?.let {devList ->
+                this.devListAdapter?.setData(devList)
+            }
+            item.genresList?.let { genList ->
+                this.genListAdapter?.setData(genList)
+            }
         }
     }
 

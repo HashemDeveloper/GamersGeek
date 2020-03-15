@@ -22,4 +22,5 @@
     <string name="pc_requirements">PC Requirements</string>
     <string name="minimum">Minimum</string>
     <string name="recommended">Recommended</string>
+    <string name="developer_company_name">Developer Company Name</string>
 </resources>

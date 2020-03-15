@@ -6,4 +6,4 @@ import com.project.gamersgeek.models.games.GameGenre
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class GameDevAndGenres(val devList: List<Developer>, val genresList: List<GameGenre>): Parcelable
+data class GameDevAndGenres(val devList: List<Developer>?, val genresList: List<GameGenre>?): Parcelable
