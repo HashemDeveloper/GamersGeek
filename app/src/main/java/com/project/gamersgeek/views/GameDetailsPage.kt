@@ -60,8 +60,6 @@ class GameDetailsPage : Fragment(), Injectable {
     }
 
     private fun setupGameData() {
-//        description_view_id.textColor = ContextCompat.getColor(this.context!!, R.color.gray_500)
-//        description_view_id.setTextSize(32f)
         val gameData: Results? = gameDetails
         var gameTitle: String?= null
         var videoUrl: String? = null
@@ -88,9 +86,10 @@ class GameDetailsPage : Fragment(), Injectable {
                 val circularProgressDrawable = CircularProgressDrawable(this.context!!)
                 when (resultHandler.status) {
                    ResultHandler.Status.LOADING -> {
-//                       description_view_loading_bar_id.visibility = View.VISIBLE
+                       description_view_loading_bar_id.visibility = View.VISIBLE
                    }
                    ResultHandler.Status.SUCCESS -> {
+                       description_view_loading_bar_id.visibility = View.GONE
                        if (resultHandler.data is GamesRes) {
                            val gameRes: GamesRes? = resultHandler.data
                            val gameDetailsDataList: MutableList<Any> = arrayListOf()
@@ -98,8 +97,6 @@ class GameDetailsPage : Fragment(), Injectable {
                                val playTime = "Play Time ${res.playTime} hrs"
                                average_play_time_view_id.text = playTime
                                game_details_released_view_id.text = res.released
-//                               description_view_loading_bar_id.visibility = View.GONE
-//                               description_view_id.text = res.descriptionRaw
                                circularProgressDrawable.strokeWidth = 5f
                                circularProgressDrawable.centerRadius = 30f
                                circularProgressDrawable.setColorSchemeColors(Color.GRAY)
@@ -112,9 +109,6 @@ class GameDetailsPage : Fragment(), Injectable {
                                }
                                this.gameDetailsItemAdapter?.setGameDetailsData(gameDetailsDataList)
 
-//                               GlideApp.with(this).load(res.backgroundImageAdditional)
-//                                   .placeholder(circularProgressDrawable)
-//                                   .into(game_bg_view_1)
                                res.ratingList?.let { ratingList ->
                                    var exceptionalPercentile: Int?= null
                                    var recommendedPercentile: Int?= null
@@ -157,7 +151,7 @@ class GameDetailsPage : Fragment(), Injectable {
                        }
                    }
                    ResultHandler.Status.ERROR -> {
-//                       description_view_loading_bar_id.visibility = View.GONE
+                       description_view_loading_bar_id.visibility = View.GONE
                    }
                }
             }
