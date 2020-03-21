@@ -1,7 +1,9 @@
 package com.project.gamersgeek.views
 
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +34,7 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 
-class GameDetailsPage : Fragment(), Injectable {
+class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetailsClickListener {
     private val gameDetails by lazy {
         fromBundle(arguments!!).gameDetailsPage
     }
@@ -55,7 +57,7 @@ class GameDetailsPage : Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(fragment_video_player_view_id)
         game_details_information_recyclerview_id.layoutManager = LinearLayoutManager(this.context!!)
-        this.gameDetailsItemAdapter = GameDetailsItemAdapter()
+        this.gameDetailsItemAdapter = GameDetailsItemAdapter(this)
         game_details_information_recyclerview_id.adapter = this.gameDetailsItemAdapter
         setupGameData()
     }
@@ -120,6 +122,12 @@ class GameDetailsPage : Fragment(), Injectable {
                                gameData?.platformList?.let {platformList ->
                                    val pcRequirements = PcRequirements(platformList)
                                    gameDetailsDataList.add(pcRequirements)
+                               }
+
+                               // add where to buy
+                               gameData?.listOfStores?.let {storeList ->
+                                   val stores = GameDetailsStores(storeList)
+                                   gameDetailsDataList.add(stores)
                                }
 
                                // ads footer
@@ -205,6 +213,18 @@ class GameDetailsPage : Fragment(), Injectable {
             GlideApp.with(this)
                 .load(imageUri)
                 .into(fragment_video_game_bg_image_view_id)
+        }
+    }
+
+    override fun <T> onGameDetailsItemClicked(items: T) {
+        when (items) {
+            is String -> {
+                val storeUrl: String = items
+                if (storeUrl.isNotEmpty()) {
+                    val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse(storeUrl))
+                    startActivity(browseIntent)
+                }
+            }
         }
     }
 }
