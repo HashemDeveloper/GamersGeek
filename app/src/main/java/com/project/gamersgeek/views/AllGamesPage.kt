@@ -92,7 +92,6 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
     }
 
     override fun onPlatformIconClicked(platform: GenericPlatformDetails) {
-        // display a dialog/snackbar to navigate user to get the game on specific platform
         Timber.e("Platform: ${platform.name}")
     }
 }

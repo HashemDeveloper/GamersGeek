@@ -61,7 +61,7 @@
                     android:layout_height="16dp"
                     android:layout_gravity="end"
                     android:layout_margin="@dimen/padding_16dp"
-                    app:srcCompat="@drawable/expand_video"
+                    app:srcCompat="@drawable/more_icon"
                     />
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/all_game_items_playback_bt_id"

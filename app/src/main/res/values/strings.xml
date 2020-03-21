@@ -24,4 +24,6 @@
     <string name="recommended">Recommended</string>
     <string name="developer_company_name">Developer Company Name</string>
     <string name="website_link">Website Link</string>
+    <string name="where_to_buy">Where To Buy</string>
+    <string name="store_name">Store Name</string>
 </resources>

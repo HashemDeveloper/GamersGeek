@@ -2,6 +2,10 @@ package com.project.gamersgeek.views.recycler
 
 import android.content.Context
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +24,7 @@ import com.project.gamersgeek.views.recycler.items.*
 import uk.co.deanwild.flowtextview.FlowTextView
 
 
-class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
+class GameDetailsItemAdapter(private val gameDetailsClickListener: GameDetailsClickListener): RecyclerView.Adapter<BaseViewHolder<*>>() {
     private var data: MutableList<Any> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
@@ -41,6 +45,10 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
                val pcRequirementView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_pc_requirements_layout, parent, false)
                PcRequirementViewHolder(pcRequirementView)
            }
+           WHERE_TO_BUY -> {
+               val whereToBuyView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_where_to_buy_layout, parent, false)
+               WhereToBuyViewHolder(parent.context, whereToBuyView)
+           }
            FOOTER -> {
                val footerView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_footer_layout, parent, false)
                FooterViewHolder(footerView)
@@ -56,6 +64,7 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             is ScreenShotViewHolder -> holder.bindView(items as ScreenShots)
             is DevAndGenresViewHolder -> holder.bindView(items as GameDevAndGenres)
             is PcRequirementViewHolder -> holder.bindView(items as PcRequirements)
+            is WhereToBuyViewHolder -> holder.bindView(items as GameDetailsStores)
             is FooterViewHolder -> holder.bindView(items as GameDetailsFooter)
         }
     }
@@ -66,6 +75,7 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             is ScreenShots -> SCREEN_SHOTS
             is GameDevAndGenres -> DEVELOPERS_GENRES
             is PcRequirements -> PC_REQUIREMENTS
+            is GameDetailsStores -> WHERE_TO_BUY
             is GameDetailsFooter -> FOOTER
             else -> throw IllegalArgumentException("Invalid index position $position")
         }
@@ -189,6 +199,28 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         }
     }
 
+    fun storeClickListener() = object: StoreListAdapter.StoreListClickListener {
+        override fun onStoreClicked(url: String) {
+            gameDetailsClickListener.onGameDetailsItemClicked(url)
+        }
+    }
+
+    inner class WhereToBuyViewHolder(private val context: Context, private val view: View): BaseViewHolder<GameDetailsStores>(view) {
+        private var storeListRecyclerView: RecyclerView?= null
+        private var storeListAdapter: StoreListAdapter?= null
+
+        init {
+          this.storeListRecyclerView = this.view.findViewById(R.id.game_details_where_to_buy_recycler_view_id)
+          this.storeListRecyclerView?.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+          this.storeListAdapter = StoreListAdapter(storeClickListener())
+          this.storeListRecyclerView?.adapter = this.storeListAdapter
+        }
+
+        override fun bindView(item: GameDetailsStores) {
+            this.storeListAdapter?.setupStoreList(item.storeList)
+        }
+    }
+
     inner class FooterViewHolder(private val view: View): BaseViewHolder<GameDetailsFooter>(view) {
         private var websiteLinkView: AppCompatTextView?= null
         private var esrbRatingView: AppCompatImageView?= null
@@ -229,12 +261,16 @@ class GameDetailsItemAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         }
     }
 
+    interface GameDetailsClickListener {
+        fun <T> onGameDetailsItemClicked(items: T)
+    }
+
     companion object {
         private const val FLO_TEXT_VIEW = 0
         private const val SCREEN_SHOTS = 1
         private const val DEVELOPERS_GENRES = 2
         private const val PC_REQUIREMENTS = 3
-        private const val FOOTER = 4
+        private const val WHERE_TO_BUY = 4
+        private const val FOOTER = 5
     }
-
 }
