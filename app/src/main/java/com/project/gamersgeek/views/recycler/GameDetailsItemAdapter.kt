@@ -51,7 +51,14 @@ class GameDetailsItemAdapter(private val gameDetailsClickListener: GameDetailsCl
            }
            FOOTER -> {
                val footerView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_footer_layout, parent, false)
-               FooterViewHolder(footerView)
+               val footerViewHolder = FooterViewHolder(footerView)
+               footerViewHolder.getSaveGameBt()?.let { bt ->
+                   bt.setOnClickListener {
+                       val gameDetailsFooter: GameDetailsFooter = footerViewHolder.itemView.tag as GameDetailsFooter
+                       this.gameDetailsClickListener.onGameDetailsItemClicked(gameDetailsFooter)
+                   }
+               }
+               footerViewHolder
            }
            else -> throw IllegalArgumentException("Unsupported view")
        }
@@ -232,6 +239,7 @@ class GameDetailsItemAdapter(private val gameDetailsClickListener: GameDetailsCl
             this.saveGameBt = this.view.findViewById(R.id.game_details_footer_save_game_bt_id)
         }
         override fun bindView(item: GameDetailsFooter) {
+           this.itemView.tag = item
            this.websiteLinkView?.let { v ->
                item.websiteUrl?.let {url ->
                    v.text = url
@@ -258,6 +266,10 @@ class GameDetailsItemAdapter(private val gameDetailsClickListener: GameDetailsCl
                     }
                 }
             }
+        }
+
+        fun getSaveGameBt(): AppCompatImageView? {
+            return this.saveGameBt
         }
     }
 

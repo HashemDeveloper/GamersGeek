@@ -69,7 +69,7 @@ class StoreListAdapter(private val storeListClickListener: StoreListClickListene
                     setupIcons(R.drawable.nintendo_icon, storeName, true)
                 }
                 "google-play" -> {
-                    setupIcons(R.drawable.google_playstore_icon, storeName, true)
+                    setupIcons(R.drawable.google_playstore_icon_white, storeName, true)
                 }
                 "xbox360" -> {
                     setupIcons(R.drawable.xbox_icon, storeName, true)
@@ -78,7 +78,7 @@ class StoreListAdapter(private val storeListClickListener: StoreListClickListene
                     setupIcons(R.drawable.gog_store_icon, storeName, true)
                 }
                 "apple-appstore" -> {
-                    setupIcons(R.drawable.apple_store, storeName, true)
+                    setupIcons(R.drawable.apple_store_white_icon, storeName, true)
                 } else -> {
                     setupIcons(0, "", false)
             }
@@ -99,9 +99,6 @@ class StoreListAdapter(private val storeListClickListener: StoreListClickListene
 
         fun getStoreImageView(): AppCompatImageView? {
             return this.storeImageView
-        }
-        fun getStoreNameView(): AppCompatTextView? {
-            return this.storeNameView
         }
     }
 

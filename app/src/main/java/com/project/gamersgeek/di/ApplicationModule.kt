@@ -60,6 +60,16 @@ class ApplicationModule {
     fun provideGameResultDb(dbService: GamerGeeksLocalDbService) : IGameResultDao {
         return dbService.getGameResultDao()
     }
+    @Singleton
+    @Provides
+    fun provideSavedGameDb(dbService: GamerGeeksLocalDbService): ISavedGamesDao {
+        return dbService.getSavedGameDao()
+    }
+    @Singleton
+    @Provides
+    fun provideLocalDbRepo(saveGameRepo: SaveGameRepo): ISaveGameRepo {
+        return saveGameRepo
+    }
     //local db end
     @Singleton
     @Provides
