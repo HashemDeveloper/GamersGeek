@@ -26,4 +26,5 @@
     <string name="website_link">Website Link</string>
     <string name="where_to_buy">Where To Buy</string>
     <string name="store_name">Store Name</string>
+    <string name="game_saved">Saved Successfully</string>
 </resources>
