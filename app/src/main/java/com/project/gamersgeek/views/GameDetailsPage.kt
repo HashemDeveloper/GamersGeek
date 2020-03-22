@@ -1,6 +1,7 @@
 package com.project.gamersgeek.views
 
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -41,6 +42,7 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
     private val gameDetails by lazy {
         fromBundle(arguments!!).gameDetailsPage
     }
+    var alertDialog: AlertDialog?= null
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val gameDetailsViewModel: GameDetailsPageViewModel by activityViewModels {
@@ -140,7 +142,8 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
                                }
 
                                val gameDetailsFooter = GameDetailsFooter(
-                                   res.id, res.website, esrbRatingName,
+                                   res.id, res.name,
+                                   res.website, esrbRatingName,
                                    gameData?.listOfStores, res.backgroundImage,
                                    res.backgroundImageAdditional)
 
@@ -240,14 +243,42 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
         }
     }
     private fun storeGames(gameDetailsFooter: GameDetailsFooter) {
+        promptChoice(gameDetailsFooter)
+    }
+    private fun promptChoice(gameDetailsFooter: GameDetailsFooter) {
         val timestampFormat: DateFormat =
             SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
         val gc: GregorianCalendar =
             GregorianCalendar.getInstance() as GregorianCalendar
         gc.timeInMillis = System.currentTimeMillis()
         val date: String = timestampFormat.format(gc.time)
-        val savedGame = SaveGames(gameDetailsFooter.id, date,
-            gameDetailsFooter.storeList, gameDetailsFooter.backgroundImage1, gameDetailsFooter.backgroundImage2)
-        this.gameDetailsViewModel.storeGames(savedGame)
+        var saveGames: SaveGames?
+        var isPlayed = false
+        val choices: Array<CharSequence> = arrayOf("I've played this game.", "I wish to play.")
+        val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(this.context)
+        alertBuilder.setTitle(gameDetailsFooter.name)
+        alertBuilder.setSingleChoiceItems(choices, -1) { dialog, item ->
+            when (item) {
+                0 -> {
+                    isPlayed = true
+                }
+                1 -> {
+                    isPlayed = false
+                }
+            }
+            saveGames = SaveGames(gameDetailsFooter.id, date, isPlayed,
+                gameDetailsFooter.storeList, gameDetailsFooter.backgroundImage1, gameDetailsFooter.backgroundImage2)
+            saveGames?.let {
+                this.gameDetailsViewModel.storeGames(it)
+            }
+            dialog.dismiss()
+        }
+        alertDialog = alertBuilder.create()
+        alertBuilder.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.alertDialog?.dismiss()
     }
 }

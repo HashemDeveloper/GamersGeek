@@ -7,6 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class GameDetailsFooter(
     val id: Int,
+    val name: String?,
     val websiteUrl: String?,
     val esrbRating: String?,
     val storeList: List<Store>?,
