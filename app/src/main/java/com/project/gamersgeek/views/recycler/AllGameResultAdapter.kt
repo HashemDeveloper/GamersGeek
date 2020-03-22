@@ -106,6 +106,7 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
         private var expandVideoBt: AppCompatImageView?= null
         private var videoImageView: AAH_VideoImage?= null
         private var fadeInFadeOutAnim: Animation?= null
+        private var fadeOutFadeInAnim: Animation?= null
         var isMute: Boolean?= false
         private var iconAdapter: PlatformIconAdapter?= null
 
@@ -132,7 +133,7 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
                 videoUrl = it.clip
                 GlideApp.with(this.view).load(it.preview)
                     .placeholder(circularProgressDrawable)
-                    .into(aaH_ImageView)
+                    .into(this.videoImageView?.imageView!!)
             }
             this.gameNameView?.let {nameView ->
                data.name.let {
@@ -169,9 +170,12 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
             super.pauseVideo()
             this.playBackBt?.visibility = View.VISIBLE
             this.expandVideoBt?.visibility = View.VISIBLE
+            this.volumeBt?.visibility = View.GONE
             this.fadeInFadeOutAnim = AnimationUtils.loadAnimation(this.context, R.anim.anim_fade_in)
+            this.fadeOutFadeInAnim = AnimationUtils.loadAnimation(this.context, R.anim.anim_fade_out)
             this.playBackBt?.animation = fadeInFadeOutAnim
             this.expandVideoBt?.animation = fadeInFadeOutAnim
+            this.volumeBt?.animation = fadeOutFadeInAnim
             this.playBackBt?.setImageResource(R.drawable.playicon)
         }
 
@@ -179,9 +183,12 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
             super.videoStarted()
             this.playBackBt?.visibility = View.GONE
             this.expandVideoBt?.visibility = View.GONE
+            this.volumeBt?.visibility = View.VISIBLE
             this.fadeInFadeOutAnim = AnimationUtils.loadAnimation(this.context, R.anim.anim_fade_out)
+            this.fadeOutFadeInAnim = AnimationUtils.loadAnimation(this.context, R.anim.anim_fade_in)
             this.playBackBt?.animation = fadeInFadeOutAnim
             this.expandVideoBt?.animation = fadeInFadeOutAnim
+            this.volumeBt?.animation = fadeOutFadeInAnim
         }
 
         fun getVolumeBt(): AppCompatImageView? {
