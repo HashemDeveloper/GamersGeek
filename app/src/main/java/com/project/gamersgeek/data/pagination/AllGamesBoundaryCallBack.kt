@@ -45,7 +45,7 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
             override fun run(requestCallback: Request.Callback) {
                 launch {
                     fetchAndSaveData(call = {
-                        gamerIRawgGameDbApi.fetchAllGames(1, PAGE_SIZE)
+                        gamerIRawgGameDbApi.fetchAllGames(2, PAGE_SIZE)
                     }, onSuccess = {
                         saveData(it.results, requestCallback)
                     }, onError = {
@@ -104,7 +104,7 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
         get() = this.job + Dispatchers.IO
 
     companion object {
-        private const val PAGE_SIZE = 30
+        private const val PAGE_SIZE = 100
         @JvmStatic private val TAG: String = AllGamesBoundaryCallBack::class.java.canonicalName!!
     }
 }

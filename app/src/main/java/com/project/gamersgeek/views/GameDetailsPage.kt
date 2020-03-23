@@ -79,7 +79,7 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
             gameTitle = result.name
             gameImage = result.backgroundImage
             result.videoClip.let {videoClip ->
-                videoIdOfYoutube = videoClip.video
+                videoIdOfYoutube = videoClip?.video
             }
             // adds screen shots
             result.shortScreenShotList?.let {

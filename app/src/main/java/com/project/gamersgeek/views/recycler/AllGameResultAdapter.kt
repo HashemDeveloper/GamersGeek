@@ -129,9 +129,9 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
             circularProgressDrawable.centerRadius = 30f
             circularProgressDrawable.start()
             data.videoClip.let {
-                imageUrl = it.preview
-                videoUrl = it.clip
-                GlideApp.with(this.view).load(it.preview)
+                imageUrl = it?.preview
+                videoUrl = it?.clip
+                GlideApp.with(this.view).load(it?.preview)
                     .placeholder(circularProgressDrawable)
                     .into(this.videoImageView?.imageView!!)
             }
