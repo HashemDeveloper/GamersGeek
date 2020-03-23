@@ -56,7 +56,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
     }
 
     private fun processAllGameListData(pageSize: Int): PagingDataListDispatcher<Results> {
-        val allGameDataSource: DataSource.Factory<Int, Results> = this.iGameResultDao.getAllGames()
+        val allGameDataSource: DataSource.Factory<Int, Results> = this.iGameResultDao.getAllGameResultForDatasource()
         val allGamesBoundaryCallBack = AllGamesBoundaryCallBack(this.iGameResultDao, this.iRawgGameDbApi)
         val fetchExecutor: Executor = ArchTaskExecutor.getIOThreadExecutor()
         val livePagedList: LiveData<PagedList<Results>> = LivePagedListBuilder(allGameDataSource, pageListConfig(pageSize))

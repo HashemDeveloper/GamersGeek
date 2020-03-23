@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.arlib.floatingsearchview.FloatingSearchView
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
@@ -48,6 +49,7 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupVideoRecyclerView()
+        setupSearchFun()
     }
 
     override fun onResume() {
@@ -70,6 +72,17 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
                 allGameAdapter.submitList(it)
             }
         })
+    }
+
+    private fun setupSearchFun() {
+        all_game_search_view_id.setOnQueryChangeListener { oldQuery, newQuery ->
+            if (oldQuery.isNotEmpty() && newQuery.isEmpty()) {
+                all_game_search_view_id.clearSuggestions()
+            } else {
+                this.allGamesPageViewModel.findSuggestions(newQuery, all_game_search_view_id)
+
+            }
+        }
     }
 
     private fun setupDrawer() {
