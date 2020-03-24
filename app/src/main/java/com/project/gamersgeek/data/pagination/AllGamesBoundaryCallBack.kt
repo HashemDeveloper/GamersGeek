@@ -45,7 +45,7 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
             override fun run(requestCallback: Request.Callback) {
                 launch {
                     fetchAndSaveData(call = {
-                        gamerIRawgGameDbApi.fetchAllGames(2, PAGE_SIZE)
+                        gamerIRawgGameDbApi.fetchAllGames(1, PAGE_SIZE)
                     }, onSuccess = {
                         saveData(it.results, requestCallback)
                     }, onError = {

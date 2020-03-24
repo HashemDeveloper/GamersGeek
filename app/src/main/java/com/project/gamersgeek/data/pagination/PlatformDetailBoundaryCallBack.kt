@@ -59,7 +59,7 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
         networkState.value = NetworkState.LOADING
         launch {
             fetchAndSaveData(call = {
-                rawgGameDbApi.getAllListOfVideoGamePlatform(1, PAGE_SIZE, "id")
+                rawgGameDbApi.getAllListOfVideoGamePlatform(2, PAGE_SIZE, "id")
             }, onSuccess = {
                 deleteAndSaveData(it.listOfResult)
                 networkState.postValue(NetworkState.LOADED)

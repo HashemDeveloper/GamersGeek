@@ -1,5 +1,6 @@
 package com.project.gamersgeek.data
 
+import android.annotation.SuppressLint
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +17,8 @@ import com.project.gamersgeek.data.remote.IRawgGameDbApi
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.utils.paging.NetworkState
+import com.project.gamersgeek.utils.search.GameResultWrapper
+import com.project.gamersgeek.utils.search.SearchHelper
 import java.lang.IllegalArgumentException
 import java.util.concurrent.Executor
 import javax.inject.Inject
@@ -32,6 +35,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
        return getPlatformDetailsFromLocalDb(pageSize)
     }
 
+    @SuppressLint("RestrictedApi")
     private fun getPlatformDetailsFromLocalDb(pageSize: Int): PagingDataListDispatcher<PlatformDetails> {
         val dataSourceFactory: DataSource.Factory<Int, PlatformDetails> = this.iPlatformDetailsDao.getAllPlatformDetails()
         val platformDetailBoundaryCallBack = PlatformDetailBoundaryCallBack(this.iPlatformDetailsDao, this.iRawgGameDbApi)
@@ -55,6 +59,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
         return processAllGameListData(pageSize)
     }
 
+    @SuppressLint("RestrictedApi")
     private fun processAllGameListData(pageSize: Int): PagingDataListDispatcher<Results> {
         val allGameDataSource: DataSource.Factory<Int, Results> = this.iGameResultDao.getAllGameResultForDatasource()
         val allGamesBoundaryCallBack = AllGamesBoundaryCallBack(this.iGameResultDao, this.iRawgGameDbApi)
@@ -92,11 +97,30 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
             retry = {
                 boundaryCallBack.paginHelper.isAllRetryFailed()
             },
+            search = {
+                onSearch(it)
+            },
             refresh = {
                 triggerRefresh.value = null
             },
             refreshState = refreshState
         )
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun onSearch(it: SearchHelper): LiveData<PagedList<Results>> {
+        val selectGameDataSource: DataSource.Factory<Int, Results> = when (it.searchByType) {
+            GameResultWrapper.SearchByType.NAME -> {
+                this.iGameResultDao.getGamesByName(it.searchBod)
+            }
+            GameResultWrapper.SearchByType.PLATFORM -> {
+                this.iGameResultDao.getGamesByName(it.searchBod)
+            }
+        }
+        val fetchExecutor: Executor = ArchTaskExecutor.getIOThreadExecutor()
+        return LivePagedListBuilder(selectGameDataSource, pageListConfig(30))
+            .setFetchExecutor(fetchExecutor)
+            .build()
     }
 
     private fun <S> setupPlatformDetailsPagingDispatcher(
@@ -112,6 +136,9 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
             networkState = boundaryCallBack.netWorkState,
             retry = {
                 boundaryCallBack.helper.isAllRetryFailed()
+            },
+            search = {
+                onSearch(it)
             },
             refresh = {
                 triggerRefresh.value = null

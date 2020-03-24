@@ -1,7 +1,9 @@
 package com.project.gamersgeek.utils.search
 
-import android.content.Context
 import android.widget.Filter
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
 import com.project.gamersgeek.data.local.IGameResultRepo
 import com.project.gamersgeek.models.games.Results
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +26,7 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
                     getSuggestionList()?.let { list ->
                         for (gameResult: Results in list) {
                             if (gameResult.name.startsWith(constraint.toString(), true)) {
-                                val resultWrapper = GameResultWrapper(gameResult.name, false)
+                                val resultWrapper = GameResultWrapper(gameResult.name, false, GameResultWrapper.SearchByType.NAME)
                                 suggestionList.add(resultWrapper)
                                 if (limit != -1 && suggestionList.size == limit) {
                                     break

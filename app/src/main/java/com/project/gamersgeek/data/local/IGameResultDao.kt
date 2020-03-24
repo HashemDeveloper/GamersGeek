@@ -12,6 +12,8 @@ interface IGameResultDao {
     suspend fun clearAllGameResults()
     @Query("select * from game_results")
     fun getAllGameResultForDatasource() : DataSource.Factory<Int, Results>
+    @Transaction @Query("select * from game_results where name =:name")
+    fun getGamesByName(name: String): DataSource.Factory<Int, Results>
     @Transaction @Query("select * from game_results order by id")
     suspend fun getGameResult(): Results
     @Transaction @Query("select * from game_results")
