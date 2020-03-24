@@ -13,6 +13,8 @@ import com.project.gamersgeek.utils.networkconnections.ConnectionStateMonitor
 import com.project.gamersgeek.utils.networkconnections.IConnectionStateMonitor
 import com.project.gamersgeek.utils.networkconnections.IUpdateNetLowApiHelper
 import com.project.gamersgeek.utils.networkconnections.UpdateNetLowApiHelper
+import com.project.gamersgeek.utils.search.GamersGeekSearchSuggestion
+import com.project.gamersgeek.utils.search.IGamersGeekSearchSuggestion
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -80,5 +82,15 @@ class ApplicationModule {
     @Provides
     fun provideLowApiNetChangeHelper(updateNetLowApiHelper: UpdateNetLowApiHelper): IUpdateNetLowApiHelper {
         return updateNetLowApiHelper
+    }
+    @Singleton
+    @Provides
+    fun provideSearchSuggestion(gamersGeekSearchSuggestion: GamersGeekSearchSuggestion): IGamersGeekSearchSuggestion {
+        return gamersGeekSearchSuggestion
+    }
+    @Singleton
+    @Provides
+    fun provideGameResultRepo(gameResultRepo: GameResultRepo): IGameResultRepo {
+        return gameResultRepo
     }
 }

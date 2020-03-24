@@ -104,7 +104,7 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
         get() = this.job + Dispatchers.IO
 
     companion object {
-        private const val PAGE_SIZE = 30
+        private const val PAGE_SIZE = 100
         @JvmStatic private val TAG: String = AllGamesBoundaryCallBack::class.java.canonicalName!!
     }
 }

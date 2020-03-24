@@ -1,17 +1,29 @@
 package com.project.gamersgeek.viewmodels
 
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.arlib.floatingsearchview.FloatingSearchView
+import com.project.gamersgeek.data.GamerGeekRepository
 import com.project.gamersgeek.data.IGamerGeekRepository
 import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.events.HamburgerEvent
-import com.project.gamersgeek.utils.Constants
-import com.project.gamersgeek.views.AllGamesPage
+import com.project.gamersgeek.models.games.Results
+import com.project.gamersgeek.utils.search.GameResultWrapper
+import com.project.gamersgeek.utils.search.GamersGeekSearchSuggestion
+import com.project.gamersgeek.utils.search.IGamersGeekSearchSuggestion
+import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.neardoc.rxeventbus.IRxEventBus
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
+
 
 class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     @Inject
@@ -20,6 +32,10 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     lateinit var iRxEventBus: IRxEventBus
     @Inject
     lateinit var iGamerGeekRepository: IGamerGeekRepository
+    @Inject
+    lateinit var searchSuggestion: IGamersGeekSearchSuggestion
+    val textFilterLiveData: MutableLiveData<SearchHelper> = MutableLiveData()
+    private var resultLiveData: LiveData<PagedList<Results>>?= null
     private val job = Job()
     private val gameResultList by lazy {
         this.iGamerGeekRepository.getAllGamesPagedData(50)
@@ -53,6 +69,28 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
 
     fun unRegisterSharedPrefListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
         this.iSharedPrefService.unregisterOnSharedPrefListener(listener)
+    }
+
+    fun findSuggestions(query: String, searchView: FloatingSearchView?) {
+        searchView?.showProgress()
+        this.searchSuggestion.findSuggestions(query, 5, object : GamersGeekSearchSuggestion.SearchSuggestionListener{
+            override fun onSearchResult(results: List<GameResultWrapper>) {
+                searchView?.swapSuggestions(results)
+                searchView?.hideProgress()
+            }
+        })
+    }
+
+    fun onSearch(searchHelper: SearchHelper) {
+        this.textFilterLiveData.value = searchHelper
+        this.resultLiveData = this.gameResultLiveData
+        resultLiveData = Transformations.switchMap(this.textFilterLiveData) {input ->
+            this.gameResultList.search(input)
+        }
+    }
+
+    fun getResultLiveData(): LiveData<PagedList<Results>>? {
+        return this.resultLiveData
     }
 
     override val coroutineContext: CoroutineContext

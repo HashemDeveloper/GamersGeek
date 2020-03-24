@@ -7,16 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.arlib.floatingsearchview.FloatingSearchView
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.GenericPlatformDetails
+import com.project.gamersgeek.utils.search.GameResultWrapper
+import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
 import com.project.gamersgeek.views.recycler.AllGameResultAdapter
 import com.project.gamersgeek.views.recycler.PlatformIconAdapter
@@ -65,9 +72,48 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
         all_game_recycler_view_id.adapter = allGameAdapter
         all_game_recycler_view_id.smoothScrollBy(0, 1)
         all_game_recycler_view_id.smoothScrollBy(0, -1)
+        this.allGamesPageViewModel.textFilterLiveData.value = null
         this.allGamesPageViewModel.gameResultLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null && it.size != 0) {
                 allGameAdapter.submitList(it)
+            }
+        })
+        setupSearchFun(allGameAdapter)
+    }
+
+    private fun setupSearchFun(allGameAdapter: AllGameResultAdapter) {
+        all_game_search_view_id.setOnQueryChangeListener { oldQuery, newQuery ->
+            if (oldQuery.isNotEmpty() && newQuery.isEmpty()) {
+                all_game_search_view_id.clearSuggestions()
+            } else {
+                this.allGamesPageViewModel.findSuggestions(newQuery, all_game_search_view_id)
+            }
+        }
+
+        all_game_search_view_id.setOnSearchListener(object : FloatingSearchView.OnSearchListener{
+            override fun onSearchAction(currentQuery: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
+               val wrapper: GameResultWrapper = searchSuggestion as GameResultWrapper
+               val searchHelper: SearchHelper
+                searchHelper = when (wrapper.searchType) {
+                    GameResultWrapper.SearchByType.NAME -> {
+                        SearchHelper(wrapper.searchBody, GameResultWrapper.SearchByType.NAME)
+                    }
+                    GameResultWrapper.SearchByType.PLATFORM -> {
+                        SearchHelper(wrapper.searchBody, GameResultWrapper.SearchByType.PLATFORM)
+                    }
+                }
+                this@AllGamesPage.allGamesPageViewModel.onSearch(searchHelper)
+                this@AllGamesPage.allGamesPageViewModel.getResultLiveData()?.let {liveData->
+                    liveData.observe(viewLifecycleOwner, Observer {
+                        if (it != null && it.size != 0) {
+                            allGameAdapter.submitList(it)
+                        }
+                    })
+                }
             }
         })
     }

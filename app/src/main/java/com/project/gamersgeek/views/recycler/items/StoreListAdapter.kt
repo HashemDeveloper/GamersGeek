@@ -10,15 +10,17 @@ import com.project.gamersgeek.R
 import com.project.gamersgeek.models.games.Store
 import com.project.gamersgeek.views.recycler.BaseViewHolder
 
-class StoreListAdapter(private val storeListClickListener: StoreListClickListener): RecyclerView.Adapter<BaseViewHolder<*>>() {
+class StoreListAdapter(private val storeListClickListener: StoreListClickListener) :
+    RecyclerView.Adapter<BaseViewHolder<*>>() {
     private val storeList: MutableList<Store> = arrayListOf()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_where_to_buy_items_layout, parent, false)
+        val view: View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.game_details_where_to_buy_items_layout, parent, false)
         val storeListViewHolder = StoreListViewHolder(view)
-        storeListViewHolder.getStoreImageView()?.let {imageView ->
-            imageView.setOnClickListener {click ->
+        storeListViewHolder.getStoreImageView()?.let { imageView ->
+            imageView.setOnClickListener { click ->
                 val store: Store = storeListViewHolder.itemView.tag as Store
                 val url: String = store.englishUrl
                 this.storeListClickListener.onStoreClicked(url)
@@ -28,7 +30,7 @@ class StoreListAdapter(private val storeListClickListener: StoreListClickListene
     }
 
     override fun getItemCount(): Int {
-       return this.storeList.size
+        return this.storeList.size
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
@@ -41,13 +43,15 @@ class StoreListAdapter(private val storeListClickListener: StoreListClickListene
         notifyDataSetChanged()
     }
 
-    inner class StoreListViewHolder(private val view: View): BaseViewHolder<Store>(view) {
-        private var storeImageView: AppCompatImageView?= null
-        private var storeNameView: AppCompatTextView?= null
+    inner class StoreListViewHolder(private val view: View) : BaseViewHolder<Store>(view) {
+        private var storeImageView: AppCompatImageView? = null
+        private var storeNameView: AppCompatTextView? = null
+
         init {
             this.storeImageView = this.view.findViewById(R.id.where_to_buy_store_icon_view_id)
             this.storeNameView = this.view.findViewById(R.id.where_to_buy_store_name_view_id)
         }
+
         override fun bindView(item: Store) {
             this.itemView.tag = item
             val storeName: String = item.storeList.name
@@ -79,9 +83,10 @@ class StoreListAdapter(private val storeListClickListener: StoreListClickListene
                 }
                 "apple-appstore" -> {
                     setupIcons(R.drawable.apple_store_white_icon, storeName, true)
-                } else -> {
+                }
+                else -> {
                     setupIcons(0, "", false)
-            }
+                }
             }
         }
 
