@@ -5,10 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.arlib.floatingsearchview.FloatingSearchView
-import com.project.gamersgeek.data.GamerGeekRepository
 import com.project.gamersgeek.data.IGamerGeekRepository
 import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.events.HamburgerEvent
@@ -21,6 +19,9 @@ import com.project.neardoc.rxeventbus.IRxEventBus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -34,6 +35,7 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     lateinit var iGamerGeekRepository: IGamerGeekRepository
     @Inject
     lateinit var searchSuggestion: IGamersGeekSearchSuggestion
+
     val textFilterLiveData: MutableLiveData<SearchHelper> = MutableLiveData()
     private var resultLiveData: LiveData<PagedList<Results>>?= null
     private val job = Job()
@@ -87,10 +89,29 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
         resultLiveData = Transformations.switchMap(this.textFilterLiveData) {input ->
             this.gameResultList.search(input)
         }
+        saveSearchResult(searchHelper)
+    }
+
+    private fun saveSearchResult(searchHelper: SearchHelper) {
+        val timestampFormat: DateFormat =
+            SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
+        val gc: GregorianCalendar =
+            GregorianCalendar.getInstance() as GregorianCalendar
+        gc.timeInMillis = System.currentTimeMillis()
+        val date: String = timestampFormat.format(gc.time)
+        val suggestionHistory = GameResultWrapper(0, searchHelper.searchBody, true, date)
+        this.searchSuggestion.saveSuggestion(suggestionHistory)
     }
 
     fun getResultLiveData(): LiveData<PagedList<Results>>? {
         return this.resultLiveData
+    }
+
+    fun setupSearchHistory(allGameSearchViewId: FloatingSearchView?) {
+        val suggestionHistories: List<GameResultWrapper>? = this.searchSuggestion.getHistory()
+        suggestionHistories?.let { historyList ->
+            allGameSearchViewId?.swapSuggestions(historyList)
+        }
     }
 
     override val coroutineContext: CoroutineContext

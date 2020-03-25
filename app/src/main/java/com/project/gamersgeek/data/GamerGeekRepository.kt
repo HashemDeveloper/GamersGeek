@@ -111,10 +111,10 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
     private fun onSearch(it: SearchHelper): LiveData<PagedList<Results>> {
         val selectGameDataSource: DataSource.Factory<Int, Results> = when (it.searchByType) {
             GameResultWrapper.SearchByType.NAME -> {
-                this.iGameResultDao.getGamesByName(it.searchBod)
+                this.iGameResultDao.getGamesByName(it.searchBody)
             }
             GameResultWrapper.SearchByType.PLATFORM -> {
-                this.iGameResultDao.getGamesByName(it.searchBod)
+                this.iGameResultDao.getGamesByName(it.searchBody)
             }
         }
         val fetchExecutor: Executor = ArchTaskExecutor.getIOThreadExecutor()
