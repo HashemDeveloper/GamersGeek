@@ -3,12 +3,13 @@ package com.project.gamersgeek.utils.search
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.project.gamersgeek.models.games.Results
 import kotlinx.android.parcel.Parcelize
 
-@Entity(tableName = "suggestion_history")
+@Entity(tableName = "suggestion_history", indices = [Index(value = ["suggestion"], unique = true)])
 @Parcelize
 data class GameResultWrapper(
     @PrimaryKey(autoGenerate = true)
