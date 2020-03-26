@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.project.gamersgeek.models.games.Results
 import kotlinx.android.parcel.Parcelize
+import org.threeten.bp.OffsetDateTime
 
 @Entity(tableName = "suggestion_history", indices = [Index(value = ["suggestion"], unique = true)])
 @Parcelize
@@ -20,7 +21,7 @@ data class GameResultWrapper(
     @ColumnInfo(name = "is_history")
     var isHistory: Boolean,
     @ColumnInfo(name = "date")
-    var date: String
+    var date: OffsetDateTime?
 ): Parcelable, SearchSuggestion {
     override fun getBody(): String {
         return this.searchBody

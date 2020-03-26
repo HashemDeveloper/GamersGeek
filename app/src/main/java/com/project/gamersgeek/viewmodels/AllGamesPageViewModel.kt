@@ -11,6 +11,7 @@ import com.project.gamersgeek.data.IGamerGeekRepository
 import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.models.games.Results
+import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.search.GameResultWrapper
 import com.project.gamersgeek.utils.search.GamersGeekSearchSuggestion
 import com.project.gamersgeek.utils.search.IGamersGeekSearchSuggestion
@@ -19,6 +20,7 @@ import com.project.neardoc.rxeventbus.IRxEventBus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import org.threeten.bp.OffsetDateTime
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -93,12 +95,7 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     }
 
     private fun saveSearchResult(searchHelper: SearchHelper) {
-        val timestampFormat: DateFormat =
-            SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
-        val gc: GregorianCalendar =
-            GregorianCalendar.getInstance() as GregorianCalendar
-        gc.timeInMillis = System.currentTimeMillis()
-        val date: String = timestampFormat.format(gc.time)
+        val date: OffsetDateTime = Constants.getCurrentTime()
         val suggestionHistory = GameResultWrapper(0, searchHelper.searchBody, true, date)
         this.searchSuggestion.saveSuggestion(suggestionHistory)
     }

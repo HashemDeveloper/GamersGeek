@@ -22,6 +22,7 @@ import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.games.SaveGames
+import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.utils.RatingType
 import com.project.gamersgeek.utils.ResultHandler
@@ -31,6 +32,7 @@ import com.project.gamersgeek.views.recycler.GameDetailsItemAdapter
 import com.project.gamersgeek.views.recycler.items.*
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_game_details_page.*
+import org.threeten.bp.OffsetDateTime
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -246,12 +248,6 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
         promptChoice(gameDetailsFooter)
     }
     private fun promptChoice(gameDetailsFooter: GameDetailsFooter) {
-        val timestampFormat: DateFormat =
-            SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
-        val gc: GregorianCalendar =
-            GregorianCalendar.getInstance() as GregorianCalendar
-        gc.timeInMillis = System.currentTimeMillis()
-        val date: String = timestampFormat.format(gc.time)
         var saveGames: SaveGames?
         var isPlayed = false
         val choices: Array<CharSequence> = arrayOf("I've played this game.", "I wish to play.")
@@ -266,6 +262,7 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
                     isPlayed = false
                 }
             }
+            val date: OffsetDateTime = Constants.getCurrentTime()
             saveGames = SaveGames(gameDetailsFooter.id, date, isPlayed,
                 gameDetailsFooter.storeList, gameDetailsFooter.backgroundImage1, gameDetailsFooter.backgroundImage2)
             saveGames?.let {

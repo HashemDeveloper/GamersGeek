@@ -7,7 +7,7 @@ import com.project.gamersgeek.utils.search.GameResultWrapper
 interface ISuggestionsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(searchResult: GameResultWrapper): Long
-    @Transaction @Query("select * from suggestion_history order by date limit 5")
+    @Transaction @Query("select * from suggestion_history order by date desc limit 5")
     suspend fun getSuggestions(): List<GameResultWrapper>
     @Transaction @Query("delete from suggestion_history")
     suspend fun deleteSuggestions(): Int

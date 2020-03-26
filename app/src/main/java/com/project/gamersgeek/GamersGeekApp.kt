@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
 import com.facebook.stetho.Stetho
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.project.gamersgeek.di.ApplicationInjector
 import com.project.gamersgeek.utils.theme.ThemeHelper
 import dagger.android.AndroidInjector
@@ -25,6 +26,7 @@ class GamersGeekApp: Application(), HasAndroidInjector {
         }
         ApplicationInjector.init(this)
         ThemeHelper.applyTheme(ThemeHelper.DEFAULT_MODE)
+        AndroidThreeTen.init(this)
     }
 
     override fun attachBaseContext(base: Context?) {

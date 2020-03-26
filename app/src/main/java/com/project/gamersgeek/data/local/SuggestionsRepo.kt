@@ -100,8 +100,12 @@ class SuggestionsRepo @Inject constructor(): ISuggestionRepo, CoroutineScope {
         val searchHistory: List<GameResultWrapper>? = getSearchHistory()
         searchHistory?.let { history ->
             if (history.size > 5) {
-                val oldHistory: List<GameResultWrapper>? = history.filter {old ->
-                    old.date.toLong() < System.currentTimeMillis() - expireTime
+                val oldHistory: List<GameResultWrapper>? = history.filter {h ->
+                    var time: Long = 0
+                    h.date?.let {
+                        time = it.toEpochSecond()
+                    }
+                    time < System.currentTimeMillis() - expireTime
                 }
                 val value: Int = iSuggestionsDao.deleteOldHistory(oldHistory)
                 emit(value)
