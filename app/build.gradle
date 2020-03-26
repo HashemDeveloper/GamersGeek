@@ -167,4 +167,6 @@ dependencies {
     implementation "com.github.deano2390:FlowTextView:$flowableTextView"
     // you tube player
     implementation "com.pierfrancescosoffritti.androidyoutubeplayer:core:$youtubePlayerVersion"
+    //threeten
+    implementation "com.jakewharton.threetenabp:threetenabp:$threeTenAbpVersion"
 }

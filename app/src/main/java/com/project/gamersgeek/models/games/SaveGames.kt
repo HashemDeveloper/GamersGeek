@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
+import org.threeten.bp.OffsetDateTime
 
 @Entity(tableName = "saved_games")
 @Parcelize
@@ -13,7 +14,7 @@ data class SaveGames(
     @ColumnInfo(name = "id")
     var gameId: Int,
     @ColumnInfo(name = "date")
-    var date: String,
+    var date: OffsetDateTime,
     @ColumnInfo(name = "played")
     var isPlayed: Boolean,
     @ColumnInfo(name = "store_list")

@@ -69,6 +69,11 @@ class ApplicationModule {
     }
     @Singleton
     @Provides
+    fun provideSuggestionDao(dbService: GamerGeeksLocalDbService): ISuggestionsDao {
+        return dbService.getSuggestionDao()
+    }
+    @Singleton
+    @Provides
     fun provideLocalDbRepo(saveGameRepo: SaveGameRepo): ISaveGameRepo {
         return saveGameRepo
     }
@@ -92,5 +97,10 @@ class ApplicationModule {
     @Provides
     fun provideGameResultRepo(gameResultRepo: GameResultRepo): IGameResultRepo {
         return gameResultRepo
+    }
+    @Singleton
+    @Provides
+    fun provideSearchHistory(suggestionsRep: SuggestionsRepo): ISuggestionRepo {
+        return suggestionsRep
     }
 }

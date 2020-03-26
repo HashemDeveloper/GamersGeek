@@ -1,10 +1,8 @@
 package com.project.gamersgeek.utils.search
 
 import android.widget.Filter
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagedList
 import com.project.gamersgeek.data.local.IGameResultRepo
+import com.project.gamersgeek.data.local.ISuggestionRepo
 import com.project.gamersgeek.models.games.Results
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +15,8 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
     private val job = Job()
     @Inject
     lateinit var iGameResultRepo: IGameResultRepo
+    @Inject
+    lateinit var suggestionRepo: ISuggestionRepo
 
     override fun findSuggestions(query: String, limit: Int, searchSuggestionListener: SearchSuggestionListener) {
         object : Filter() {
@@ -26,7 +26,7 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
                     getSuggestionList()?.let { list ->
                         for (gameResult: Results in list) {
                             if (gameResult.name.startsWith(constraint.toString(), true)) {
-                                val resultWrapper = GameResultWrapper(gameResult.name, false, GameResultWrapper.SearchByType.NAME)
+                                val resultWrapper = GameResultWrapper(0, gameResult.name, false, null)
                                 suggestionList.add(resultWrapper)
                                 if (limit != -1 && suggestionList.size == limit) {
                                     break
@@ -49,6 +49,14 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
                 searchSuggestionListener.onSearchResult(results?.values as MutableList<GameResultWrapper>)
             }
         }.filter(query)
+    }
+
+    override fun saveSuggestion(suggestionHistory: GameResultWrapper) {
+        this.suggestionRepo.saveSearchResult(suggestionHistory)
+    }
+
+    override fun getHistory(): List<GameResultWrapper>? {
+        return this.suggestionRepo.getSearchHistory()
     }
 
     private fun getSuggestionList(): List<Results>? {

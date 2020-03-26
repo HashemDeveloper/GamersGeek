@@ -6,15 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arlib.floatingsearchview.FloatingSearchView
+import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 
 import com.project.gamersgeek.R
@@ -35,6 +35,7 @@ import javax.inject.Inject
 class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClickListener, PlatformIconAdapter.PlatformIconClickListener{
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    private var mLastQuery: String = ""
     private val allGamesPageViewModel: AllGamesPageViewModel by viewModels {
         this.viewModelFactory
     }
@@ -92,20 +93,10 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
 
         all_game_search_view_id.setOnSearchListener(object : FloatingSearchView.OnSearchListener{
             override fun onSearchAction(currentQuery: String?) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
-               val wrapper: GameResultWrapper = searchSuggestion as GameResultWrapper
-               val searchHelper: SearchHelper
-                searchHelper = when (wrapper.searchType) {
-                    GameResultWrapper.SearchByType.NAME -> {
-                        SearchHelper(wrapper.searchBody, GameResultWrapper.SearchByType.NAME)
-                    }
-                    GameResultWrapper.SearchByType.PLATFORM -> {
-                        SearchHelper(wrapper.searchBody, GameResultWrapper.SearchByType.PLATFORM)
-                    }
+                currentQuery?.let {
+                    mLastQuery = it
                 }
+                val searchHelper = SearchHelper(mLastQuery, GameResultWrapper.SearchByType.NAME)
                 this@AllGamesPage.allGamesPageViewModel.onSearch(searchHelper)
                 this@AllGamesPage.allGamesPageViewModel.getResultLiveData()?.let {liveData->
                     liveData.observe(viewLifecycleOwner, Observer {
@@ -115,7 +106,36 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
                     })
                 }
             }
+
+            override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
+               val wrapper: GameResultWrapper = searchSuggestion as GameResultWrapper
+               val searchHelper = SearchHelper(wrapper.searchBody, GameResultWrapper.SearchByType.NAME)
+                this@AllGamesPage.allGamesPageViewModel.onSearch(searchHelper)
+                this@AllGamesPage.allGamesPageViewModel.getResultLiveData()?.let {liveData->
+                    liveData.observe(viewLifecycleOwner, Observer {
+                        if (it != null && it.size != 0) {
+                            allGameAdapter.submitList(it)
+                        }
+                    })
+                }
+                mLastQuery = searchHelper.searchBody
+            }
         })
+        all_game_search_view_id.setOnFocusChangeListener(object : FloatingSearchView.OnFocusChangeListener {
+            override fun onFocusCleared() {
+                all_game_search_view_id.setSearchBarTitle(mLastQuery)
+            }
+
+            override fun onFocus() {
+                this@AllGamesPage.allGamesPageViewModel.setupSearchHistory(all_game_search_view_id)
+            }
+        })
+        all_game_search_view_id.setOnSuggestionsListHeightChanged {
+            all_game_recycler_view_id.translationY = it
+        }
+        all_game_search_view_id.setOnBindSuggestionCallback { suggestionView, leftIcon, textView, item, itemPosition ->
+
+        }
     }
 
     private fun setupDrawer() {
