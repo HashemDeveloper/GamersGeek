@@ -1,27 +1,28 @@
 package com.project.gamersgeek.views
 
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arlib.floatingsearchview.FloatingSearchView
-import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
-
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.GenericPlatformDetails
+import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.search.GameResultWrapper
 import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
@@ -31,6 +32,7 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_all_games_page.*
 import timber.log.Timber
 import javax.inject.Inject
+
 
 class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClickListener, PlatformIconAdapter.PlatformIconClickListener{
     @Inject
@@ -119,6 +121,7 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
                     })
                 }
                 mLastQuery = searchHelper.searchBody
+                Constants.hideKeyboard(context)
             }
         })
         all_game_search_view_id.setOnFocusChangeListener(object : FloatingSearchView.OnFocusChangeListener {
