@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -63,8 +65,16 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
     override fun onResume() {
         super.onResume()
         setupDrawer()
+        setupDarkMode()
     }
-
+    private fun setupDarkMode() {
+        val isNightMode: Boolean = this.allGamesPageViewModel.getIsNightModeOn()
+        if (isNightMode) {
+            all_game_search_view_id.setBackgroundColor(ContextCompat.getColor(this.context!!, R.color.black))
+        } else {
+            all_game_search_view_id.setBackgroundColor(ContextCompat.getColor(this.context!!, R.color.white))
+        }
+    }
     private fun setupVideoRecyclerView() {
         val allGameAdapter = AllGameResultAdapter(this, this)
         all_game_recycler_view_id.layoutManager = LinearLayoutManager(this.context)
@@ -121,7 +131,7 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
                     })
                 }
                 mLastQuery = searchHelper.searchBody
-                Constants.hideKeyboard(context)
+                Constants.hideKeyboard(activity)
             }
         })
         all_game_search_view_id.setOnFocusChangeListener(object : FloatingSearchView.OnFocusChangeListener {
@@ -137,7 +147,20 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
             all_game_recycler_view_id.translationY = it
         }
         all_game_search_view_id.setOnBindSuggestionCallback { suggestionView, leftIcon, textView, item, itemPosition ->
-
+            val gameResultWrapper: GameResultWrapper = item as GameResultWrapper
+            val isNightModeOn: Boolean = this@AllGamesPage.allGamesPageViewModel.getIsNightModeOn()
+            if (isNightModeOn) {
+                suggestionView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.black))
+            } else {
+                suggestionView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+            }
+            if (gameResultWrapper.isHistory) {
+                leftIcon.alpha = 1.0f
+                leftIcon.setImageDrawable(ResourcesCompat.getDrawable(context?.resources!!, R.drawable.ic_history_gray_24dp, null))
+            } else {
+                leftIcon.alpha = 0.0f
+                leftIcon.setImageDrawable(null)
+            }
         }
     }
 
@@ -162,5 +185,10 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
 
     override fun onPlatformIconClicked(platform: GenericPlatformDetails) {
         Timber.e("Platform: ${platform.name}")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Constants.hideKeyboard(activity)
     }
 }

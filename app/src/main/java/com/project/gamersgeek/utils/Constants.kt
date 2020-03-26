@@ -5,8 +5,10 @@ import android.graphics.Typeface
 import android.os.Build
 import android.text.*
 import android.text.style.StyleSpan
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.fragment.app.FragmentActivity
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
@@ -66,9 +68,9 @@ class Constants {
             val localDate: LocalDate = LocalDate.parse(dateGameSaved, dateTimeFormatter)
             return OffsetDateTime.of(localDate, LocalTime.now(), ZoneOffset.UTC)
         }
-        fun hideKeyboard(context: Context?) {
-            val imm: InputMethodManager? = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+        fun hideKeyboard(activity: FragmentActivity?) {
+            val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm?.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
         }
     }
 }
