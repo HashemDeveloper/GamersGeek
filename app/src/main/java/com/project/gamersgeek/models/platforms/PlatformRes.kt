@@ -12,10 +12,10 @@ data class PlatformRes(
     var count: Int,
     @SerializedName("next")
     @Expose
-    var next: String,
+    var next: String?,
     @SerializedName("previous")
     @Expose
-    var previous: String,
+    var previous: String?,
     @SerializedName("results")
     @Expose
     var listOfResult: List<PlatformDetails> = arrayListOf()

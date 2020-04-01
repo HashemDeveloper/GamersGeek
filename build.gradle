@@ -42,7 +42,7 @@ ext {
     glideVersion = '4.10.0'
     glideTransformationVersion = "3.3.0"
     mockitoVersion = "2.11.0"
-    room_version = "2.2.4"
+    room_version = "2.2.5"
     room_compiler_version = "2.2.2"
     materialDesignVersion = '1.2.0-alpha05'
     designSupportLib ='1.0.0'
@@ -65,13 +65,12 @@ ext {
     view_animator_version = "1.1.0"
     filter_menu_version = "0.2.3"
     coroutines_scopes = "2.2.0"
-    pagingVersion = '2.1.1'
+    pagingVersion = '2.1.2'
     material_rating_bar = '1.4.0'
     stetho = '1.5.1'
     timberVersion = '4.7.1'
     lottieVersion = '3.3.1'
     materialSearchBar = '0.8.2'
-    pagingVersion = '2.1.1'
     floatingSearchViewVersion = '2.1.1'
     rxJavaVersion = '2.1.4'
     rxAndroidVersion = '2.1.1'

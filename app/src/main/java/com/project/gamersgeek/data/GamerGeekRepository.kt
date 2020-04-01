@@ -43,6 +43,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
         val livePagedList: LiveData<PagedList<PlatformDetails>> = LivePagedListBuilder(dataSourceFactory, pageListConfig(pageSize))
             .setBoundaryCallback(platformDetailBoundaryCallBack)
             .setFetchExecutor(fetchExecutor)
+            .setInitialLoadKey(50)
             .build()
         return setPagedListData(platformDetailBoundaryCallBack, livePagedList)
     }
@@ -67,6 +68,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
         val livePagedList: LiveData<PagedList<Results>> = LivePagedListBuilder(allGameDataSource, pageListConfig(pageSize))
             .setBoundaryCallback(allGamesBoundaryCallBack)
             .setFetchExecutor(fetchExecutor)
+            .setInitialLoadKey(50)
             .build()
         return setPagedListData(allGamesBoundaryCallBack, livePagedList)
     }
@@ -148,14 +150,14 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
     }
 
     companion object {
-        private const val PAGE_SIZE = 10
+        private const val PAGE_SIZE = 50
         private const val INITIAL_LOAD_SIZE_HINT = PAGE_SIZE * 3
         private const val MAX_SIZE: Int = PagedList.Config.MAX_SIZE_UNBOUNDED
         fun pageListConfig(pageSize: Int) = PagedList.Config.Builder()
             .setPageSize(pageSize)
-            .setEnablePlaceholders(true)
             .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
             .setMaxSize(MAX_SIZE)
+            .setEnablePlaceholders(true)
             .build()
     }
 }

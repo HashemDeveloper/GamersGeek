@@ -16,7 +16,9 @@ suspend fun<T> fetchAndSaveData(call: suspend() -> Response<T>,
             onError(response.message())
         }
     } catch (ex: Exception) {
-        onError(ex.localizedMessage!!)
+        if (ex.localizedMessage != null) {
+            onError(ex.localizedMessage!!)
+        }
     }
 
 }

@@ -25,6 +25,7 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
     private val job = Job()
     val paginHelper = PagingRequestHelper()
     val networkState = paginHelper.createNetworkStatusLiveData()
+    private var pageCount: Int = 1
 
     override fun onZeroItemsLoaded() {
         this.paginHelper.runIfNotRunning(RequestType.INITIAL) {
@@ -36,8 +37,8 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
         this.paginHelper.runIfNotRunning(RequestType.AFTER) {
             requestAndSaveData()
         }
+        super.onItemAtEndLoaded(itemAtEnd)
     }
-
 
     private fun requestAndSaveData(): Request {
         val network = MutableLiveData<NetworkState>()
@@ -45,11 +46,13 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
             override fun run(requestCallback: Request.Callback) {
                 launch {
                     fetchAndSaveData(call = {
-                        gamerIRawgGameDbApi.fetchAllGames(1, PAGE_SIZE)
+                        gamerIRawgGameDbApi.fetchAllGames(pageCount, PAGE_SIZE)
                     }, onSuccess = {
                         saveData(it.results, requestCallback)
+                        pageCount++
                     }, onError = {
                         requestCallback.recordFailure(it)
+                        pageCount = 1
                         if (BuildConfig.DEBUG) {
                             Timber.d("Error fetching data: $it")
                         }
@@ -104,7 +107,7 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
         get() = this.job + Dispatchers.IO
 
     companion object {
-        private const val PAGE_SIZE = 100
+        private const val PAGE_SIZE = 50
         @JvmStatic private val TAG: String = AllGamesBoundaryCallBack::class.java.canonicalName!!
     }
 }
