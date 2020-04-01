@@ -1,10 +1,14 @@
 package com.project.gamersgeek.utils
 
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Build
 import android.text.*
 import android.text.style.StyleSpan
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.fragment.app.FragmentActivity
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
@@ -63,6 +67,10 @@ class Constants {
                 .withResolverStyle(org.threeten.bp.format.ResolverStyle.STRICT)
             val localDate: LocalDate = LocalDate.parse(dateGameSaved, dateTimeFormatter)
             return OffsetDateTime.of(localDate, LocalTime.now(), ZoneOffset.UTC)
+        }
+        fun hideKeyboard(activity: FragmentActivity?) {
+            val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm?.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
         }
     }
 }

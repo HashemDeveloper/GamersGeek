@@ -1,5 +1,6 @@
 package com.project.gamersgeek.data.pagination
 
+import android.net.Uri
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +9,7 @@ import com.project.gamersgeek.data.fetchAndSaveData
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
 import com.project.gamersgeek.data.remote.IRawgGameDbApi
 import com.project.gamersgeek.models.platforms.PlatformDetails
+import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.utils.paging.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +24,8 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
     private val job = Job()
     val helper = PagingRequestHelper()
     val netWorkState = helper.createNetworkStatusLiveData()
-
+    private var pageCount: Int = 1
+    private val cache: MutableMap<Int, PlatformDetails> = HashMap()
     @MainThread
     override fun onZeroItemsLoaded() {
         this.helper.runIfNotRunning(RequestType.INITIAL) {
@@ -42,9 +45,10 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
             override fun run(requestCallback: Request.Callback) {
                 launch {
                     fetchAndSaveData(call = {
-                        rawgGameDbApi.getAllListOfVideoGamePlatform(1, PAGE_SIZE, "id")
+                        rawgGameDbApi.getAllListOfVideoGamePlatform(pageCount, PAGE_SIZE, "id")
                     }, onSuccess = {
                         saveData(it.listOfResult, requestCallback)
+                        setupPageCount(it)
                     }, onError = {
                         requestCallback.recordFailure(it)
                         Timber.d(TAG, "Failed to fetch platform data: $it")
@@ -59,10 +63,11 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
         networkState.value = NetworkState.LOADING
         launch {
             fetchAndSaveData(call = {
-                rawgGameDbApi.getAllListOfVideoGamePlatform(2, PAGE_SIZE, "id")
+                rawgGameDbApi.getAllListOfVideoGamePlatform(pageCount, PAGE_SIZE, "id")
             }, onSuccess = {
-                deleteAndSaveData(it.listOfResult)
                 networkState.postValue(NetworkState.LOADED)
+                setupPageCount(it)
+                updateData(it.listOfResult)
             }, onError = {
                 networkState.postValue(NetworkState.error(it))
                 Timber.d(TAG, "Failed to fetch platform data: $it")
@@ -70,27 +75,63 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
         }
         return networkState
     }
+
+    private fun setupPageCount(it: PlatformRes) {
+        var nextUrl: String? = ""
+        it.next?.let {url ->
+            nextUrl = url
+        }
+        if (nextUrl?.isNotEmpty()!!) {
+            val nextUri: Uri = Uri.parse(nextUrl)
+            if (nextUri.getQueryParameter("page") != null) {
+                val query: String? = nextUri.getQueryParameter("page")!!
+                if (query != null && query.isNotEmpty()) {
+                    pageCount = nextUri.getQueryParameter("page")?.toInt()!!
+                }
+            }
+        }
+    }
+
     private fun saveData(
         dataList: List<PlatformDetails>,
         requestCallback: Request.Callback
     ) {
+        getCachedItems(dataList)?.let {
+
+        }
+        val list: MutableList<PlatformDetails>? = getCachedItems(dataList)
         launch {
-            iPlatformDetailsDao.insert(dataList)
+            iPlatformDetailsDao.clearPlatformDetails()
+            list?.let {
+                iPlatformDetailsDao.insert(it)
+                it.clear()
+            }
             requestCallback.recordSuccess()
         }
     }
-    private fun deleteAndSaveData(dataList: List<PlatformDetails>) {
+    private fun updateData(dataList: List<PlatformDetails>) {
+        val list: MutableList<PlatformDetails>? = getCachedItems(dataList)
         launch {
-            iPlatformDetailsDao.clearPlatformDetails()
-            iPlatformDetailsDao.insert(dataList)
+            list?.let {
+                iPlatformDetailsDao.update(it)
+            }
         }
+    }
+
+    private fun getCachedItems(dataList: List<PlatformDetails>): MutableList<PlatformDetails>? {
+        for (data: PlatformDetails in dataList) {
+            if (!cache.containsKey(data.id)) {
+                cache[data.id] = data
+            }
+        }
+        return ArrayList(cache.values)
     }
 
 
     override val coroutineContext: CoroutineContext
         get() = this.job + Dispatchers.IO
     companion object {
-        private const val PAGE_SIZE = 30
+        private const val PAGE_SIZE = 10
         @JvmStatic private val TAG: String = PlatformDetailBoundaryCallBack::class.java.canonicalName!!
     }
 }

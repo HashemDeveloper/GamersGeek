@@ -22,7 +22,7 @@ data class GameListRes(
     @ColumnInfo(name = "next")
     @SerializedName("next")
     @Expose
-    var next: String,
+    var next: String?,
     @ColumnInfo(name = "previous")
     @SerializedName("previous")
     @Expose

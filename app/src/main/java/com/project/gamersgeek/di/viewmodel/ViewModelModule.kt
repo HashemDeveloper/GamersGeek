@@ -6,6 +6,7 @@ import com.project.gamersgeek.di.scopes.ViewModelKey
 import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
 import com.project.gamersgeek.viewmodels.GameDetailsPageViewModel
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
+import com.project.gamersgeek.viewmodels.SavedGamesViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -26,4 +27,8 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GameDetailsPageViewModel::class)
     abstract fun provideGameDetailPageViewModel(gameDetailsPageViewModel: GameDetailsPageViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(SavedGamesViewModel::class)
+    abstract fun provideSavedGameViewModel(savedGamesViewModel: SavedGamesViewModel): ViewModel
 }

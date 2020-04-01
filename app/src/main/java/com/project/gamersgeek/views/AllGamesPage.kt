@@ -1,27 +1,25 @@
 package com.project.gamersgeek.views
 
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arlib.floatingsearchview.FloatingSearchView
-import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
-
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.GenericPlatformDetails
+import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.search.GameResultWrapper
 import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
@@ -31,6 +29,7 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_all_games_page.*
 import timber.log.Timber
 import javax.inject.Inject
+
 
 class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClickListener, PlatformIconAdapter.PlatformIconClickListener{
     @Inject
@@ -61,8 +60,16 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
     override fun onResume() {
         super.onResume()
         setupDrawer()
+        setupDarkMode()
     }
-
+    private fun setupDarkMode() {
+        val isNightMode: Boolean = this.allGamesPageViewModel.getIsNightModeOn()
+        if (isNightMode) {
+            all_game_search_view_id.setBackgroundColor(ContextCompat.getColor(this.context!!, R.color.black))
+        } else {
+            all_game_search_view_id.setBackgroundColor(ContextCompat.getColor(this.context!!, R.color.white))
+        }
+    }
     private fun setupVideoRecyclerView() {
         val allGameAdapter = AllGameResultAdapter(this, this)
         all_game_recycler_view_id.layoutManager = LinearLayoutManager(this.context)
@@ -119,6 +126,7 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
                     })
                 }
                 mLastQuery = searchHelper.searchBody
+                Constants.hideKeyboard(activity)
             }
         })
         all_game_search_view_id.setOnFocusChangeListener(object : FloatingSearchView.OnFocusChangeListener {
@@ -134,7 +142,20 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
             all_game_recycler_view_id.translationY = it
         }
         all_game_search_view_id.setOnBindSuggestionCallback { suggestionView, leftIcon, textView, item, itemPosition ->
-
+            val gameResultWrapper: GameResultWrapper = item as GameResultWrapper
+            val isNightModeOn: Boolean = this@AllGamesPage.allGamesPageViewModel.getIsNightModeOn()
+            if (isNightModeOn) {
+                suggestionView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.black))
+            } else {
+                suggestionView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+            }
+            if (gameResultWrapper.isHistory) {
+                leftIcon.alpha = 1.0f
+                leftIcon.setImageDrawable(ResourcesCompat.getDrawable(context?.resources!!, R.drawable.ic_history_gray_24dp, null))
+            } else {
+                leftIcon.alpha = 0.0f
+                leftIcon.setImageDrawable(null)
+            }
         }
     }
 
@@ -159,5 +180,10 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
 
     override fun onPlatformIconClicked(platform: GenericPlatformDetails) {
         Timber.e("Platform: ${platform.name}")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Constants.hideKeyboard(activity)
     }
 }
