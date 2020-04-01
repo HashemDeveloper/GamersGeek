@@ -40,10 +40,6 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
         }
     }
 
-    override fun onItemAtFrontLoaded(itemAtFront: PlatformDetails) {
-        super.onItemAtFrontLoaded(itemAtFront)
-    }
-
     private fun requestAndSaveData(): Request {
         return object : Request {
             override fun run(requestCallback: Request.Callback) {
@@ -82,12 +78,8 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
 
     private fun setupPageCount(it: PlatformRes) {
         var nextUrl: String? = ""
-        var prevUrl: String? = ""
         it.next?.let {url ->
             nextUrl = url
-        }
-        it.previous?.let { url ->
-            prevUrl = url
         }
         if (nextUrl?.isNotEmpty()!!) {
             val nextUri: Uri = Uri.parse(nextUrl)

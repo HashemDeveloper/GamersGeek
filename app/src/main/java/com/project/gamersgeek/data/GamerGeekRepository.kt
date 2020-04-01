@@ -40,10 +40,9 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
         val dataSourceFactory: DataSource.Factory<Int, PlatformDetails> = this.iPlatformDetailsDao.getAllPlatformDetails()
         val platformDetailBoundaryCallBack = PlatformDetailBoundaryCallBack(this.iPlatformDetailsDao, this.iRawgGameDbApi)
         val fetchExecutor: Executor = ArchTaskExecutor.getIOThreadExecutor()
-        val livePagedList: LiveData<PagedList<PlatformDetails>> = LivePagedListBuilder(dataSourceFactory, pageListConfig(pageSize))
+        val livePagedList: LiveData<PagedList<PlatformDetails>> = LivePagedListBuilder(dataSourceFactory, pageListConfig(pageSize, PLATFORM_DETAILS_INITIAL_LOAD_SIZE))
             .setBoundaryCallback(platformDetailBoundaryCallBack)
             .setFetchExecutor(fetchExecutor)
-            .setInitialLoadKey(50)
             .build()
         return setPagedListData(platformDetailBoundaryCallBack, livePagedList)
     }
@@ -65,7 +64,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
         val allGameDataSource: DataSource.Factory<Int, Results> = this.iGameResultDao.getAllGameResultForDatasource()
         val allGamesBoundaryCallBack = AllGamesBoundaryCallBack(this.iGameResultDao, this.iRawgGameDbApi)
         val fetchExecutor: Executor = ArchTaskExecutor.getIOThreadExecutor()
-        val livePagedList: LiveData<PagedList<Results>> = LivePagedListBuilder(allGameDataSource, pageListConfig(pageSize))
+        val livePagedList: LiveData<PagedList<Results>> = LivePagedListBuilder(allGameDataSource, pageListConfig(pageSize, ALL_GAMES_INITIAL_LOAD_SIZE))
             .setBoundaryCallback(allGamesBoundaryCallBack)
             .setFetchExecutor(fetchExecutor)
             .setInitialLoadKey(50)
@@ -120,7 +119,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
             }
         }
         val fetchExecutor: Executor = ArchTaskExecutor.getIOThreadExecutor()
-        return LivePagedListBuilder(selectGameDataSource, pageListConfig(30))
+        return LivePagedListBuilder(selectGameDataSource, pageListConfig(30, ALL_GAMES_INITIAL_LOAD_SIZE))
             .setFetchExecutor(fetchExecutor)
             .build()
     }
@@ -150,12 +149,14 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
     }
 
     companion object {
-        private const val PAGE_SIZE = 50
-        private const val INITIAL_LOAD_SIZE_HINT = PAGE_SIZE * 3
+        private const val ALL_GAMES_PAGE_SIZE = 50
+        private const val PLATFORM_DETAILS_PAGE_SIZE = 10
+        private const val PLATFORM_DETAILS_INITIAL_LOAD_SIZE = PLATFORM_DETAILS_PAGE_SIZE * 3
+        private const val ALL_GAMES_INITIAL_LOAD_SIZE = ALL_GAMES_PAGE_SIZE * 3
         private const val MAX_SIZE: Int = PagedList.Config.MAX_SIZE_UNBOUNDED
-        fun pageListConfig(pageSize: Int) = PagedList.Config.Builder()
+        fun pageListConfig(pageSize: Int, initialPageLoadCount: Int) = PagedList.Config.Builder()
             .setPageSize(pageSize)
-            .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
+            .setInitialLoadSizeHint(initialPageLoadCount)
             .setMaxSize(MAX_SIZE)
             .setEnablePlaceholders(true)
             .build()
