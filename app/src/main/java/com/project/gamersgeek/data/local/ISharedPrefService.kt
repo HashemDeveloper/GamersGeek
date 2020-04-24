@@ -7,4 +7,6 @@ interface ISharedPrefService {
     fun unregisterOnSharedPrefListener(sharedPrefListener: SharedPreferences.OnSharedPreferenceChangeListener)
     fun setIsNightModeOn(isNightModeOn: Boolean)
     fun getIsNightModeOn(): Boolean
+    fun getSavedGamePlatformImage(): String
+    fun storeGameProfileHeader(json: String)
 }

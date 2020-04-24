@@ -5,6 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class GameProfileHeader(
-    var gamePlatformImage: String?,
+    var gamePlatformImage: Int?,
     var platformName: String
 ): Parcelable

@@ -85,7 +85,7 @@ class SavedGamesAdapter (private val listener: SavedGamePageListener): RecyclerV
         init {
             this.platformImageView = this.view.findViewById(R.id.fragment_saved_game_platform_image_view_id)
             this.backBtView = this.view.findViewById(R.id.fragment_saved_game_back_bt_id)
-            this.platformTitle = this.view.findViewById(R.id.fragment_saved_game_title_view_id)
+            this.platformTitle = this.view.findViewById(R.id.fragment_saved_game_player_name_view_id)
         }
 
         override fun bindView(item: GameProfileHeader) {
@@ -101,7 +101,8 @@ class SavedGamesAdapter (private val listener: SavedGamePageListener): RecyclerV
                     .into(platformView)
             }
             this.platformTitle?.let { titleView ->
-                titleView.text = item.platformName
+                val text = "${item.platformName} Gamer"
+                titleView.text = text
             }
         }
         fun getBackBt(): AppCompatImageView? {

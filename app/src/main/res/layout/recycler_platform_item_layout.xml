@@ -32,7 +32,7 @@
         app:layout_constraintGuide_percent="0.96" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/topGuideLine"
+        android:id="@+id/titleGuideLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -54,14 +54,14 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/leftGuideline"
-        app:layout_constraintTop_toTopOf="@+id/topGuideLine" />
+        app:layout_constraintTop_toTopOf="@+id/titleGuideLine" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/view_details_bt_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/rightGuideline"
-        app:layout_constraintTop_toTopOf="@+id/topGuideLine"
+        app:layout_constraintTop_toTopOf="@+id/titleGuideLine"
         app:srcCompat="@drawable/ic_eye_white_24dp" />
 
     <androidx.appcompat.widget.AppCompatTextView

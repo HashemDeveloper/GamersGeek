@@ -20,7 +20,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/platform_page_search_id"
             app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
             app:layout_constraintStart_toStartOf="@+id/leftGuideLine"
-            app:layout_constraintTop_toBottomOf="@+id/topGuideLine" />
+            app:layout_constraintTop_toBottomOf="@+id/titleGuideLine" />
 
         <include
             android:id="@+id/platform_page_loading_view_id"
@@ -31,7 +31,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
             app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
             app:layout_constraintStart_toStartOf="@+id/leftGuideLine"
-            app:layout_constraintTop_toBottomOf="@+id/topGuideLine"/>
+            app:layout_constraintTop_toBottomOf="@+id/titleGuideLine"/>
 
 
         <com.arlib.floatingsearchview.FloatingSearchView
@@ -72,7 +72,7 @@
             app:layout_constraintGuide_percent="0.92" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/topGuideLine"
+            android:id="@+id/titleGuideLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

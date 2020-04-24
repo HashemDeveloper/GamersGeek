@@ -16,7 +16,7 @@
         >
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/topGuideLine"
+            android:id="@+id/titleGuideLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

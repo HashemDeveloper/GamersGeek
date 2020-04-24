@@ -49,4 +49,15 @@ class SharedPrefService @Inject constructor(): ISharedPrefService {
     override fun getIsNightModeOn(): Boolean {
         return pref?.getBoolean(Constants.IS_NIGHT_MODE, false)!!
     }
+
+    override fun storeGameProfileHeader(json: String) {
+        pref?.edit(commit = true) {
+            putString(Constants.SAVED_GAME_PLATFORM_HEADER, json)
+        }
+        listener?.onSharedPreferenceChanged(pref, Constants.SAVED_GAME_PLATFORM_HEADER)
+    }
+
+    override fun getSavedGamePlatformImage(): String {
+        return pref?.getString(Constants.SAVED_GAME_PLATFORM_HEADER, "")!!
+    }
 }
