@@ -27,4 +27,6 @@
     <string name="where_to_buy">Where To Buy</string>
     <string name="store_name">Store Name</string>
     <string name="game_saved">Saved Successfully</string>
+    <string name="header">Header</string>
+    <string name="player_name">Player Name</string>
 </resources>

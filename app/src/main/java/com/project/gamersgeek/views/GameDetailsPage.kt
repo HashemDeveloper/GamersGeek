@@ -263,7 +263,11 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
                 }
             }
             val date: OffsetDateTime = Constants.getCurrentTime()
-            saveGames = SaveGames(gameDetailsFooter.id, date, isPlayed,
+            var name: String = ""
+            gameDetailsFooter.name?.let {gameName ->
+                name = gameName
+            }
+            saveGames = SaveGames(gameDetailsFooter.id, name, date, isPlayed,
                 gameDetailsFooter.storeList, gameDetailsFooter.backgroundImage1, gameDetailsFooter.backgroundImage2)
             saveGames?.let {
                 this.gameDetailsViewModel.storeGames(it)
