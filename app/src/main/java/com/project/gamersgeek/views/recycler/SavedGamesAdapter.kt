@@ -99,14 +99,12 @@ class SavedGamesAdapter (private val listener: SavedGamePageListener): RecyclerV
             this.platformTitle = this.view.findViewById(R.id.fragment_saved_game_player_name_view_id)
             if (this.isNightMode) {
                 this.platformImageView?.setColorFilter(ContextCompat.getColor(this.context, R.color.white), PorterDuff.Mode.MULTIPLY)
-                this.backBtView?.setColorFilter(ContextCompat.getColor(this.context, R.color.white), PorterDuff.Mode.MULTIPLY)
                 this.platformTitle?.setTextColor(ContextCompat.getColor(this.context, R.color.white))
             } else {
                 this.platformImageView?.setColorFilter(ContextCompat.getColor(this.context, R.color.black), PorterDuff.Mode.MULTIPLY)
                 this.backBtView?.setColorFilter(ContextCompat.getColor(this.context, R.color.black), PorterDuff.Mode.MULTIPLY)
                 this.platformTitle?.setTextColor(ContextCompat.getColor(this.context, R.color.black))
             }
-
         }
 
         override fun bindView(item: GameProfileHeader) {
