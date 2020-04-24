@@ -43,6 +43,10 @@ class SavedGamesViewModel @Inject constructor(): ViewModel(), CoroutineScope {
         this.iSharedPrefService.registerOnSharedPrefListener(listener)
     }
 
+    fun getIsNightModeOn(): Boolean {
+        return this.iSharedPrefService.getIsNightModeOn()
+    }
+
     override val coroutineContext: CoroutineContext
         get() = this.job + Dispatchers.IO
 

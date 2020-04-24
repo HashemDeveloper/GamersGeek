@@ -43,7 +43,9 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         this.savedGamesViewModel.setupSharedPrefListener(this)
+        val isNightMode: Boolean = this.savedGamesViewModel.getIsNightModeOn()
         this.savedGameAdapter = SavedGamesAdapter(this)
+        this.savedGameAdapter?.setIsNightMode(isNightMode)
         fragment_saved_game_recycler_id.layoutManager = LinearLayoutManager(this.context!!)
         fragment_saved_game_recycler_id.adapter = this.savedGameAdapter
         val platformHeader: GameProfileHeader? = this.savedGamesViewModel.getPlatformImage()
