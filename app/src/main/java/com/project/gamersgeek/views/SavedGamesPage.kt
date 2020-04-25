@@ -9,12 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
+import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.games.Store
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.viewmodels.SavedGamesViewModel
@@ -26,6 +29,7 @@ import com.project.gamersgeek.views.recycler.items.GameProfileHeader
 import com.project.gamersgeek.views.recycler.items.WishToPlay
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_saved_games_page.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageListener,
@@ -139,5 +143,14 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
 
     override fun onShopBtClicked(storeList: List<Store>?) {
 
+    }
+
+    override fun imageClicked(gameResult: Results?) {
+        gameResult?.let {
+            val gameDetailPageRouter: SavedGamesPageDirections.ActionBottomNavSavedGameIdToGameDetailsPage2 = SavedGamesPageDirections.actionBottomNavSavedGameIdToGameDetailsPage2(it)
+            val gameResultController: NavController = findNavController()
+            gameResultController.navigate(gameDetailPageRouter)
+            this.list.clear()
+        }
     }
 }

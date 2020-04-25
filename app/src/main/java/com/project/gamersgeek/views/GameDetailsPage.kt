@@ -33,9 +33,6 @@ import com.project.gamersgeek.views.recycler.items.*
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_game_details_page.*
 import org.threeten.bp.OffsetDateTime
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -64,7 +61,7 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(fragment_video_player_view_id)
         game_details_information_recyclerview_id.layoutManager = LinearLayoutManager(this.context!!)
-        this.gameDetailsItemAdapter = GameDetailsItemAdapter(this)
+        this.gameDetailsItemAdapter = GameDetailsItemAdapter(this, this.gameDetails)
         game_details_information_recyclerview_id.adapter = this.gameDetailsItemAdapter
         setupGameData()
     }
@@ -146,6 +143,7 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
                                val gameDetailsFooter = GameDetailsFooter(
                                    res.id, res.name,
                                    res.website, esrbRatingName,
+                                   this.gameDetails,
                                    gameData?.listOfStores, res.backgroundImage,
                                    res.backgroundImageAdditional)
 
@@ -268,6 +266,7 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
                 name = gameName
             }
             saveGames = SaveGames(gameDetailsFooter.id, name, date, isPlayed,
+                gameDetailsFooter.gameResult,
                 gameDetailsFooter.storeList, gameDetailsFooter.backgroundImage1, gameDetailsFooter.backgroundImage2)
             saveGames?.let {
                 this.gameDetailsViewModel.storeGames(it)
