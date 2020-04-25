@@ -4,42 +4,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/fragment_saved_game_wish_to_play_bg_view_id"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_saved_game_page_wish_to_play_recycler_view_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
+        />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/fragment_saved_game_wish_to_play_game_title_view_id"
+        android:id="@+id/fragment_saved_game_wish_page_no_item_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/game_title"
-        android:textSize="18sp"
-        android:fontFamily="@font/cutive"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/fragment_saved_game_wish_to_play_shop_bt_id"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginLeft="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
+        android:text="@string/wish_game_will_be_shown_here"
+        app:layout_constraintBottom_toBottomOf="@+id/fragment_saved_game_page_wish_to_play_recycler_view_id"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_shopping_cart_red_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fragment_saved_game_page_wish_to_play_recycler_view_id"
+        android:visibility="gone"
         />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottomGuideLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

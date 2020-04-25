@@ -8,16 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.google.android.material.textview.MaterialTextView
 import com.project.gamersgeek.R
+import com.project.gamersgeek.models.games.Store
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.views.recycler.items.DividerHeader
+import com.project.gamersgeek.views.recycler.items.GamePlayed
 import com.project.gamersgeek.views.recycler.items.GameProfileHeader
+import com.project.gamersgeek.views.recycler.items.WishToPlay
 import java.lang.IllegalArgumentException
 
-class SavedGamesAdapter (private val listener: SavedGamePageListener): RecyclerView.Adapter<BaseViewHolder<*>>() {
+class SavedGamesAdapter (private val listener: SavedGamePageListener, private val gamePlayedOrNotListener: GamePlayedOrNotAdapter.GamePlayedOrNotListener): RecyclerView.Adapter<BaseViewHolder<*>>() {
     private val data: MutableList<Any> = arrayListOf()
     private var isNightMode = false
 
@@ -35,6 +39,14 @@ class SavedGamesAdapter (private val listener: SavedGamePageListener): RecyclerV
                 val view: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_saved_game_page_item_header_layout, parent, false)
                 DividerHeaderHolder(view)
             }
+            GAME_PLAYED_VIEW -> {
+                val view: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_saved_game_page_played_layout, parent, false)
+                GamePlayedViewHolder(view, parent.context, getIsNightMode(), this.gamePlayedOrNotListener)
+            }
+            GAME_WISH_TO_PLAY -> {
+                val view: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_saved_game_wish_to_play_layout, parent, false)
+                WishToPlayViewHolder(view, parent.context, this.isNightMode, this.gamePlayedOrNotListener)
+            }
             else -> {
                 throw IllegalArgumentException("Unsupported view")
             }
@@ -50,6 +62,8 @@ class SavedGamesAdapter (private val listener: SavedGamePageListener): RecyclerV
         when (holder) {
             is GameProfileHeaderHolder -> holder.bindView(item as GameProfileHeader)
             is DividerHeaderHolder -> holder.bindView(item as DividerHeader)
+            is GamePlayedViewHolder -> holder.bindView(item as GamePlayed)
+            is WishToPlayViewHolder -> holder.bindView(item as WishToPlay)
         }
     }
 
@@ -57,13 +71,15 @@ class SavedGamesAdapter (private val listener: SavedGamePageListener): RecyclerV
         return when (this.data[position]) {
             is GameProfileHeader -> GAME_PROFILE_HEADER
             is DividerHeader -> DIVIDER_HEADER
+            is GamePlayed -> GAME_PLAYED_VIEW
+            is WishToPlay -> GAME_WISH_TO_PLAY
             else -> throw IllegalArgumentException("Invalid index position $position")
         }
     }
     fun setIsNightMode(isNightMode: Boolean) {
         this.isNightMode = isNightMode
     }
-    fun getIsNightMode(): Boolean {
+    private fun getIsNightMode(): Boolean {
         return this.isNightMode
     }
 
@@ -108,10 +124,7 @@ class SavedGamesAdapter (private val listener: SavedGamePageListener): RecyclerV
         }
 
         override fun bindView(item: GameProfileHeader) {
-            val circularProgressDrawable = CircularProgressDrawable(this.context)
-            circularProgressDrawable.strokeWidth = 5f
-            circularProgressDrawable.centerRadius = 30f
-            circularProgressDrawable.setColorSchemeColors(Color.GRAY)
+            val circularProgressDrawable: CircularProgressDrawable = getCircularProgressDr(this.context)
             circularProgressDrawable.start()
             this.platformImageView?.let { platformView ->
                 GlideApp.with(this.view)
@@ -128,6 +141,70 @@ class SavedGamesAdapter (private val listener: SavedGamePageListener): RecyclerV
             return this.backBtView
         }
     }
+
+    inner class GamePlayedViewHolder(private val view: View, private val context:
+    Context, private val isNightMode: Boolean,
+                                     private val listener: GamePlayedOrNotAdapter.GamePlayedOrNotListener): BaseViewHolder<GamePlayed>(view) {
+        private var gamePlayedRecyclerView: RecyclerView?= null
+        private var gamePlayedOrNotAdapter: GamePlayedOrNotAdapter?= null
+        private var noItemView: MaterialTextView?= null
+
+        init {
+            this.gamePlayedRecyclerView = this.view.findViewById(R.id.fragment_saved_game_played_page_recycler_view_id)
+            this.noItemView = this.view.findViewById(R.id.fragment_saved_game_played_page_no_item_view_id)
+            this.gamePlayedRecyclerView?.layoutManager = LinearLayoutManager(this.context)
+            this.gamePlayedOrNotAdapter = GamePlayedOrNotAdapter(this.isNightMode, true, this.listener)
+            this.gamePlayedRecyclerView?.adapter = this.gamePlayedOrNotAdapter
+        }
+        override fun bindView(item: GamePlayed) {
+            if (item.saveGameList?.isNotEmpty()!!) {
+                this.gamePlayedRecyclerView?.visibility = View.VISIBLE
+                this.noItemView?.visibility = View.GONE
+                item.saveGameList?.let { list ->
+                    this.gamePlayedOrNotAdapter?.setData(list)
+                }
+            } else {
+                this.noItemView?.visibility = View.VISIBLE
+                this.gamePlayedRecyclerView?.visibility = View.GONE
+            }
+        }
+    }
+    inner class WishToPlayViewHolder(private val view: View,
+                                     private val context: Context,
+                                     private val isNightMode: Boolean,
+                                     private val listener: GamePlayedOrNotAdapter.GamePlayedOrNotListener): BaseViewHolder<WishToPlay>(view) {
+        private var wishToPlayRecyclerView: RecyclerView?= null
+        private var gamePlayedOrNotAdapter: GamePlayedOrNotAdapter?= null
+        private var noItemView: MaterialTextView?= null
+        init {
+            this.wishToPlayRecyclerView = this.view.findViewById(R.id.fragment_saved_game_page_wish_to_play_recycler_view_id)
+            this.noItemView = this.view.findViewById(R.id.fragment_saved_game_wish_page_no_item_view_id)
+            this.wishToPlayRecyclerView?.layoutManager = LinearLayoutManager(this.context)
+            this.gamePlayedOrNotAdapter = GamePlayedOrNotAdapter(this.isNightMode, false, this.listener)
+            this.wishToPlayRecyclerView?.adapter = this.gamePlayedOrNotAdapter
+        }
+
+        override fun bindView(item: WishToPlay) {
+            if (item.saveGameList?.isNotEmpty()!!) {
+                this.wishToPlayRecyclerView?.visibility = View.VISIBLE
+                this.noItemView?.visibility = View.GONE
+                item.saveGameList?.let { list ->
+                    this.gamePlayedOrNotAdapter?.setData(list)
+                }
+            } else {
+                this.noItemView?.visibility = View.VISIBLE
+                this.wishToPlayRecyclerView?.visibility = View.GONE
+            }
+        }
+    }
+    private fun getCircularProgressDr(context: Context): CircularProgressDrawable {
+        val circularProgressDrawable = CircularProgressDrawable(context)
+        circularProgressDrawable.strokeWidth = 5f
+        circularProgressDrawable.centerRadius = 30f
+        circularProgressDrawable.setColorSchemeColors(Color.GRAY)
+        return circularProgressDrawable
+    }
+
     interface SavedGamePageListener {
         fun onBackPressed()
     }

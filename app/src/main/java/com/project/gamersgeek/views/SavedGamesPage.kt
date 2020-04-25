@@ -15,19 +15,26 @@ import com.google.gson.Gson
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
+import com.project.gamersgeek.models.games.Store
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.viewmodels.SavedGamesViewModel
+import com.project.gamersgeek.views.recycler.GamePlayedOrNotAdapter
 import com.project.gamersgeek.views.recycler.SavedGamesAdapter
 import com.project.gamersgeek.views.recycler.items.DividerHeader
+import com.project.gamersgeek.views.recycler.items.GamePlayed
 import com.project.gamersgeek.views.recycler.items.GameProfileHeader
+import com.project.gamersgeek.views.recycler.items.WishToPlay
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_saved_games_page.*
 import javax.inject.Inject
 
-class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageListener, SharedPreferences.OnSharedPreferenceChangeListener {
+class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageListener,
+    SharedPreferences.OnSharedPreferenceChangeListener, GamePlayedOrNotAdapter.GamePlayedOrNotListener {
     private var savedGameAdapter: SavedGamesAdapter?= null
     private val list: MutableList<Any> = arrayListOf()
     var alertDialog: AlertDialog?= null
+    private var gamePlayed: GamePlayed?= null
+    private var wishToPlay: WishToPlay?= null
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val savedGamesViewModel: SavedGamesViewModel by viewModels {
@@ -43,8 +50,10 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         this.savedGamesViewModel.setupSharedPrefListener(this)
+        this.gamePlayed = this.savedGamesViewModel.getGamePlayedList()
+        this.wishToPlay = this.savedGamesViewModel.getWishToPlayList()
         val isNightMode: Boolean = this.savedGamesViewModel.getIsNightModeOn()
-        this.savedGameAdapter = SavedGamesAdapter(this)
+        this.savedGameAdapter = SavedGamesAdapter(this, this)
         this.savedGameAdapter?.setIsNightMode(isNightMode)
         fragment_saved_game_recycler_id.layoutManager = LinearLayoutManager(this.context!!)
         fragment_saved_game_recycler_id.adapter = this.savedGameAdapter
@@ -53,8 +62,16 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
            promptChoice(platformHeader)
         } else {
             val divider = DividerHeader("Game Played")
-            list.add(platformHeader)
-            list.add(divider)
+            this.list.add(platformHeader)
+            this.list.add(divider)
+            this.gamePlayed?.let { playedGames ->
+                this.list.add(playedGames)
+            }
+            val divider1 = DividerHeader("Wish To Play")
+            list.add(divider1)
+            this.wishToPlay?.let { wishGames ->
+                this.list.add(wishGames)
+            }
             this.savedGameAdapter?.setData(list)
         }
     }
@@ -107,8 +124,20 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
                 this.list.add(gameProfileHeader)
                 val divider = DividerHeader("Game Played")
                 this.list.add(divider)
+                this.gamePlayed?.let { playedGames ->
+                    this.list.add(playedGames)
+                }
+                this.wishToPlay?.let { wishGames ->
+                    this.list.add(wishGames)
+                }
+                val divider1 = DividerHeader("Wish To Play")
+                list.add(divider1)
                 this.savedGameAdapter?.setData(list)
             }
         }
+    }
+
+    override fun onShopBtClicked(storeList: List<Store>?) {
+
     }
 }

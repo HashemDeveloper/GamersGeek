@@ -2,14 +2,12 @@ package com.project.gamersgeek.data.local
 
 import android.content.Context
 import android.widget.Toast
-import com.project.gamersgeek.BuildConfig
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.games.SaveGames
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -41,15 +39,26 @@ class SaveGameRepo @Inject constructor(private val context: Context): ISaveGameR
         emit(value)
     }
 
-    override fun getAllSavedGames(): List<SaveGames>? {
+    override fun getPlayedGames(): List<SaveGames>? {
         var savedGameList: List<SaveGames>?= null
         runBlocking {
-            if (allSavedGames() != null) {
-                val job: Deferred<List<SaveGames>> = async { allSavedGames()!! }
+            if (allPlayedGames() != null) {
+                val job: Deferred<List<SaveGames>> = async { allPlayedGames()!! }
                 savedGameList = job.await()
             }
         }
         return savedGameList
+    }
+
+    override fun getWishedToPlayGames(): List<SaveGames>? {
+        var wishToPlayList: List<SaveGames>?= null
+        runBlocking {
+            if (allWishedToPlayGames() != null) {
+                val job: Deferred<List<SaveGames>> = async { allWishedToPlayGames()!! }
+                wishToPlayList = job.await()
+            }
+        }
+        return wishToPlayList
     }
 
     override fun getGameById(id: Int): SaveGames? {
@@ -75,8 +84,11 @@ class SaveGameRepo @Inject constructor(private val context: Context): ISaveGameR
         }
     }
 
-    private suspend fun allSavedGames(): List<SaveGames>? {
-        return this.savedGamesDao.getAllSavedGames()
+    private suspend fun allPlayedGames(): List<SaveGames>? {
+        return this.savedGamesDao.getPlayedGames()
+    }
+    private suspend fun allWishedToPlayGames(): List<SaveGames>? {
+        return this.savedGamesDao.getWishedToPlayGames()
     }
     private suspend fun gameById(id: Int): SaveGames? {
         return this.savedGamesDao.getSavedGameById(id)
