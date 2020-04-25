@@ -101,7 +101,6 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
         }
         val list: MutableList<PlatformDetails>? = getCachedItems(dataList)
         launch {
-            iPlatformDetailsDao.clearPlatformDetails()
             list?.let {
                 iPlatformDetailsDao.insert(it)
                 it.clear()

@@ -27,4 +27,8 @@
     <string name="where_to_buy">Where To Buy</string>
     <string name="store_name">Store Name</string>
     <string name="game_saved">Saved Successfully</string>
+    <string name="header">Header</string>
+    <string name="player_name">Player Name</string>
+    <string name="wish_game_will_be_shown_here">Wish List Will Be Shown Here</string>
+    <string name="played_game_list_will_be_shown_here">Played Game List Will Be Shown Here</string>
 </resources>

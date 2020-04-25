@@ -17,8 +17,6 @@ import javax.inject.Singleton
 object GamerGeekNetworkingModule {
     private const val READ_TIMEOUT_TIME: Long = 1000
     private const val CONNECTION_TIMEOUT_TIME: Long = 1000
-    private const val API_KEY = "31a50ea584msh31135fa52e8cf43p1e368fjsn03a55f8d0822"
-    private const val APP_NAME = "GamersGeek"
     @Singleton
     @Provides
     @JvmStatic

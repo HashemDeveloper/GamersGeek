@@ -39,7 +39,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             app:floatingSearch_close_search_on_keyboard_dismiss="true"
             app:floatingSearch_leftActionMode="showHamburger"
             app:floatingSearch_searchHint="@string/action_search"

@@ -13,6 +13,8 @@ data class SaveGames(
     @PrimaryKey
     @ColumnInfo(name = "id")
     var gameId: Int,
+    @ColumnInfo(name = "name")
+    var name: String,
     @ColumnInfo(name = "date")
     var date: OffsetDateTime,
     @ColumnInfo(name = "played")
