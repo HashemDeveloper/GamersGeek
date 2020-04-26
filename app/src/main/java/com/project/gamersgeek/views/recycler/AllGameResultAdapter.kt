@@ -2,7 +2,6 @@ package com.project.gamersgeek.views.recycler
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -11,8 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,18 +18,18 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.allattentionhere.autoplayvideos.AAH_CustomViewHolder
 import com.allattentionhere.autoplayvideos.AAH_VideoImage
+import com.google.android.material.card.MaterialCardView
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.GameGenericPlatform
 import com.project.gamersgeek.models.platforms.GenericPlatformDetails
 import com.project.gamersgeek.utils.GlideApp
 
-class AllGameResultAdapter constructor(private val gameResultClickListener: GameResultClickListener,
-                                       private val gamePlatformIconClickListener: PlatformIconAdapter.PlatformIconClickListener): PagedListAdapter<Results, AllGameResultAdapter.GameVideoViewHolder>(
+class AllGameResultAdapter constructor(private val gameResultClickListener: GameResultClickListener): PagedListAdapter<Results, AllGameResultAdapter.GameVideoViewHolder>(
     GAME_RESULT_COMPARATOR){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameVideoViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.recycler_all_game_items_layout, parent, false)
-        return GameVideoViewHolder(view, parent.context, this.gamePlatformIconClickListener)
+        return GameVideoViewHolder(view, parent.context)
     }
 
     override fun onBindViewHolder(holder: GameVideoViewHolder, position: Int) {
@@ -76,6 +74,10 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
             val gameResults: Results = holder.itemView.tag as Results
             this.gameResultClickListener.onVideoClicked(gameResults, VideoItemClickType.EXPAND_VIDEO)
         }
+        holder.getCardView()?.setOnClickListener {
+            val gameResults: Results = holder.itemView.tag as Results
+            this.gameResultClickListener.onVideoClicked(gameResults, VideoItemClickType.EXPAND_VIDEO)
+        }
     }
 
     override fun onViewDetachedFromWindow(holder: GameVideoViewHolder) {
@@ -97,8 +99,7 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
         }
     }
 
-    inner class GameVideoViewHolder constructor(private val view: View, private val context: Context,
-                                                private val gamePlatformIconClickListener: PlatformIconAdapter.PlatformIconClickListener): AAH_CustomViewHolder(view) {
+    inner class GameVideoViewHolder constructor(private val view: View, private val context: Context): AAH_CustomViewHolder(view) {
         private var volumeBt: AppCompatImageView?= null
         private var playBackBt: AppCompatImageView?= null
         private var iconRecyclerView: RecyclerView?= null
@@ -107,6 +108,8 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
         private var videoImageView: AAH_VideoImage?= null
         private var fadeInFadeOutAnim: Animation?= null
         private var fadeOutFadeInAnim: Animation?= null
+        private var cardView: MaterialCardView?= null
+        private var container: ConstraintLayout?= null
         var isMute: Boolean?= false
         private var iconAdapter: PlatformIconAdapter?= null
 
@@ -116,8 +119,10 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
             this.iconRecyclerView = this.view.findViewById(R.id.game_icon_list_view_id)
             this.expandVideoBt = this.view.findViewById(R.id.all_game_expand_video_bt_id)
             this.videoImageView = this.view.findViewById(R.id.all_game_video_view_id)
+            this.cardView = this.view.findViewById(R.id.all_games_items_card_view_id)
+            this.container = this.view.findViewById(R.id.all_all_games_item_container_id)
             this.iconRecyclerView?.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-            this.iconAdapter = PlatformIconAdapter(this.gamePlatformIconClickListener)
+            this.iconAdapter = PlatformIconAdapter()
             this.iconRecyclerView?.adapter = this.iconAdapter
             this.gameNameView = this.view.findViewById(R.id.game_title_id)
         }
@@ -204,6 +209,9 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
 
         fun getExpandVideoBt(): AppCompatImageView? {
             return this.expandVideoBt
+        }
+        fun getCardView(): MaterialCardView? {
+            return this.cardView
         }
     }
 
