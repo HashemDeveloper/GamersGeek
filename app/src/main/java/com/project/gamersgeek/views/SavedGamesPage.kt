@@ -2,13 +2,16 @@ package com.project.gamersgeek.views
 
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +30,7 @@ import com.project.gamersgeek.views.recycler.items.DividerHeader
 import com.project.gamersgeek.views.recycler.items.GamePlayed
 import com.project.gamersgeek.views.recycler.items.GameProfileHeader
 import com.project.gamersgeek.views.recycler.items.WishToPlay
+import com.project.gamersgeek.views.widgets.GamersGeekBottomSheet
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_saved_games_page.*
 import timber.log.Timber
@@ -34,6 +38,7 @@ import javax.inject.Inject
 
 class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageListener,
     SharedPreferences.OnSharedPreferenceChangeListener, GamePlayedOrNotAdapter.GamePlayedOrNotListener {
+    private var gamersGeekBottomSheet: GamersGeekBottomSheet?= null
     private var savedGameAdapter: SavedGamesAdapter?= null
     private val list: MutableList<Any> = arrayListOf()
     var alertDialog: AlertDialog?= null
@@ -142,7 +147,22 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
     }
 
     override fun onShopBtClicked(storeList: List<Store>?) {
+        storeList?.let { list ->
+            this.gamersGeekBottomSheet = GamersGeekBottomSheet(list)
+            this.gamersGeekBottomSheet?.show(this.activity!!.supportFragmentManager, this.gamersGeekBottomSheet?.tag)
+            this.gamersGeekBottomSheet?.getClickObserver()?.observe(activity!!, shopListClickListener())
+        }
+    }
 
+    private fun shopListClickListener(): Observer<String> {
+        return Observer {
+            val storeUrl: String = it
+            if (storeUrl.isNotEmpty()) {
+                val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse(storeUrl))
+                startActivity(browseIntent)
+                this.gamersGeekBottomSheet?.dismiss()
+            }
+        }
     }
 
     override fun imageClicked(gameResult: Results?) {
