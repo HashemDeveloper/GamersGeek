@@ -72,7 +72,7 @@ class GamePlayedOrNotAdapter(private val isNightMode: Boolean,
                 this.gameTitleView?.setTextColor(ContextCompat.getColor(this.context, R.color.white))
             } else {
                 this.gameTitleView?.setTextColor(ContextCompat.getColor(this.context, R.color.white))
-                this.shopBt?.setColorFilter(ContextCompat.getColor(this.context, R.color.red), PorterDuff.Mode.MULTIPLY)
+//                this.shopBt?.setColorFilter(ContextCompat.getColor(this.context, R.color.red), PorterDuff.Mode.MULTIPLY)
             }
         }
         override fun bindView(item: SaveGames) {

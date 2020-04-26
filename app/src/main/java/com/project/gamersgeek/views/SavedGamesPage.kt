@@ -33,7 +33,6 @@ import com.project.gamersgeek.views.recycler.items.WishToPlay
 import com.project.gamersgeek.views.widgets.GamersGeekBottomSheet
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_saved_games_page.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageListener,
@@ -44,6 +43,7 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
     var alertDialog: AlertDialog?= null
     private var gamePlayed: GamePlayed?= null
     private var wishToPlay: WishToPlay?= null
+    private var isNightMode = false
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val savedGamesViewModel: SavedGamesViewModel by viewModels {
@@ -61,9 +61,9 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
         this.savedGamesViewModel.setupSharedPrefListener(this)
         this.gamePlayed = this.savedGamesViewModel.getGamePlayedList()
         this.wishToPlay = this.savedGamesViewModel.getWishToPlayList()
-        val isNightMode: Boolean = this.savedGamesViewModel.getIsNightModeOn()
+        this.isNightMode = this.savedGamesViewModel.getIsNightModeOn()
         this.savedGameAdapter = SavedGamesAdapter(this, this)
-        this.savedGameAdapter?.setIsNightMode(isNightMode)
+        this.savedGameAdapter?.setIsNightMode(this.isNightMode)
         fragment_saved_game_recycler_id.layoutManager = LinearLayoutManager(this.context!!)
         fragment_saved_game_recycler_id.adapter = this.savedGameAdapter
         val platformHeader: GameProfileHeader? = this.savedGamesViewModel.getPlatformImage()
@@ -148,7 +148,7 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
 
     override fun onShopBtClicked(storeList: List<Store>?) {
         storeList?.let { list ->
-            this.gamersGeekBottomSheet = GamersGeekBottomSheet(list)
+            this.gamersGeekBottomSheet = GamersGeekBottomSheet(list, this.isNightMode)
             this.gamersGeekBottomSheet?.show(this.activity!!.supportFragmentManager, this.gamersGeekBottomSheet?.tag)
             this.gamersGeekBottomSheet?.getClickObserver()?.observe(activity!!, shopListClickListener())
         }

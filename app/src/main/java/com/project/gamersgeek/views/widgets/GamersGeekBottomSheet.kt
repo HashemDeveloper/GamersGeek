@@ -16,7 +16,10 @@ import com.project.gamersgeek.views.recycler.BottomSheetShopListAdapter
 import com.project.gamersgeek.views.recycler.items.StoreListAdapter
 import kotlinx.android.synthetic.main.bottom_sheet_shop_list_layout.*
 
-class GamersGeekBottomSheet constructor(private val data: List<Store>): BottomSheetDialogFragment(), StoreListAdapter.StoreListClickListener {
+class GamersGeekBottomSheet(
+    private val data: List<Store>,
+    nightMode: Boolean
+): BottomSheetDialogFragment(), StoreListAdapter.StoreListClickListener {
     private var shopListAdapter: BottomSheetShopListAdapter?= null
     private val clickLiveDataObserver: MutableLiveData<String> = MutableLiveData()
     override fun onCreateView(

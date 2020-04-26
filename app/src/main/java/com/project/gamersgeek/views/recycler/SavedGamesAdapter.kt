@@ -124,13 +124,8 @@ class SavedGamesAdapter (private val listener: SavedGamePageListener, private va
         }
 
         override fun bindView(item: GameProfileHeader) {
-            val circularProgressDrawable: CircularProgressDrawable = getCircularProgressDr(this.context)
-            circularProgressDrawable.start()
-            this.platformImageView?.let { platformView ->
-                GlideApp.with(this.view)
-                    .load(item.gamePlatformImage)
-                    .placeholder(circularProgressDrawable)
-                    .into(platformView)
+            item.gamePlatformImage?.let { imageUri ->
+                this.platformImageView?.setImageResource(imageUri)
             }
             this.platformTitle?.let { titleView ->
                 val text = "${item.platformName} Gamer"
