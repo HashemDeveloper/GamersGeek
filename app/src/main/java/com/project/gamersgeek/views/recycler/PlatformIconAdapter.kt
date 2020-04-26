@@ -8,17 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.platforms.GenericPlatformDetails
 
-class PlatformIconAdapter constructor(private val listener: PlatformIconClickListener): RecyclerView.Adapter<BaseViewHolder<*>>(){
+class PlatformIconAdapter: RecyclerView.Adapter<BaseViewHolder<*>>(){
     private var iconData: MutableList<GenericPlatformDetails> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val iconView: View = LayoutInflater.from(parent.context).inflate(R.layout.platform_icons_item, parent, false)
-        val viewHolder = PlatformIconViewHolder(iconView)
-        viewHolder.getIconView()?.setOnClickListener {
-            val platform: GenericPlatformDetails = viewHolder.itemView.tag as GenericPlatformDetails
-            this.listener.onPlatformIconClicked(platform)
-        }
-        return viewHolder
+        return PlatformIconViewHolder(iconView)
     }
 
     override fun getItemCount(): Int {
@@ -77,10 +72,6 @@ class PlatformIconAdapter constructor(private val listener: PlatformIconClickLis
                 }
             }
         }
-
-        fun getIconView(): AppCompatImageView? {
-            return this.iconView
-        }
         private fun setupIcons(iconId: Int, isPlatformExists: Boolean) {
             if (isPlatformExists) {
                 this.iconView?.visibility = View.VISIBLE
@@ -89,8 +80,5 @@ class PlatformIconAdapter constructor(private val listener: PlatformIconClickLis
                 this.iconView?.visibility = View.GONE
             }
         }
-    }
-    interface PlatformIconClickListener {
-        fun onPlatformIconClicked(platform: GenericPlatformDetails)
     }
 }

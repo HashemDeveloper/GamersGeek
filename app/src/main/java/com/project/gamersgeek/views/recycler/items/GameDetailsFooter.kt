@@ -1,6 +1,7 @@
 package com.project.gamersgeek.views.recycler.items
 
 import android.os.Parcelable
+import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.games.Store
 import kotlinx.android.parcel.Parcelize
 
@@ -10,6 +11,7 @@ data class GameDetailsFooter(
     val name: String?,
     val websiteUrl: String?,
     val esrbRating: String?,
+    var gameResult: Results?,
     val storeList: List<Store>?,
     val backgroundImage1: String,
     val backgroundImage2: String): Parcelable

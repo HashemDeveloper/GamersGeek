@@ -2,19 +2,25 @@ package com.project.gamersgeek.views
 
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
+import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.games.Store
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.viewmodels.SavedGamesViewModel
@@ -24,17 +30,20 @@ import com.project.gamersgeek.views.recycler.items.DividerHeader
 import com.project.gamersgeek.views.recycler.items.GamePlayed
 import com.project.gamersgeek.views.recycler.items.GameProfileHeader
 import com.project.gamersgeek.views.recycler.items.WishToPlay
+import com.project.gamersgeek.views.widgets.GamersGeekBottomSheet
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_saved_games_page.*
 import javax.inject.Inject
 
 class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageListener,
     SharedPreferences.OnSharedPreferenceChangeListener, GamePlayedOrNotAdapter.GamePlayedOrNotListener {
+    private var gamersGeekBottomSheet: GamersGeekBottomSheet?= null
     private var savedGameAdapter: SavedGamesAdapter?= null
     private val list: MutableList<Any> = arrayListOf()
     var alertDialog: AlertDialog?= null
     private var gamePlayed: GamePlayed?= null
     private var wishToPlay: WishToPlay?= null
+    private var isNightMode = false
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val savedGamesViewModel: SavedGamesViewModel by viewModels {
@@ -52,9 +61,9 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
         this.savedGamesViewModel.setupSharedPrefListener(this)
         this.gamePlayed = this.savedGamesViewModel.getGamePlayedList()
         this.wishToPlay = this.savedGamesViewModel.getWishToPlayList()
-        val isNightMode: Boolean = this.savedGamesViewModel.getIsNightModeOn()
+        this.isNightMode = this.savedGamesViewModel.getIsNightModeOn()
         this.savedGameAdapter = SavedGamesAdapter(this, this)
-        this.savedGameAdapter?.setIsNightMode(isNightMode)
+        this.savedGameAdapter?.setIsNightMode(this.isNightMode)
         fragment_saved_game_recycler_id.layoutManager = LinearLayoutManager(this.context!!)
         fragment_saved_game_recycler_id.adapter = this.savedGameAdapter
         val platformHeader: GameProfileHeader? = this.savedGamesViewModel.getPlatformImage()
@@ -138,6 +147,30 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
     }
 
     override fun onShopBtClicked(storeList: List<Store>?) {
+        storeList?.let { list ->
+            this.gamersGeekBottomSheet = GamersGeekBottomSheet(list, this.isNightMode)
+            this.gamersGeekBottomSheet?.show(this.activity!!.supportFragmentManager, this.gamersGeekBottomSheet?.tag)
+            this.gamersGeekBottomSheet?.getClickObserver()?.observe(activity!!, shopListClickListener())
+        }
+    }
 
+    private fun shopListClickListener(): Observer<String> {
+        return Observer {
+            val storeUrl: String = it
+            if (storeUrl.isNotEmpty()) {
+                val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse(storeUrl))
+                startActivity(browseIntent)
+                this.gamersGeekBottomSheet?.dismiss()
+            }
+        }
+    }
+
+    override fun imageClicked(gameResult: Results?) {
+        gameResult?.let {
+            val gameDetailPageRouter: SavedGamesPageDirections.ActionBottomNavSavedGameIdToGameDetailsPage2 = SavedGamesPageDirections.actionBottomNavSavedGameIdToGameDetailsPage2(it)
+            val gameResultController: NavController = findNavController()
+            gameResultController.navigate(gameDetailPageRouter)
+            this.list.clear()
+        }
     }
 }

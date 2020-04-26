@@ -39,7 +39,12 @@
         android:id="@+id/bottom_nav_saved_game_id"
         android:name="com.project.gamersgeek.views.SavedGamesPage"
         android:label="fragment_saved_games_page"
-        tools:layout="@layout/fragment_saved_games_page" />
+        tools:layout="@layout/fragment_saved_games_page" >
+        <action
+            android:id="@+id/action_bottom_nav_saved_game_id_to_gameDetailsPage2"
+            app:destination="@id/gameDetailsPage" />
+
+    </fragment>
     <fragment
         android:id="@+id/gameDetailsPage"
         android:name="com.project.gamersgeek.views.GameDetailsPage"

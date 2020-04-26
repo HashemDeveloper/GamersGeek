@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.google.android.material.textview.MaterialTextView
 import com.project.gamersgeek.R
+import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.games.SaveGames
 import com.project.gamersgeek.models.games.Store
 import com.project.gamersgeek.models.games.StoreList
@@ -25,6 +26,10 @@ class GamePlayedOrNotAdapter(private val isNightMode: Boolean,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_saved_game_page_played_item_layout, parent, false)
         val viewHolder = GamePlayedItemViewHolder(view, parent.context, this.isNightMode, this.isPlayed)
+        viewHolder.getImageView()?.setOnClickListener {
+            val saveGames: SaveGames = viewHolder.itemView.tag as SaveGames
+            this.listener.imageClicked(saveGames.gameResult)
+        }
         viewHolder.getShopBt()?.setOnClickListener {
             val saveGames: SaveGames = viewHolder.itemView.tag as SaveGames
             this.listener.onShopBtClicked(saveGames.storeList)
@@ -67,7 +72,7 @@ class GamePlayedOrNotAdapter(private val isNightMode: Boolean,
                 this.gameTitleView?.setTextColor(ContextCompat.getColor(this.context, R.color.white))
             } else {
                 this.gameTitleView?.setTextColor(ContextCompat.getColor(this.context, R.color.white))
-                this.shopBt?.setColorFilter(ContextCompat.getColor(this.context, R.color.red), PorterDuff.Mode.MULTIPLY)
+//                this.shopBt?.setColorFilter(ContextCompat.getColor(this.context, R.color.red), PorterDuff.Mode.MULTIPLY)
             }
         }
         override fun bindView(item: SaveGames) {
@@ -84,6 +89,9 @@ class GamePlayedOrNotAdapter(private val isNightMode: Boolean,
                 titleView.text = item.name
             }
         }
+        fun getImageView(): AppCompatImageView? {
+            return this.imageView
+        }
         fun getShopBt(): AppCompatImageView? {
             return this.shopBt
         }
@@ -97,5 +105,6 @@ class GamePlayedOrNotAdapter(private val isNightMode: Boolean,
     }
     interface GamePlayedOrNotListener {
         fun onShopBtClicked(storeList: List<Store>?)
+        fun imageClicked(gameResult: Results?)
     }
 }

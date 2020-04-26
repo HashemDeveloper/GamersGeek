@@ -2,10 +2,6 @@ package com.project.gamersgeek.views.recycler
 
 import android.content.Context
 import android.graphics.Color
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.project.gamersgeek.R
+import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.CategorizedGamePlatforms
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.EsrbRatingType
@@ -24,7 +21,10 @@ import com.project.gamersgeek.views.recycler.items.*
 import uk.co.deanwild.flowtextview.FlowTextView
 
 
-class GameDetailsItemAdapter(private val gameDetailsClickListener: GameDetailsClickListener): RecyclerView.Adapter<BaseViewHolder<*>>() {
+class GameDetailsItemAdapter(
+    private val gameDetailsClickListener: GameDetailsClickListener,
+    private val gameDetails: Results
+): RecyclerView.Adapter<BaseViewHolder<*>>() {
     private var data: MutableList<Any> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
@@ -55,6 +55,7 @@ class GameDetailsItemAdapter(private val gameDetailsClickListener: GameDetailsCl
                footerViewHolder.getSaveGameBt()?.let { bt ->
                    bt.setOnClickListener {
                        val gameDetailsFooter: GameDetailsFooter = footerViewHolder.itemView.tag as GameDetailsFooter
+                       gameDetailsFooter.gameResult = this.gameDetails
                        this.gameDetailsClickListener.onGameDetailsItemClicked(gameDetailsFooter)
                    }
                }

@@ -19,6 +19,8 @@ data class SaveGames(
     var date: OffsetDateTime,
     @ColumnInfo(name = "played")
     var isPlayed: Boolean,
+    @ColumnInfo(name = "game_results")
+    var gameResult: Results?,
     @ColumnInfo(name = "store_list")
     val storeList: List<Store>? = arrayListOf(),
     @ColumnInfo(name = "background_image")

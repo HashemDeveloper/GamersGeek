@@ -31,7 +31,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClickListener, PlatformIconAdapter.PlatformIconClickListener{
+class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClickListener {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private var mLastQuery: String = ""
@@ -71,7 +71,7 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
         }
     }
     private fun setupVideoRecyclerView() {
-        val allGameAdapter = AllGameResultAdapter(this, this)
+        val allGameAdapter = AllGameResultAdapter(this)
         all_game_recycler_view_id.layoutManager = LinearLayoutManager(this.context)
         all_game_recycler_view_id.setActivity(activity)
         all_game_recycler_view_id.setPlayOnlyFirstVideo(true)
@@ -176,10 +176,6 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
                 gameResultController.navigate(gameDetailPageRouter)
             }
         }
-    }
-
-    override fun onPlatformIconClicked(platform: GenericPlatformDetails) {
-        Timber.e("Platform: ${platform.name}")
     }
 
     override fun onDestroy() {
