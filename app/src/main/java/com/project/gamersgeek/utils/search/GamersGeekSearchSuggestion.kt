@@ -3,6 +3,10 @@ package com.project.gamersgeek.utils.search
 import android.widget.Filter
 import com.project.gamersgeek.data.local.IGameResultRepo
 import com.project.gamersgeek.data.local.ISuggestionRepo
+import com.project.gamersgeek.data.remote.GamersGeekRemoteRepo
+import com.project.gamersgeek.data.remote.IRawgGameDbApi
+import com.project.gamersgeek.data.remote.IRawgGamerGeekApiHelper
+import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.games.Results
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,16 +21,19 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
     lateinit var iGameResultRepo: IGameResultRepo
     @Inject
     lateinit var suggestionRepo: ISuggestionRepo
+    @Inject
+    lateinit var iGamersGeekRemoteRepo: IRawgGamerGeekApiHelper
+
 
     override fun findSuggestions(query: String, limit: Int, searchSuggestionListener: SearchSuggestionListener) {
         object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val suggestionList: MutableList<GameResultWrapper> = arrayListOf()
-                if (!(constraint == null || constraint.isEmpty())) {
-                    getSuggestionList()?.let { list ->
+                if (!(constraint == null || constraint.isEmpty()) && constraint.length >= 3) {
+                    getSuggestionList(constraint)?.let { list ->
                         for (gameResult: Results in list) {
-                            if (gameResult.name.startsWith(constraint.toString(), true)) {
-                                val resultWrapper = GameResultWrapper(0, gameResult.name, false, null)
+                            if (gameResult.name!!.startsWith(constraint.toString(), true)) {
+                                val resultWrapper = GameResultWrapper(0, gameResult.name!!, false, null)
                                 suggestionList.add(resultWrapper)
                                 if (limit != -1 && suggestionList.size == limit) {
                                     break
@@ -59,8 +66,9 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
         return this.suggestionRepo.getSearchHistory()
     }
 
-    private fun getSuggestionList(): List<Results>? {
-        return this.iGameResultRepo.getAllGameResult();
+    private fun getSuggestionList(value: CharSequence): List<Results>? {
+        val gameListRes: GameListRes? = this.iGamersGeekRemoteRepo.onSearch(value.toString())
+        return gameListRes?.results
     }
 
     interface SearchSuggestionListener {

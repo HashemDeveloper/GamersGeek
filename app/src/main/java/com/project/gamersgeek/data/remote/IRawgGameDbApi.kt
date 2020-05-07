@@ -4,6 +4,7 @@ import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.models.stores.GameStoreToBuy
+import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -26,6 +27,9 @@ interface IRawgGameDbApi {
     @Headers("Content-Type: application/json,", "User-Agent: $APP_NAME")
     @GET("api/games/{game_slug}/stores")
     suspend fun getListOfWhereToBuy(@Path("game_slug") gameSlug: String): Response<GameStoreToBuy>
+    @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
+    @GET("api/games")
+    suspend fun searchGames(@Query("search") value: String): Response<GameListRes>
 
     companion object {
         private const val APP_NAME = "GamersGeek"

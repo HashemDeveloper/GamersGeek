@@ -67,7 +67,7 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
                 val jobGameResults: Deferred<Results> = async { getGameResultBlocked()!! }
                 val results: Results? = jobGameResults.await()
                 if (results != null) {
-                    backgroundImage = results.backgroundImage
+                    backgroundImage = results.backgroundImage!!
                 }
             }
         }

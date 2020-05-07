@@ -8,13 +8,13 @@ import java.lang.reflect.Type
 
 class GameRatingTypeConverter {
     @TypeConverter
-    fun stringToRating(json: String): List<Rating> {
+    fun stringToRating(json: String?): List<Rating>? {
         val gson = Gson()
         val type: Type = object : TypeToken<List<Rating>>(){}.type
         return gson.fromJson(json, type);
     }
     @TypeConverter
-    fun ratingToString(ratings: List<Rating>): String {
+    fun ratingToString(ratings: List<Rating>?): String {
         val gson = Gson()
         val type: Type = object : TypeToken<List<Rating>>(){}.type
         return gson.toJson(ratings, type)

@@ -8,13 +8,13 @@ import java.lang.reflect.Type
 
 class AddedByStatusTypeConverter {
     @TypeConverter
-    fun stringToAddedByStatus(json: String): AddedByStatus {
+    fun stringToAddedByStatus(json: String?): AddedByStatus? {
         val gson = Gson()
         val type: Type = object : TypeToken<AddedByStatus>(){}.type
         return gson.fromJson(json, type)
     }
     @TypeConverter
-    fun addedByStatusToString(addedByStatus: AddedByStatus): String {
+    fun addedByStatusToString(addedByStatus: AddedByStatus?): String {
         val gson = Gson()
         val type: Type = object : TypeToken<AddedByStatus>(){}.type
         return gson.toJson(addedByStatus, type)

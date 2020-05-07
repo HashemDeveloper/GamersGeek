@@ -33,7 +33,7 @@ data class GameListRes(
     var results: @RawValue List<Results>? = arrayListOf(),
     @SerializedName("seo_title")
     @Expose
-    var seoTitle: String,
+    var seoTitle: String?,
     @SerializedName("seo_description")
     @Expose
     var seoDescription: String,
@@ -42,7 +42,7 @@ data class GameListRes(
     var seoKeywords: String,
     @SerializedName("seo_h1")
     @Expose
-    var categoryType: String,
+    var categoryType: String?,
     @SerializedName("noindex")
     @Expose
     var noIndex: Boolean,

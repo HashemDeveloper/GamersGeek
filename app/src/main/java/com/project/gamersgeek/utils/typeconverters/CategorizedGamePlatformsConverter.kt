@@ -8,13 +8,13 @@ import java.lang.reflect.Type
 
 class CategorizedGamePlatformsConverter {
     @TypeConverter
-    fun stringToCategorizedGamePlatforms(json: String): List<CategorizedGamePlatforms> {
+    fun stringToCategorizedGamePlatforms(json: String?): List<CategorizedGamePlatforms>? {
         val gson = Gson()
         val type: Type = object : TypeToken<List<CategorizedGamePlatforms>>(){}.type
         return gson.fromJson(json, type)
     }
     @TypeConverter
-    fun categorizedGamePlatformsToString(cateGamePlatList: List<CategorizedGamePlatforms>): String {
+    fun categorizedGamePlatformsToString(cateGamePlatList: List<CategorizedGamePlatforms>?): String {
         val gson = Gson()
         val type: Type = object : TypeToken<List<CategorizedGamePlatforms>>(){}.type
         return gson.toJson(cateGamePlatList, type)
