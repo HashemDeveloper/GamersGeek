@@ -10,14 +10,14 @@ import kotlinx.android.parcel.RawValue
 data class Store(
     @SerializedName("id")
     @Expose
-    var id: Int,
+    var id: Int?,
     @SerializedName("store")
     @Expose
-    var storeList: @RawValue StoreList,
+    var storeList: @RawValue StoreList?,
     @SerializedName("url_en")
     @Expose
-    var englishUrl: String,
+    var englishUrl: String?,
     @SerializedName("url_ru")
     @Expose
-    var russianUrl: String
+    var russianUrl: String?
 ): Parcelable
