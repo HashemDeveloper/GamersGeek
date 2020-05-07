@@ -25,15 +25,15 @@ data class Results(
     @ColumnInfo(name = "slug")
     @SerializedName("slug")
     @Expose
-    var slug: String,
+    var slug: String?,
     @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
-    var name: String,
+    var name: String?,
     @ColumnInfo(name = "released")
     @SerializedName("released")
     @Expose
-    var released: String,
+    var released: String?,
     @ColumnInfo(name = "tba")
     @SerializedName("tba")
     @Expose
@@ -41,15 +41,15 @@ data class Results(
     @ColumnInfo(name = "background_image")
     @SerializedName("background_image")
     @Expose
-    var backgroundImage: String,
+    var backgroundImage: String?,
     @ColumnInfo(name = "rating")
     @SerializedName("rating")
     @Expose
-    var rating: Double,
+    var rating: Double?,
     @ColumnInfo(name = "rating_top")
     @SerializedName("rating_top")
     @Expose
-    var ratingTop: Int,
+    var ratingTop: Int?,
     @ColumnInfo(name = "ratings")
     @SerializedName("ratings")
     @Expose
@@ -57,43 +57,44 @@ data class Results(
     @ColumnInfo(name = "ratings_count")
     @SerializedName("ratings_count")
     @Expose
-    var ratingCount: Int,
+    var ratingCount: Int?,
     @ColumnInfo(name = "reviews_text_count")
     @SerializedName("reviews_text_count")
     @Expose
-    var reviewsTextCount: Int,
+    var reviewsTextCount: Int?,
     @ColumnInfo(name = "added")
     @SerializedName("added")
     @Expose
-    var added: Int,
+    var added: Int?,
     @ColumnInfo(name = "added_by_status")
     @SerializedName("added_by_status")
     @Expose
-    var addedByStatus: @RawValue AddedByStatus,
+    @Nullable
+    var addedByStatus: @RawValue AddedByStatus?,
     @ColumnInfo(name = "metacritic")
     @SerializedName("metacritic")
     @Expose
-    var metaCritic: Int,
+    var metaCritic: Int?,
     @ColumnInfo(name = "playtime")
     @SerializedName("playtime")
     @Expose
-    var playTime: Long,
+    var playTime: Long?,
     @ColumnInfo(name = "suggestions_count")
     @SerializedName("suggestions_count")
     @Expose
-    var suggestionsCount: Int,
+    var suggestionsCount: Int?,
     @ColumnInfo(name = "reviews_count")
     @SerializedName("reviews_count")
     @Expose
-    var reviewsCount: Int,
+    var reviewsCount: Int?,
     @ColumnInfo(name = "saturated_color")
     @SerializedName("saturated_color")
     @Expose
-    var saturatedColor: String,
+    var saturatedColor: String?,
     @ColumnInfo(name = "dominant_color")
     @SerializedName("dominant_color")
     @Expose
-    var dominentColor: String,
+    var dominentColor: String?,
     @ColumnInfo(name = "platforms")
     @SerializedName("platforms")
     @Expose

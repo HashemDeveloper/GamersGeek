@@ -9,7 +9,7 @@ class TimeConverter {
     private val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
 
     @TypeConverter
-    fun toOffSetDateTime(dateVal: String?): OffsetDateTime {
+    fun toOffSetDateTime(dateVal: String?): OffsetDateTime? {
         return dateTimeFormatter.parse(dateVal, OffsetDateTime::from)
     }
 
