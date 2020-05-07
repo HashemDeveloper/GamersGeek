@@ -3,6 +3,7 @@ package com.project.gamersgeek.views.recycler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,8 +21,19 @@ class BottomSheetShopListAdapter constructor(private val listener: StoreListAdap
         storeListViewHolder.getShopListContainer()?.let { container ->
             container.setOnClickListener { click ->
                 val store: Store = storeListViewHolder.itemView.tag as Store
-                val url: String = store.englishUrl
-                this.listener.onStoreClicked(url)
+                val storeName: String = store.storeList?.name ?: ""
+                if (store.englishUrl != null && store.englishUrl?.isNotEmpty()!!) {
+                    store.englishUrl.let {url ->
+                        this.listener.onStoreClicked(url!!)
+                    }
+                } else {
+                    val message: String = if (storeName.isNotEmpty()) {
+                        "Not able to navigate to $storeName for this game."
+                    } else {
+                        "Not able to navigate."
+                    }
+                    Toast.makeText(parent.context, message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
         return storeListViewHolder
@@ -54,8 +66,8 @@ class BottomSheetShopListAdapter constructor(private val listener: StoreListAdap
 
         override fun bindView(item: Store) {
             this.itemView.tag = item
-            val storeName: String = item.storeList.name
-            val storeSlug: String = item.storeList.slug
+            val storeName: String = item.storeList?.name!!
+            val storeSlug: String = item.storeList?.slug!!
             when (storeSlug) {
                 "steam" -> {
                     setupIcons(R.drawable.steam_store_black_n_white, storeName, true)
