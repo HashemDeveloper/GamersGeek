@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.GenericPlatformDetails
 import com.project.gamersgeek.utils.Constants
+import com.project.gamersgeek.utils.paging.NetworkState
 import com.project.gamersgeek.utils.search.GameResultWrapper
 import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
@@ -27,6 +29,7 @@ import com.project.gamersgeek.views.recycler.AllGameResultAdapter
 import com.project.gamersgeek.views.recycler.PlatformIconAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_all_games_page.*
+import kotlinx.android.synthetic.main.fragment_platforms_page.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -71,6 +74,7 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
         }
     }
     private fun setupVideoRecyclerView() {
+        all_game_swipe_refresh_layout_id?.isRefreshing = true
         val allGameAdapter = AllGameResultAdapter(this)
         all_game_recycler_view_id.layoutManager = LinearLayoutManager(this.context)
         all_game_recycler_view_id.setActivity(activity)
@@ -83,10 +87,21 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
         this.allGamesPageViewModel.textFilterLiveData.value = null
         this.allGamesPageViewModel.gameResultLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null && it.size != 0) {
+                all_game_swipe_refresh_layout_id?.isRefreshing = false
                 allGameAdapter.submitList(it)
             }
         })
+        swipeToRefresh()
         setupSearchFun(allGameAdapter)
+    }
+
+    private fun swipeToRefresh() {
+        this.allGamesPageViewModel.refreshState.observe(viewLifecycleOwner) {
+            all_game_swipe_refresh_layout_id.isRefreshing = it == NetworkState.LOADING
+        }
+        all_game_swipe_refresh_layout_id?.setOnRefreshListener {
+            this.allGamesPageViewModel.refresh()
+        }
     }
 
     private fun setupSearchFun(allGameAdapter: AllGameResultAdapter) {

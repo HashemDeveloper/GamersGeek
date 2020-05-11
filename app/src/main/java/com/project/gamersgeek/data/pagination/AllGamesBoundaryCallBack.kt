@@ -111,9 +111,9 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
                 gamerIRawgGameDbApi.fetchAllGames(1, PAGE_SIZE, "")
             }, onSuccess = {
                 deleteAndSaveData(it.results)
-                networkState.value = NetworkState.LOADED
+                networkState.postValue(NetworkState.LOADED)
             }, onError = {
-                networkState.value = NetworkState.error(it)
+                networkState.postValue(NetworkState.error(it))
                 if (BuildConfig.DEBUG) {
                     Timber.d("Failed to refresh data: $it")
                 }

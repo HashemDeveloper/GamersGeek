@@ -48,7 +48,7 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     val gameResultLiveData by lazy {
         gameResultList.pagedList
     }
-    val gameResultRefreshState by lazy {
+    val refreshState by lazy {
         gameResultList.refreshState
     }
 
