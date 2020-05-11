@@ -14,7 +14,7 @@ import retrofit2.http.Query
 interface IRawgGameDbApi {
     @Headers("Content-Type: application/json","User-Agent: $APP_NAME")
     @GET("api/games")
-    suspend fun fetchAllGames(@Query("page") page: Int, @Query("page_size") pageSize: Int): Response<GameListRes>
+    suspend fun fetchAllGames(@Query("page") page: Int, @Query("page_size") pageSize: Int, @Query("ordering") ordering: String): Response<GameListRes>
     @Headers("Content-Type: application/json","User-Agent: $APP_NAME")
     @GET("api/games/{id}")
     suspend fun fetchGameById(@Path("id") id: Int): Response<GamesRes>

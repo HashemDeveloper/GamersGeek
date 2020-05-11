@@ -49,7 +49,7 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
             override fun run(requestCallback: Request.Callback) {
                 launch {
                     fetchAndSaveData(call = {
-                        gamerIRawgGameDbApi.fetchAllGames(pageCount, PAGE_SIZE)
+                        gamerIRawgGameDbApi.fetchAllGames(pageCount, PAGE_SIZE, "")
                     }, onSuccess = {
                         saveData(it.results, requestCallback)
                         setupPageCount(it)
@@ -108,7 +108,7 @@ class AllGamesBoundaryCallBack @Inject constructor(private val gameResultDao: IG
         networkState.value = NetworkState.LOADING
         launch {
             fetchAndSaveData(call = {
-                gamerIRawgGameDbApi.fetchAllGames(1, PAGE_SIZE)
+                gamerIRawgGameDbApi.fetchAllGames(1, PAGE_SIZE, "")
             }, onSuccess = {
                 deleteAndSaveData(it.results)
                 networkState.value = NetworkState.LOADED

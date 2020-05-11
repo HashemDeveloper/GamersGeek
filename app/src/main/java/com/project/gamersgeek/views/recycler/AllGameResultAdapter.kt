@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -100,6 +101,7 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
     }
 
     inner class GameVideoViewHolder constructor(private val view: View, private val context: Context): AAH_CustomViewHolder(view) {
+        private var bgImageView: AppCompatImageView?= null
         private var volumeBt: AppCompatImageView?= null
         private var playBackBt: AppCompatImageView?= null
         private var iconRecyclerView: RecyclerView?= null
@@ -114,6 +116,7 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
         private var iconAdapter: PlatformIconAdapter?= null
 
         init {
+            this.bgImageView = this.view.findViewById(R.id.all_game_bg_image_view_id)
             this.volumeBt = this.view.findViewById(R.id.all_games_item_vol_bt_id)
             this.playBackBt = this.view.findViewById(R.id.all_game_items_playback_bt_id)
             this.iconRecyclerView = this.view.findViewById(R.id.game_icon_list_view_id)
@@ -133,12 +136,19 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
             circularProgressDrawable.strokeWidth = 5f
             circularProgressDrawable.centerRadius = 30f
             circularProgressDrawable.start()
-            data.videoClip.let {
-                imageUrl = it?.preview
-                videoUrl = it?.clip
-                GlideApp.with(this.view).load(it?.preview)
+            invertView(data.videoClip != null)
+            if (data.videoClip != null) {
+                data.videoClip.let {
+                    imageUrl = it?.preview
+                    videoUrl = it?.clip
+                    GlideApp.with(this.view).load(it?.preview)
+                        .placeholder(circularProgressDrawable)
+                        .into(this.videoImageView?.imageView!!)
+                }
+            } else {
+                GlideApp.with(this.view).load(data.backgroundImage)
                     .placeholder(circularProgressDrawable)
-                    .into(this.videoImageView?.imageView!!)
+                    .into(this.bgImageView!!)
             }
             this.gameNameView?.let {nameView ->
                data.name.let {
@@ -155,6 +165,13 @@ class AllGameResultAdapter constructor(private val gameResultClickListener: Game
                 }
             }
             isLooping = true
+        }
+
+        private fun invertView(isVideoClip: Boolean) {
+            this.bgImageView?.visibility = if (isVideoClip) View.GONE else View.VISIBLE
+            this.videoImageView?.visibility = if (isVideoClip) View.VISIBLE else View.GONE
+            this.playBackBt?.visibility = if (isVideoClip) View.VISIBLE else View.GONE
+            this.volumeBt?.visibility = if (isVideoClip) View.VISIBLE else View.GONE
         }
 
         @SuppressLint("ClickableViewAccessibility")

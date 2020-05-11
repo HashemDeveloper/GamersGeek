@@ -20,7 +20,7 @@ class GamersGeekRemoteRepo @Inject constructor(): IRawgGamerGeekApiHelper, BaseD
 
     override suspend fun fetchAllGames(page: Int, pageSize: Int): ResultHandler<GameListRes> {
         return getResult {
-            this.rawgGameDbApi.fetchAllGames(page, pageSize)
+            this.rawgGameDbApi.fetchAllGames(page, pageSize, "released")
         }
     }
 
