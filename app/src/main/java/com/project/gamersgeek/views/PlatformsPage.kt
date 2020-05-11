@@ -101,7 +101,7 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
     }
 
     override fun onPlatformViewClicked(platformDetails: PlatformDetails) {
-
+        Timber.e("${platformDetails.id}")
     }
 
     override fun onShowGameClicked(gameId: Int, showGameType: PlatformDetailsAdapter.ShowGameType) {
