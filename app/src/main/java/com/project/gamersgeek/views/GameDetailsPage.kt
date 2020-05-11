@@ -14,8 +14,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.project.gamersgeek.BuildConfig
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
@@ -33,6 +35,7 @@ import com.project.gamersgeek.views.recycler.items.*
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_game_details_page.*
 import org.threeten.bp.OffsetDateTime
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -203,14 +206,25 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
                 it.text = gameTitle
             }
         }
+        var videoIdFinal = ""
         videoIdOfYoutube?.let { videoId ->
-            fragment_video_player_view_id.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                override fun onReady(youTubePlayer: YouTubePlayer) {
-                    fragment_video_player_view_id.enterFullScreen()
-                   youTubePlayer.loadVideo(videoId, 0f)
-                }
-            })
+            videoIdFinal = videoId
         }
+        fragment_video_player_view_id.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                fragment_video_player_view_id.enterFullScreen()
+                youTubePlayer.loadVideo(videoIdFinal, 0f)
+            }
+
+            override fun onError(
+                youTubePlayer: YouTubePlayer,
+                error: PlayerConstants.PlayerError
+            ) {
+                if (BuildConfig.DEBUG) {
+                    Timber.d("Error $error")
+                }
+            }
+        })
         gameImage?.let {
             var imageUri = ""
             if ("" != it) {

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.paging.AsyncPagedListDiffer
 import androidx.paging.PagedList
@@ -31,6 +32,10 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.recycler_platform_item_layout, parent, false)
         val viewHolder = PlatformDetailsViewHolder(view, parent.context)
         viewHolder.getViewPlatformDetailsBt().setOnClickListener {
+            val platformDetails: PlatformDetails = viewHolder.itemView.tag as PlatformDetails
+            this.listener.onPlatformViewClicked(platformDetails)
+        }
+        viewHolder.getContainerView()?.setOnClickListener {
             val platformDetails: PlatformDetails = viewHolder.itemView.tag as PlatformDetails
             this.listener.onPlatformViewClicked(platformDetails)
         }
@@ -81,6 +86,7 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
     private fun hasExtraRow() = this.networkState != null && this.networkState != NetworkState.LOADED
 
     inner class PlatformDetailsViewHolder constructor(private val view: View, private val context: Context): RecyclerView.ViewHolder(view) {
+        private var container: ConstraintLayout?= null
         private var platformImageView: AppCompatImageView?= null
         private var viewPlatformDetails: AppCompatImageView?= null
         private var platformNameView: AppCompatTextView?= null
@@ -92,6 +98,7 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
         private var gamesTwoAddedResult: AppCompatTextView?= null
 
         init {
+            this.container = this.view.findViewById(R.id.platform_game_container_id)
             this.platformImageView = this.view.findViewById(R.id.platform_image_view)
             this.viewPlatformDetails = this.view.findViewById(R.id.view_details_bt_id)
             this.platformNameView = this.view.findViewById(R.id.platform_name_view_id)
@@ -162,6 +169,10 @@ class PlatformDetailsAdapter constructor(private val listener: PlatformDetailsLi
 
         fun getShowCaseGame2View(): AppCompatTextView {
             return this.showCaseGame2View!!
+        }
+
+        fun getContainerView(): ConstraintLayout? {
+            return this.container
         }
     }
 

@@ -55,8 +55,16 @@
                 <com.allattentionhere.autoplayvideos.AAH_VideoImage
                     android:id="@+id/all_game_video_view_id"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/all_game_bg_image_view_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:scaleType="fitXY"
+                    />
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/all_game_expand_video_bt_id"
                     android:layout_width="16dp"
