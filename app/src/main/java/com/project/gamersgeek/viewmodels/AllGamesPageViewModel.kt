@@ -111,6 +111,11 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        this.job.cancel()
+    }
+
     override val coroutineContext: CoroutineContext
         get() = this.job + Dispatchers.IO
 }

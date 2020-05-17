@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -46,7 +47,7 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
     private var isNightMode = false
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val savedGamesViewModel: SavedGamesViewModel by viewModels {
+    private val savedGamesViewModel: SavedGamesViewModel by activityViewModels {
         this.viewModelFactory
     }
     override fun onCreateView(

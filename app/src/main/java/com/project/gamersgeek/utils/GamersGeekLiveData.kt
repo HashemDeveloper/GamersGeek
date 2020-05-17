@@ -1,7 +1,10 @@
 package com.project.gamersgeek.utils
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
+import androidx.annotation.MainThread
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.createViewModelLazy
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 
 fun <T> gamersGeekLiveData(networkCall: suspend() -> ResultHandler<T>): LiveData<ResultHandler<T>> =

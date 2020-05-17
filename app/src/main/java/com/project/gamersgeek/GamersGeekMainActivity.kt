@@ -21,6 +21,7 @@ import com.project.gamersgeek.utils.networkconnections.IConnectionStateMonitor
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
 import com.project.gamersgeek.views.recycler.NavItemAdapter
 import com.project.neardoc.rxeventbus.IRxEventBus
+import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -50,7 +51,8 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private var navItemAdapter: NavItemAdapter?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme);
+        AndroidInjection.inject(this)
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamers_geek_main_activity)
         this.navController = Navigation.findNavController(this, R.id.container)

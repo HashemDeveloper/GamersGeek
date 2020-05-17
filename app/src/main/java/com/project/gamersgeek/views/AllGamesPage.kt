@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
@@ -38,12 +39,12 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private var mLastQuery: String = ""
-    private val allGamesPageViewModel: AllGamesPageViewModel by viewModels {
+    private val allGamesPageViewModel: AllGamesPageViewModel by activityViewModels {
         this.viewModelFactory
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
     }
 

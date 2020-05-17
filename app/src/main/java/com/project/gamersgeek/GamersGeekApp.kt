@@ -1,5 +1,6 @@
 package com.project.gamersgeek
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
@@ -9,22 +10,22 @@ import com.project.gamersgeek.di.ApplicationInjector
 import com.project.gamersgeek.utils.theme.ThemeHelper
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.android.HasActivityInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class GamersGeekApp: Application(), HasAndroidInjector {
+class GamersGeekApp: Application(), HasActivityInjector {
 
     @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+    lateinit var dispatchActivityInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
         super.onCreate()
+        ApplicationInjector.init(this)
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this)
             Timber.plant(Timber.DebugTree())
         }
-        ApplicationInjector.init(this)
         ThemeHelper.applyTheme(ThemeHelper.DEFAULT_MODE)
         AndroidThreeTen.init(this)
     }
@@ -34,7 +35,7 @@ class GamersGeekApp: Application(), HasAndroidInjector {
         MultiDex.install(this)
     }
 
-    override fun androidInjector(): AndroidInjector<Any> {
-       return this.dispatchingAndroidInjector
+    override fun activityInjector(): AndroidInjector<Activity> {
+        return this.dispatchActivityInjector
     }
 }

@@ -18,17 +18,17 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(AllGamesPageViewModel::class)
-    abstract fun provideWelcomePageViewModel(allGamesPageViewModel: AllGamesPageViewModel): ViewModel
+    internal abstract fun provideWelcomePageViewModel(allGamesPageViewModel: AllGamesPageViewModel): ViewModel
     @Binds
     @IntoMap
     @ViewModelKey(PlatformPageViewModel::class)
-    abstract fun providePlatformPageViewModel(platformPageViewModel: PlatformPageViewModel): ViewModel
+    internal abstract fun providePlatformPageViewModel(platformPageViewModel: PlatformPageViewModel): ViewModel
     @Binds
     @IntoMap
     @ViewModelKey(GameDetailsPageViewModel::class)
-    abstract fun provideGameDetailPageViewModel(gameDetailsPageViewModel: GameDetailsPageViewModel): ViewModel
+    internal abstract fun provideGameDetailPageViewModel(gameDetailsPageViewModel: GameDetailsPageViewModel): ViewModel
     @Binds
     @IntoMap
     @ViewModelKey(SavedGamesViewModel::class)
-    abstract fun provideSavedGameViewModel(savedGamesViewModel: SavedGamesViewModel): ViewModel
+    internal abstract fun provideSavedGameViewModel(savedGamesViewModel: SavedGamesViewModel): ViewModel
 }
