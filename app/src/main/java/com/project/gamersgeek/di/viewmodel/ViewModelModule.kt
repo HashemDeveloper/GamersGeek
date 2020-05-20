@@ -3,10 +3,7 @@ package com.project.gamersgeek.di.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.project.gamersgeek.di.scopes.ViewModelKey
-import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
-import com.project.gamersgeek.viewmodels.GameDetailsPageViewModel
-import com.project.gamersgeek.viewmodels.PlatformPageViewModel
-import com.project.gamersgeek.viewmodels.SavedGamesViewModel
+import com.project.gamersgeek.viewmodels.*
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -23,6 +20,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PlatformPageViewModel::class)
     internal abstract fun providePlatformPageViewModel(platformPageViewModel: PlatformPageViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlatformDetailsPageViewModel::class)
+    internal abstract fun providePlatformDetailsPageViewModel(platformDetailsPageViewModel: PlatformDetailsPageViewModel): ViewModel
     @Binds
     @IntoMap
     @ViewModelKey(GameDetailsPageViewModel::class)

@@ -34,6 +34,9 @@
             app:popEnterAnim="@anim/fade_in_left"
             app:popExitAnim="@anim/fade_out"
             app:popUpTo="@+id/bottom_nav_all_games_id" />
+        <action
+            android:id="@+id/actionPlatformDetailsPage"
+            app:destination="@id/platformDetailsPage" />
     </fragment>
     <fragment
         android:id="@+id/bottom_nav_saved_game_id"
@@ -56,6 +59,18 @@
         <argument
             android:name="GameDetailsPage"
             app:argType="com.project.gamersgeek.models.games.Results"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/platformDetailsPage"
+        android:name="com.project.gamersgeek.views.PlatformDetailsPage"
+        android:label="PlatformDetailsPage" >
+        <action
+            android:id="@+id/actionPlatformPage"
+            app:destination="@id/bottom_nav_platform_id" />
+        <argument
+            android:name="PlatformPage"
+            app:argType="com.project.gamersgeek.models.platforms.PlatformDetails"
             />
     </fragment>
 </navigation>

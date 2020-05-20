@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.gamersgeek.R
@@ -101,7 +103,9 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
     }
 
     override fun onPlatformViewClicked(platformDetails: PlatformDetails) {
-        Timber.e("${platformDetails.id}")
+        val platformDetailsRouter: PlatformsPageDirections.ActionPlatformDetailsPage = PlatformsPageDirections.actionPlatformDetailsPage(platformDetails)
+        val controller: NavController = findNavController()
+        controller.navigate(platformDetailsRouter)
     }
 
     override fun onShowGameClicked(gameId: Int, showGameType: PlatformDetailsAdapter.ShowGameType) {
