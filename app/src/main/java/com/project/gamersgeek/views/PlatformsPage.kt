@@ -90,7 +90,7 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
                     if (it.data is PlatformRes) {
                         val platformData: PlatformRes = it.data
                         for (result in platformData.listOfResult) {
-                            Timber.e("Name: ${result.name}")
+                            Timber.e(                          "Name: ${result.name}")
                         }
                     }
                     this.globalLoadingBar.startLoading(false)

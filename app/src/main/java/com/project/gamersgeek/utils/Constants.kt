@@ -26,6 +26,12 @@ class Constants {
         const val CONNECTIVITY_ACTION: String = "android.net.conn.CONNECTIVITY_CHANGE"
         const val YOUTUBE_VIDEO_URL: String = "https://www.youtube.com/watch?v="
 
+        fun beautifyString(input: String): String {
+            val clearNonLetters: String = input.replace("&#39;", "'")
+            val clearFirstTag: String = clearNonLetters.replace("<P>", "")
+            val finalDesc: String = clearFirstTag.replace("</p>", "")
+            return finalDesc
+        }
         fun getFirstWord(input: String): String {
             for (i in input.indices) {
                 if (input[i] == ' ') {
