@@ -1,6 +1,7 @@
 package com.project.gamersgeek.utils
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.text.*
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.FragmentActivity
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
@@ -26,10 +28,17 @@ class Constants {
         const val CONNECTIVITY_ACTION: String = "android.net.conn.CONNECTIVITY_CHANGE"
         const val YOUTUBE_VIDEO_URL: String = "https://www.youtube.com/watch?v="
 
+        fun glideCircularAnim(context: Context): CircularProgressDrawable {
+            val circularProgressDrawable = CircularProgressDrawable(context)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.setColorSchemeColors(Color.GRAY)
+            return circularProgressDrawable
+        }
         fun beautifyString(input: String): String {
             val clearNonLetters: String = input.replace("&#39;", "'")
-            val clearFirstTag: String = clearNonLetters.replace("<P>", "")
-            val finalDesc: String = clearFirstTag.replace("</p>", "")
+            val clearFirstTag: String = clearNonLetters.replace("<p>", "")
+            val finalDesc: String = clearFirstTag.replace("</p>", "").replace("<br />", "").replace("<br>", "")
             return finalDesc
         }
         fun getFirstWord(input: String): String {
