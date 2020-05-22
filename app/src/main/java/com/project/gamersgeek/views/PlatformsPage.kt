@@ -21,14 +21,14 @@ import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.utils.paging.NetworkState
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
-import com.project.gamersgeek.views.recycler.PlatformDetailsAdapter
+import com.project.gamersgeek.views.recycler.PlatformAdapter
 import com.project.gamersgeek.views.widgets.GlobalLoadingBar
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_platforms_page.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDetailsListener {
+class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -50,7 +50,7 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = PlatformDetailsAdapter(this)
+        val adapter = PlatformAdapter(this)
         platform_page_recycler_view_id.layoutManager = LinearLayoutManager(context!!)
         platform_page_recycler_view_id.adapter = adapter
         this.platformPageViewModel.platformDetailsLiveData.observe(viewLifecycleOwner) {
@@ -80,35 +80,13 @@ class PlatformsPage : Fragment(), Injectable, PlatformDetailsAdapter.PlatformDet
         this.platformPageViewModel.setupDrawer(platform_page_search_id)
     }
 
-    private fun gameListLiveDataObserver(): Observer<ResultHandler<PlatformRes?>> {
-        return Observer {
-            when (it.status) {
-                ResultHandler.Status.LOADING -> {
-                    this.globalLoadingBar.startLoading(true)
-                }
-                ResultHandler.Status.SUCCESS -> {
-                    if (it.data is PlatformRes) {
-                        val platformData: PlatformRes = it.data
-                        for (result in platformData.listOfResult) {
-                            Timber.e("Name: ${result.name}")
-                        }
-                    }
-                    this.globalLoadingBar.startLoading(false)
-                }
-                ResultHandler.Status.ERROR -> {
-                    this.globalLoadingBar.startLoading(false)
-                }
-            }
-        }
-    }
-
     override fun onPlatformViewClicked(platformDetails: PlatformDetails) {
         val platformDetailsRouter: PlatformsPageDirections.ActionPlatformDetailsPage = PlatformsPageDirections.actionPlatformDetailsPage(platformDetails)
         val controller: NavController = findNavController()
         controller.navigate(platformDetailsRouter)
     }
 
-    override fun onShowGameClicked(gameId: Int, showGameType: PlatformDetailsAdapter.ShowGameType) {
+    override fun onShowGameClicked(gameId: Int, showGameType: PlatformAdapter.ShowGameType) {
         Timber.e("GameId: $gameId")
     }
 }

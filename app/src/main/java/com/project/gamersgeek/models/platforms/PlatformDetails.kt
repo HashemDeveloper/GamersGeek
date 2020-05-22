@@ -51,5 +51,9 @@ data class PlatformDetails(
     @ColumnInfo(name = "following")
     @SerializedName("following")
     @Expose
-    var following : Boolean
+    var following : Boolean,
+    @ColumnInfo(name = "description")
+    @SerializedName("description")
+    @Expose
+    var description: String?
 ): Parcelable

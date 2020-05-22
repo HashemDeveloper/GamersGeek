@@ -115,10 +115,7 @@ class GameDetailsItemAdapter(
                     it.setTextSize(32f)
                     it.text = desc.description
                 }
-                val circularProgressDrawable = CircularProgressDrawable(this.context)
-                circularProgressDrawable.strokeWidth = 5f
-                circularProgressDrawable.centerRadius = 30f
-                circularProgressDrawable.setColorSchemeColors(Color.GRAY)
+                val circularProgressDrawable: CircularProgressDrawable = Constants.glideCircularAnim(this.context)
                 circularProgressDrawable.start()
                 this.bgImageView?.let {
 

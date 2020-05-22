@@ -5,6 +5,7 @@ import com.project.gamersgeek.data.local.IGameResultDao
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.games.Results
+import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.utils.ResultHandler
 import kotlinx.coroutines.Deferred
@@ -36,7 +37,7 @@ class GamersGeekRemoteRepo @Inject constructor(): IRawgGamerGeekApiHelper, BaseD
         }
     }
 
-    override suspend fun getGamePlatformDetails(id: Int): ResultHandler<PlatformRes> {
+    override suspend fun getGamePlatformDetails(id: Int): ResultHandler<PlatformDetails> {
         return getResult {
             this.rawgGameDbApi.getPlatformDetails(id)
         }
