@@ -80,28 +80,6 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
         this.platformPageViewModel.setupDrawer(platform_page_search_id)
     }
 
-    private fun gameListLiveDataObserver(): Observer<ResultHandler<PlatformRes?>> {
-        return Observer {
-            when (it.status) {
-                ResultHandler.Status.LOADING -> {
-                    this.globalLoadingBar.startLoading(true)
-                }
-                ResultHandler.Status.SUCCESS -> {
-                    if (it.data is PlatformRes) {
-                        val platformData: PlatformRes = it.data
-                        for (result in platformData.listOfResult) {
-                            Timber.e(                          "Name: ${result.name}")
-                        }
-                    }
-                    this.globalLoadingBar.startLoading(false)
-                }
-                ResultHandler.Status.ERROR -> {
-                    this.globalLoadingBar.startLoading(false)
-                }
-            }
-        }
-    }
-
     override fun onPlatformViewClicked(platformDetails: PlatformDetails) {
         val platformDetailsRouter: PlatformsPageDirections.ActionPlatformDetailsPage = PlatformsPageDirections.actionPlatformDetailsPage(platformDetails)
         val controller: NavController = findNavController()

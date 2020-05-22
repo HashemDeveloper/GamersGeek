@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformGames
+import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.utils.paging.NetworkState
 
@@ -112,10 +113,7 @@ class PlatformAdapter constructor(private val listener: PlatformListener): Paged
                 }
             }
             val imageUrl: String = data.imageBackground
-            val circularProgressDrawable = CircularProgressDrawable(context)
-            circularProgressDrawable.strokeWidth = 5f
-            circularProgressDrawable.centerRadius = 30f
-            circularProgressDrawable.setColorSchemeColors(Color.GRAY)
+            val circularProgressDrawable: CircularProgressDrawable = Constants.glideCircularAnim(this.context)
             circularProgressDrawable.start()
             if (data.name != "Game Boy Advance") {
                 GlideApp.with(this.view).load(imageUrl)

@@ -2,6 +2,7 @@ package com.project.gamersgeek.views.recycler
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -18,11 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.google.android.material.textview.MaterialTextView
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformGames
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.GlideApp
+import com.project.gamersgeek.views.recycler.items.GameListWrapper
 import uk.co.deanwild.flowtextview.FlowTextView
 
 class PlatformDetailsAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
@@ -50,14 +53,14 @@ class PlatformDetailsAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         val item: Any = this.data[position]
         when (holder) {
             is PlatformInfoHolder -> holder.bindView(item as PlatformDetails)
-            is PlatformGameListHolder -> holder.bindView(item as PlatformGames)
+            is PlatformGameListHolder -> holder.bindView(item as GameListWrapper)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (this.data[position]) {
             is PlatformDetails -> PLATFORM_INFO
-            is PlatformGames -> PLATFORM_GAME_LIST
+            is GameListWrapper -> PLATFORM_GAME_LIST
             else -> throw IllegalArgumentException("Invalid index position $position")
         }
     }
@@ -94,20 +97,31 @@ class PlatformDetailsAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         }
     }
 
-    inner class PlatformGameListHolder constructor(private val view: View, private val context: Context): BaseViewHolder<PlatformGames>(view) {
+    inner class PlatformGameListHolder constructor(private val view: View, private val context: Context): BaseViewHolder<GameListWrapper>(view) {
+        private var platformGameListAdapter: PlatformGameListAdapter?= null
+        private var headerView: MaterialTextView?= null
         private var listView: RecyclerView?= null
         init {
+            this.headerView = this.view.findViewById(R.id.fragment_platform_detail_game_list_header_view_id)
             this.listView = this.view.findViewById(R.id.fragment_platform_details_game_list_recyclerview_id)
             this.listView?.layoutManager = LinearLayoutManager(this.context)
+            this.platformGameListAdapter = PlatformGameListAdapter()
+            this.listView?.adapter = this.platformGameListAdapter
         }
-        override fun bindView(item: PlatformGames) {
-            val list: MutableList<Any> = arrayListOf()
-            list.add(item)
+        override fun bindView(item: GameListWrapper) {
+            this.headerView?.let { textView ->
+                val headerTitle = "Some of the most popular games namely:"
+                textView.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+                textView.text = headerTitle
+            }
+            item.list?.let {
+                this.platformGameListAdapter?.add(it)
+            }
         }
     }
 
     companion object {
-        private const val PLATFORM_INFO: Int = 1
-        private const val PLATFORM_GAME_LIST = 2
+        private const val PLATFORM_INFO: Int = 0
+        private const val PLATFORM_GAME_LIST: Int = 1
     }
 }

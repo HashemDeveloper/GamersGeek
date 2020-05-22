@@ -19,6 +19,7 @@ import com.project.gamersgeek.viewmodels.PlatformDetailsPageViewModel
 import dagger.android.support.AndroidSupportInjection
 import com.project.gamersgeek.views.PlatformDetailsPageArgs.fromBundle
 import com.project.gamersgeek.views.recycler.PlatformDetailsAdapter
+import com.project.gamersgeek.views.recycler.items.GameListWrapper
 import kotlinx.android.synthetic.main.fragment_platform_details_page_layout.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -49,13 +50,13 @@ class PlatformDetailsPage: Fragment(), Injectable {
         fragment_platform_details_page_recycler_view_id.layoutManager = LinearLayoutManager(this.context!!)
         fragment_platform_details_page_recycler_view_id?.adapter = this.platformDetailsAdapter
         val id: Int = this.platformDetails.id
-        val gameList: List<PlatformGames>? = this.platformDetails.games
+        val gameListWrapper = GameListWrapper(this.platformDetails.games)
         this.detailPageViewModel.loadPlatformDetails(id)
-        this.detailPageViewModel.platformDetailLiveData?.observe(viewLifecycleOwner, platformResLiveDataObserver(gameList))
+        this.detailPageViewModel.platformDetailLiveData?.observe(viewLifecycleOwner, platformResLiveDataObserver(gameListWrapper))
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun platformResLiveDataObserver(gameList: List<PlatformGames>?=null): Observer<ResultHandler<PlatformDetails>> {
+    private fun platformResLiveDataObserver(gameListWrapper: GameListWrapper?=null): Observer<ResultHandler<PlatformDetails>> {
         return Observer {
             when (it.status) {
                 ResultHandler.Status.LOADING -> {
@@ -63,11 +64,11 @@ class PlatformDetailsPage: Fragment(), Injectable {
                 }
                 ResultHandler.Status.SUCCESS -> {
                     val data: PlatformDetails = it.data as PlatformDetails
-                    gameList?.let {list->
-                        data.games = list
-                    }
                     val list: MutableList<Any> = arrayListOf()
                     list.add(data)
+                    gameListWrapper?.let {wrapper ->
+                        list.add(wrapper)
+                    }
                     this.platformDetailsAdapter?.add(list)
                 }
                 ResultHandler.Status.ERROR -> {
