@@ -26,4 +26,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_platform_detail_game_list_header_view_id" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
