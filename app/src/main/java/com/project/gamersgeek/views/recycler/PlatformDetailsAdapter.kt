@@ -1,45 +1,35 @@
 package com.project.gamersgeek.views.recycler
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Typeface
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
-import androidx.core.text.color
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.google.android.material.textview.MaterialTextView
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.platforms.PlatformDetails
-import com.project.gamersgeek.models.platforms.PlatformGames
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.views.recycler.items.GameListWrapper
 import uk.co.deanwild.flowtextview.FlowTextView
 
-class PlatformDetailsAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
+class PlatformDetailsAdapter(private val nightModeOn: Boolean) : RecyclerView.Adapter<BaseViewHolder<*>>() {
     private val data: MutableList<Any> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         return when (viewType) {
             PLATFORM_INFO -> {
                 val infoView: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_platform_detail_item_layout, parent, false)
-                PlatformInfoHolder(infoView, parent.context)
+                PlatformInfoHolder(infoView, parent.context, this.nightModeOn)
             }
             PLATFORM_GAME_LIST -> {
                 val gameListView: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_platform_detail_game_list_layout, parent, false)
-                PlatformGameListHolder(gameListView, parent.context)
+                PlatformGameListHolder(gameListView, parent.context, this.nightModeOn)
             }
             else -> throw IllegalArgumentException("Unsupported view")
         }
@@ -71,7 +61,11 @@ class PlatformDetailsAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         notifyDataSetChanged()
     }
 
-    inner class PlatformInfoHolder constructor(private val view: View, private val context: Context): BaseViewHolder<PlatformDetails>(view) {
+    inner class PlatformInfoHolder(
+        private val view: View,
+        private val context: Context,
+        private val nightModeOn: Boolean
+    ): BaseViewHolder<PlatformDetails>(view) {
         private var descView: FlowTextView?= null
         private var imageView: AppCompatImageView?= null
         init {
@@ -82,7 +76,11 @@ class PlatformDetailsAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             item.description?.let { d ->
                 val desc: String = Constants.beautifyString(d)
                 this.descView?.let { textView ->
-                    textView.textColor = ContextCompat.getColor(this.context, R.color.gray_500)
+                    if (this.nightModeOn) {
+                        textView.textColor = ContextCompat.getColor(this.context, R.color.gray_500)
+                    } else {
+                        textView.textColor = ContextCompat.getColor(this.context, R.color.black)
+                    }
                     textView.setTextSize(42f)
                     textView.text = desc
                 }
@@ -97,7 +95,11 @@ class PlatformDetailsAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         }
     }
 
-    inner class PlatformGameListHolder constructor(private val view: View, private val context: Context): BaseViewHolder<GameListWrapper>(view) {
+    inner class PlatformGameListHolder(
+        private val view: View,
+        private val context: Context,
+        private val nightModeOn: Boolean
+    ): BaseViewHolder<GameListWrapper>(view) {
         private var platformGameListAdapter: PlatformGameListAdapter?= null
         private var headerView: MaterialTextView?= null
         private var listView: RecyclerView?= null
@@ -105,11 +107,16 @@ class PlatformDetailsAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             this.headerView = this.view.findViewById(R.id.fragment_platform_detail_game_list_header_view_id)
             this.listView = this.view.findViewById(R.id.fragment_platform_details_game_list_recyclerview_id)
             this.listView?.layoutManager = LinearLayoutManager(this.context)
-            this.platformGameListAdapter = PlatformGameListAdapter()
+            this.platformGameListAdapter = PlatformGameListAdapter(this.nightModeOn)
             this.listView?.adapter = this.platformGameListAdapter
         }
         override fun bindView(item: GameListWrapper) {
             this.headerView?.let { textView ->
+                if (this.nightModeOn) {
+                    textView.setTextColor(ContextCompat.getColor(this.context, R.color.gray_500))
+                } else {
+                    textView.setTextColor(ContextCompat.getColor(this.context, R.color.black))
+                }
                 val headerTitle = "Some of the most popular games namely:"
                 textView.paintFlags = Paint.UNDERLINE_TEXT_FLAG
                 textView.text = headerTitle
