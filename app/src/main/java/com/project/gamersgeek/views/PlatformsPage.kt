@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -68,6 +69,11 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
         setupDrawer()
     }
 
+    private fun setupDarkMode() {
+        val isNightModeOn: Boolean = this.platformPageViewModel.getIsNightModeOn()
+        platform_page_search_id?.setBackgroundColor(if (isNightModeOn) ContextCompat.getColor(this.context!!, R.color.black) else ContextCompat.getColor(this.context!!, R.color.white))
+    }
+
     private fun swipeToRefresh() {
         this.platformPageViewModel.refreshState.observe(viewLifecycleOwner) {
             platform_page_swipe_to_refresh_layout_id.isRefreshing = it == NetworkState.LOADING
@@ -84,6 +90,11 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
         val platformDetailsRouter: PlatformsPageDirections.ActionPlatformDetailsPage = PlatformsPageDirections.actionPlatformDetailsPage(platformDetails)
         val controller: NavController = findNavController()
         controller.navigate(platformDetailsRouter)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupDarkMode()
     }
 
     override fun onShowGameClicked(gameId: Int, showGameType: PlatformAdapter.ShowGameType) {
