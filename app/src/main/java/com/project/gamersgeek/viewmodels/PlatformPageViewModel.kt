@@ -5,6 +5,7 @@ import com.arlib.floatingsearchview.FloatingSearchView
 import com.project.gamersgeek.data.IGamerGeekRepository
 import com.project.gamersgeek.data.local.IGameResultDao
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
+import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.events.NetworkStateEvent
 import com.project.gamersgeek.models.games.Results
@@ -25,6 +26,8 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     lateinit var platformDetailsDao: IPlatformDetailsDao
     @Inject
     lateinit var iGameResultDao: IGameResultDao
+    @Inject
+    lateinit var iSharedPrefService: ISharedPrefService
     private val job = Job()
     private val platformDetailsList by lazy {
           this.iGamerGeekRepository.getPlatformDetailsPagedData(50)
@@ -106,6 +109,10 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
 
     fun setupNetConnection(networkStateEvent: NetworkStateEvent) {
         this.networkLiveData.value = networkStateEvent
+    }
+
+    fun getIsNightModeOn(): Boolean {
+        return this.iSharedPrefService.getIsNightModeOn()
     }
 
     override val coroutineContext: CoroutineContext
