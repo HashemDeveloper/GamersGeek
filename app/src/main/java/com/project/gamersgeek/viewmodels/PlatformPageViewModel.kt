@@ -1,6 +1,7 @@
 package com.project.gamersgeek.viewmodels
 
 import androidx.lifecycle.*
+import androidx.paging.PagedList
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.project.gamersgeek.data.IGamerGeekRepository
 import com.project.gamersgeek.data.local.IGameResultDao
@@ -10,13 +11,13 @@ import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.events.NetworkStateEvent
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.PlatformDetails
+import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.neardoc.rxeventbus.IRxEventBus
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
-//    val mediatorLiveData: MediatorLiveData<PagedList<PlatformDetails>> = MediatorLiveData()
     val networkLiveData: MutableLiveData<NetworkStateEvent> = MutableLiveData()
     @Inject
     lateinit var iRxEventBus: IRxEventBus
@@ -28,7 +29,10 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     lateinit var iGameResultDao: IGameResultDao
     @Inject
     lateinit var iSharedPrefService: ISharedPrefService
+    val textFilterLiveData: MutableLiveData<SearchHelper> = MutableLiveData()
+    private var searchResultLiveData: LiveData<PagedList<PlatformDetails>>?= null
     private val job = Job()
+
     private val platformDetailsList by lazy {
           this.iGamerGeekRepository.getPlatformDetailsPagedData(50)
     }
@@ -113,6 +117,19 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
 
     fun getIsNightModeOn(): Boolean {
         return this.iSharedPrefService.getIsNightModeOn()
+    }
+
+    fun findSuggestions(newQuery: String?, platformPageSearchId: FloatingSearchView) {
+        platformPageSearchId.showProgress()
+        // TODO: Create suggestions for platform information query
+    }
+
+    fun onSearch(searchHelper: SearchHelper) {
+        this.textFilterLiveData.value = searchHelper
+        this.searchResultLiveData = Transformations.switchMap(this.textFilterLiveData, {input ->
+           platformDetailsList.search(input)
+        })
+
     }
 
     override val coroutineContext: CoroutineContext

@@ -10,7 +10,7 @@ data class PagingDataListDispatcher<T>(
     val pagedList: LiveData<PagedList<T>>,
     val networkState: LiveData<NetworkState>,
     val refreshState: LiveData<NetworkState>,
-    val search: (search: SearchHelper) -> LiveData<PagedList<Results>>,
+    val search: (search: SearchHelper) -> LiveData<PagedList<T>>,
     val refresh: () -> Unit,
     val retry: () -> Unit
 )

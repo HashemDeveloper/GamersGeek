@@ -21,9 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import org.threeten.bp.OffsetDateTime
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 

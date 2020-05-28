@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
@@ -20,18 +19,14 @@ import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.Results
-import com.project.gamersgeek.models.platforms.GenericPlatformDetails
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.paging.NetworkState
 import com.project.gamersgeek.utils.search.GameResultWrapper
 import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
 import com.project.gamersgeek.views.recycler.AllGameResultAdapter
-import com.project.gamersgeek.views.recycler.PlatformIconAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_all_games_page.*
-import kotlinx.android.synthetic.main.fragment_platforms_page.*
-import timber.log.Timber
 import javax.inject.Inject
 
 
