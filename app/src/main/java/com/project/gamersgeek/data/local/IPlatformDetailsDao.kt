@@ -16,4 +16,6 @@ interface IPlatformDetailsDao {
     fun getAllPlatformDetails(): DataSource.Factory<Int, PlatformDetails>
     @Transaction @Query("select * from platform_details order by id")
     suspend fun getPlatformDetails(): PlatformDetails
+    @Transaction @Query("select * from platform_details where name =:name")
+    fun searchPlatformByName(name: String): DataSource.Factory<Int, PlatformDetails>
 }

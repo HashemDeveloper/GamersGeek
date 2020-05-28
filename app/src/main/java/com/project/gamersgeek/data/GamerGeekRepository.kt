@@ -134,7 +134,7 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
             },
             search = {
                 onSearch(it, getDataSource = {
-                    this.iGameResultDao.getGamesByName(it.searchBody) as DataSource.Factory<Int, S>
+                    this.iPlatformDetailsDao.searchPlatformByName(it.searchBody) as DataSource.Factory<Int, S>
                 })
             },
             refresh = {
