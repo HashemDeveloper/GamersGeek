@@ -4,7 +4,8 @@
     package="com.project.gamersgeek">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <dist:module dist:instant="true" />
 
     <application
@@ -15,18 +16,18 @@
         android:roundIcon="@mipmap/gamers_geek_app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GamersGeekMainActivity"
-            android:theme="@style/Splash"
-            >
+        <activity
+            android:name=".GamersGeekMainActivity"
+            android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".broadcast.GamersGeekBroadcastReceiver">
 
-        </receiver>
+        <receiver android:name=".broadcast.GamersGeekBroadcastReceiver"></receiver>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

@@ -37,12 +37,16 @@ class PlatformDetailsPage: Fragment(), Injectable {
     private var isNightModeOn: Boolean = false
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        AndroidSupportInjection.inject(this)
        return inflater.inflate(R.layout.fragment_platform_details_page_layout, container, false)
     }
 

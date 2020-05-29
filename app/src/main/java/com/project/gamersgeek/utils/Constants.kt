@@ -3,12 +3,16 @@ package com.project.gamersgeek.utils
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.*
 import android.text.style.StyleSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import org.threeten.bp.LocalDate
@@ -29,6 +33,16 @@ class Constants {
         const val IS_NIGHT_MODE: String = "IS NIGHT MODE"
         const val CONNECTIVITY_ACTION: String = "android.net.conn.CONNECTIVITY_CHANGE"
         const val YOUTUBE_VIDEO_URL: String = "https://www.youtube.com/watch?v="
+        const val PUBLISHER_PAGE_NAV_URI = "gamersgeek://publisherpage"
+        const val DEVELOPER_PAGE_NAV_URI = "gamersgeek://developerpage"
+
+        fun changeIconColor(context: Context, iconId: Int, iconColor: Int) {
+            val drawable: Drawable? = ContextCompat.getDrawable(context, iconId)?.mutate()
+            drawable?.let { d ->
+                val wrapDrawable: Drawable = DrawableCompat.wrap(d)
+                DrawableCompat.setTint(wrapDrawable, iconColor)
+            }
+        }
 
         fun glideCircularAnim(context: Context): CircularProgressDrawable {
             val circularProgressDrawable = CircularProgressDrawable(context)

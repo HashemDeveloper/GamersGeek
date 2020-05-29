@@ -12,5 +12,5 @@ interface IRawgGamerGeekApiHelper {
     suspend fun fetchGameById(id: Int): ResultHandler<GamesRes>
     suspend fun fetchAllGamePlatforms(page: Int, pageSize: Int): ResultHandler<PlatformRes>
     suspend fun getGamePlatformDetails(id: Int): ResultHandler<PlatformDetails>
-    fun onSearch(value: String): GameListRes?
+    fun onSearchAllGames(value: String): GameListRes?
 }

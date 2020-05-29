@@ -1,6 +1,7 @@
 package com.project.gamersgeek
 
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,8 @@ import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.events.NetworkStateEvent
 import com.project.gamersgeek.models.localobj.NavigationHeaderItems
 import com.project.gamersgeek.models.localobj.NavigationItems
+import com.project.gamersgeek.utils.Constants
+import com.project.gamersgeek.utils.navigateUriWithDefaultOptions
 import com.project.gamersgeek.utils.networkconnections.IConnectionStateMonitor
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
 import com.project.gamersgeek.views.recycler.NavItemAdapter
@@ -32,7 +35,7 @@ import kotlinx.android.synthetic.main.gamers_geek_main_activity.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, NavItemAdapter.DrawerClickListener{
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val platformPageViewModel: PlatformPageViewModel by viewModels {
@@ -81,8 +84,9 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
     private fun setupNavBarItems() {
+        val isNightModeOne: Boolean = this.iSharedPrefService.getIsNightModeOn()
         navigation_view_menu_item_view_id.layoutManager = LinearLayoutManager(this)
-        this.navItemAdapter = NavItemAdapter()
+        this.navItemAdapter = NavItemAdapter(isNightModeOne, this)
         navigation_view_menu_item_view_id.adapter = navItemAdapter
         val backgroundImage: String = this.platformPageViewModel.getNavBackgroundImage()
         val navHeader = NavigationHeaderItems("", backgroundImage, "HashemDev")
@@ -133,6 +137,24 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             if (BuildConfig.DEBUG) {
                 Timber.i("No Internet $it.toString()")
             }
+        }
+    }
+
+    override fun onNavItemClicked(itemType: String) {
+        when (itemType) {
+            "Publisher" -> {
+                closeDrawer()
+                this.navController.navigateUriWithDefaultOptions(Uri.parse(Constants.PUBLISHER_PAGE_NAV_URI))
+            }
+            "Developer" -> {
+                closeDrawer()
+                this.navController.navigateUriWithDefaultOptions(Uri.parse(Constants.DEVELOPER_PAGE_NAV_URI))
+            }
+        }
+    }
+    private fun closeDrawer() {
+        if (navigation_drawer_layout_id.isDrawerOpen(GravityCompat.START)) {
+            navigation_drawer_layout_id.closeDrawer(GravityCompat.START)
         }
     }
 }
