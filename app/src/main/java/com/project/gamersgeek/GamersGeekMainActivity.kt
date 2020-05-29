@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.gamersgeek.data.local.ISharedPrefService
