@@ -73,4 +73,14 @@
             app:argType="com.project.gamersgeek.models.platforms.PlatformDetails"
             />
     </fragment>
+    <fragment
+        android:id="@+id/publisherPage"
+        android:name="com.project.gamersgeek.views.PublisherPage"
+        android:label="fragment_publisher_list_layout"
+        tools:layout="@layout/fragment_publisher_list_layout">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="gamersgeek://publisherpage"
+            />
+    </fragment>
 </navigation>

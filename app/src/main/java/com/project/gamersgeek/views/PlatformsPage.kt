@@ -42,11 +42,15 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
         GlobalLoadingBar(platform_page_loading_view_id!!, activity!!)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        AndroidSupportInjection.inject(this)
         return inflater.inflate(R.layout.fragment_platforms_page, container, false)
     }
 

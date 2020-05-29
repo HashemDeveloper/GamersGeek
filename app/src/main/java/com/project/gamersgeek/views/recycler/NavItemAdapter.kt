@@ -21,7 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import java.lang.IllegalArgumentException
 
 
-class NavItemAdapter(private val nightModeOne: Boolean) : RecyclerView.Adapter<BaseViewHolder<*>>() {
+class NavItemAdapter(private val nightModeOne: Boolean, private val listener: DrawerClickListener) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     private var data: MutableList<Any> = arrayListOf()
 
@@ -33,7 +33,12 @@ class NavItemAdapter(private val nightModeOne: Boolean) : RecyclerView.Adapter<B
             }
             NAV_ITEMS -> {
                 val navItemView: View = LayoutInflater.from(parent.context).inflate(R.layout.nav_drawer_items_layout, parent, false)
-                NavItemViewHolder(navItemView, this.nightModeOne, parent.context)
+                val navItemHolder = NavItemViewHolder(navItemView, this.nightModeOne, parent.context)
+                navItemHolder.getNavItemContainer()?.setOnClickListener {onClick ->
+                    val navItems: NavigationItems = navItemHolder.itemView.tag as NavigationItems
+                    this.listener.onNavItemClicked(navItems.itemTitle())
+                }
+                navItemHolder
             } else -> throw IllegalArgumentException("Unsupported view")
         }
     }
@@ -125,6 +130,7 @@ class NavItemAdapter(private val nightModeOne: Boolean) : RecyclerView.Adapter<B
             this.itemTitleView?.setTextColor(if (this.nightModeOne) ContextCompat.getColor(this.context, R.color.white) else ContextCompat.getColor(this.context, R.color.gray_600))
         }
         override fun bindView(item: NavigationItems) {
+            this.itemView.tag = item
             item.let {i ->
                 if (this.nightModeOne) {
 //                    Constants.changeIconColor(this.context, i.itemIcon(), R.color.white)
@@ -141,6 +147,9 @@ class NavItemAdapter(private val nightModeOne: Boolean) : RecyclerView.Adapter<B
         }
     }
 
+    interface DrawerClickListener {
+        fun onNavItemClicked(itemType: String)
+    }
     companion object {
         private const val NAV_HEADER: Int = 0
         private const val NAV_ITEMS: Int = 1

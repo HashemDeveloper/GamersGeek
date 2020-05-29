@@ -33,6 +33,7 @@ class Constants {
         const val IS_NIGHT_MODE: String = "IS NIGHT MODE"
         const val CONNECTIVITY_ACTION: String = "android.net.conn.CONNECTIVITY_CHANGE"
         const val YOUTUBE_VIDEO_URL: String = "https://www.youtube.com/watch?v="
+        const val PUBLISHER_PAGE_NAV_URI = "gamersgeek://publisherpage"
 
         fun changeIconColor(context: Context, iconId: Int, iconColor: Int) {
             val drawable: Drawable? = ContextCompat.getDrawable(context, iconId)?.mutate()

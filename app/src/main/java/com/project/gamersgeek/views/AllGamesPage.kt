@@ -39,7 +39,7 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -47,7 +47,6 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        AndroidSupportInjection.inject(this)
         return inflater.inflate(R.layout.fragment_all_games_page, container, false)
     }
 
