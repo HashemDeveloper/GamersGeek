@@ -65,7 +65,7 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
     }
 
     private fun getSuggestionList(value: CharSequence): List<Results>? {
-        val gameListRes: GameListRes? = this.iGamersGeekRemoteRepo.onSearch(value.toString())
+        val gameListRes: GameListRes? = this.iGamersGeekRemoteRepo.onSearchAllGames(value.toString())
         return gameListRes?.results
     }
 

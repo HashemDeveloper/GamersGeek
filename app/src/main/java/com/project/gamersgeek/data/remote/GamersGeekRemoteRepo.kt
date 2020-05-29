@@ -43,11 +43,11 @@ class GamersGeekRemoteRepo @Inject constructor(): IRawgGamerGeekApiHelper, BaseD
         }
     }
 
-    override fun onSearch(value: String): GameListRes? {
+    override fun onSearchAllGames(value: String): GameListRes? {
         var gameListRes: GameListRes?= null
         runBlocking {
-            if (search(value) != null) {
-                val job: Deferred<GameListRes> = async { search(value)!! }
+            if (searchAllGames(value) != null) {
+                val job: Deferred<GameListRes> = async { searchAllGames(value)!! }
                 gameListRes = job.await()
                 gameListRes?.let { list ->
                     val result: List<Results>?= list.results
@@ -59,7 +59,7 @@ class GamersGeekRemoteRepo @Inject constructor(): IRawgGamerGeekApiHelper, BaseD
         }
         return gameListRes
     }
-    private suspend fun search(value: String): GameListRes? {
+    private suspend fun searchAllGames(value: String): GameListRes? {
         return rawgGameDbApi.searchGames(value).body()
     }
 }
