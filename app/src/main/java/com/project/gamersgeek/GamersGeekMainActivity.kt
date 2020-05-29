@@ -81,8 +81,9 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
     private fun setupNavBarItems() {
+        val isNightModeOne: Boolean = this.iSharedPrefService.getIsNightModeOn()
         navigation_view_menu_item_view_id.layoutManager = LinearLayoutManager(this)
-        this.navItemAdapter = NavItemAdapter()
+        this.navItemAdapter = NavItemAdapter(isNightModeOne)
         navigation_view_menu_item_view_id.adapter = navItemAdapter
         val backgroundImage: String = this.platformPageViewModel.getNavBackgroundImage()
         val navHeader = NavigationHeaderItems("", backgroundImage, "HashemDev")
