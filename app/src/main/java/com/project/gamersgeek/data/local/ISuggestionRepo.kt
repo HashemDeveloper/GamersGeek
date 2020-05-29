@@ -1,11 +1,11 @@
 package com.project.gamersgeek.data.local
 
-import com.project.gamersgeek.utils.search.GameResultWrapper
+import com.project.gamersgeek.utils.search.SearchResultWrapper
 
 interface ISuggestionRepo {
-    fun saveSearchResult(suggestionHistory: GameResultWrapper)
-    fun getSearchHistory(): List<GameResultWrapper>?
-    fun deleteSearchHistory()
+    fun saveSearchResult(suggestionHistory: SearchResultWrapper)
+    fun getSearchHistory(searchFor: String): List<SearchResultWrapper>?
+    fun deleteSearchHistory(searchFor: String)
     fun deleteByName(search: String)
-    fun deleteOldHistory()
+    fun deleteOldHistory(searchFor: String)
 }

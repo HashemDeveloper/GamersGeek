@@ -1,7 +1,7 @@
 package com.project.gamersgeek.data.local
 
 import com.project.gamersgeek.BuildConfig
-import com.project.gamersgeek.utils.search.GameResultWrapper
+import com.project.gamersgeek.utils.search.SearchResultWrapper
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -16,7 +16,7 @@ class SuggestionsRepo @Inject constructor(): ISuggestionRepo, CoroutineScope {
     @Inject
     lateinit var iSuggestionsDao: ISuggestionsDao
 
-    override fun saveSearchResult(suggestionHistory: GameResultWrapper) {
+    override fun saveSearchResult(suggestionHistory: SearchResultWrapper) {
         launch {
             val insert: Flow<Long>? = insertData(suggestionHistory)
             insert?.collect {value ->
@@ -30,23 +30,23 @@ class SuggestionsRepo @Inject constructor(): ISuggestionRepo, CoroutineScope {
         }
     }
 
-    private fun insertData(suggestionHistory: GameResultWrapper): Flow<Long> = flow {
+    private fun insertData(suggestionHistory: SearchResultWrapper): Flow<Long> = flow {
         val value: Long = iSuggestionsDao.insert(suggestionHistory)
         emit(value)
     }
-    override fun getSearchHistory(): List<GameResultWrapper>? {
-        var historyList: List<GameResultWrapper>?= null
+    override fun getSearchHistory(searchFor: String): List<SearchResultWrapper>? {
+        var historyList: List<SearchResultWrapper>?= null
         runBlocking {
-            val job: Deferred<List<GameResultWrapper>> = async { allSearchHistory()!! }
+            val job: Deferred<List<SearchResultWrapper>> = async { allSearchHistory(searchFor)!! }
             historyList = job.await()
         }
         return historyList
     }
-    private suspend fun allSearchHistory(): List<GameResultWrapper>? {
-        return this.iSuggestionsDao.getSuggestions()
+    private suspend fun allSearchHistory(searchFor: String): List<SearchResultWrapper>? {
+        return this.iSuggestionsDao.getSuggestions(searchFor)
     }
 
-    override fun deleteSearchHistory() {
+    override fun deleteSearchHistory(searchFor: String) {
         launch {
             val delete: Flow<Int>?= deleteAll()
             delete?.collect {value ->
@@ -82,9 +82,9 @@ class SuggestionsRepo @Inject constructor(): ISuggestionRepo, CoroutineScope {
         emit(value)
     }
 
-    override fun deleteOldHistory() {
+    override fun deleteOldHistory(searchFor: String) {
         launch {
-            val delete: Flow<Int>? = removeOldHistory()
+            val delete: Flow<Int>? = removeOldHistory(searchFor)
             delete?.collect {value ->
                 val id: Int? = value
                 if (id != null) {
@@ -95,12 +95,12 @@ class SuggestionsRepo @Inject constructor(): ISuggestionRepo, CoroutineScope {
             }
         }
     }
-    private suspend fun removeOldHistory(): Flow<Int> = flow {
+    private suspend fun removeOldHistory(searchFor: String): Flow<Int> = flow {
         val expireTime: Long = TimeUnit.DAYS.toDays(1)
-        val searchHistory: List<GameResultWrapper>? = getSearchHistory()
+        val searchHistory: List<SearchResultWrapper>? = getSearchHistory(searchFor)
         searchHistory?.let { history ->
             if (history.size > 5) {
-                val oldHistory: List<GameResultWrapper>? = history.filter {h ->
+                val oldHistory: List<SearchResultWrapper>? = history.filter { h ->
                     var time: Long = 0
                     h.date?.let {
                         time = it.toEpochSecond()

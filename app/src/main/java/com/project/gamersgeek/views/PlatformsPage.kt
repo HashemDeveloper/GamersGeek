@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -20,10 +19,8 @@ import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.platforms.PlatformDetails
-import com.project.gamersgeek.models.platforms.PlatformRes
-import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.utils.paging.NetworkState
-import com.project.gamersgeek.utils.search.GameResultWrapper
+import com.project.gamersgeek.utils.search.SearchResultWrapper
 import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
 import com.project.gamersgeek.views.recycler.PlatformAdapter
@@ -92,7 +89,7 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
                 currentQuery?.let {
                     mLastQuery = it
                 }
-                val searchHelper: SearchHelper = SearchHelper(mLastQuery, GameResultWrapper.SearchByType.NAME)
+                val searchHelper: SearchHelper = SearchHelper(mLastQuery, SearchResultWrapper.SearchByType.NAME)
                 this@PlatformsPage.platformPageViewModel.onSearch(searchHelper)
 
             }

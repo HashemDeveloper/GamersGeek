@@ -126,10 +126,9 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
 
     fun onSearch(searchHelper: SearchHelper) {
         this.textFilterLiveData.value = searchHelper
-        this.searchResultLiveData = Transformations.switchMap(this.textFilterLiveData, {input ->
-           platformDetailsList.search(input)
-        })
-
+        this.searchResultLiveData = Transformations.switchMap(this.textFilterLiveData) { input ->
+            platformDetailsList.search(input)
+        }
     }
 
     override val coroutineContext: CoroutineContext
