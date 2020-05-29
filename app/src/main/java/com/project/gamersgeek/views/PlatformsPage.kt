@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.arlib.floatingsearchview.FloatingSearchView
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.platforms.PlatformDetails
-import com.project.gamersgeek.models.platforms.PlatformRes
-import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.utils.paging.NetworkState
+import com.project.gamersgeek.utils.search.SearchResultWrapper
+import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
 import com.project.gamersgeek.views.recycler.PlatformAdapter
 import com.project.gamersgeek.views.widgets.GlobalLoadingBar
@@ -30,7 +31,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
-
+    private var mLastQuery: String = ""
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val platformPageViewModel: PlatformPageViewModel by activityViewModels {
@@ -51,6 +52,10 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupPlatformViewList()
+    }
+
+    private fun setupPlatformViewList() {
         val adapter = PlatformAdapter(this)
         platform_page_recycler_view_id.layoutManager = LinearLayoutManager(context!!)
         platform_page_recycler_view_id.adapter = adapter
@@ -62,11 +67,37 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
             }
             platform_page_swipe_to_refresh_layout_id.isRefreshing = false
         }
+        this.platformPageViewModel.textFilterLiveData.value = null
         this.platformPageViewModel.networkState.observe(viewLifecycleOwner) {
             adapter.setNetworkState(it)
         }
         swipeToRefresh()
         setupDrawer()
+        setupSearchFunctionality(adapter)
+    }
+
+    private fun setupSearchFunctionality(adapter: PlatformAdapter) {
+        platform_page_search_id?.setOnQueryChangeListener {oldQuery, newQuery ->
+            if (oldQuery.isNotEmpty() && newQuery.isEmpty()) {
+                platform_page_search_id?.clearSuggestions()
+            } else {
+                this.platformPageViewModel.findSuggestions(newQuery, platform_page_search_id)
+            }
+        }
+        platform_page_search_id?.setOnSearchListener(object : FloatingSearchView.OnSearchListener {
+            override fun onSearchAction(currentQuery: String?) {
+                currentQuery?.let {
+                    mLastQuery = it
+                }
+                val searchHelper: SearchHelper = SearchHelper(mLastQuery, SearchResultWrapper.SearchByType.NAME)
+                this@PlatformsPage.platformPageViewModel.onSearch(searchHelper)
+
+            }
+
+            override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     private fun setupDarkMode() {

@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
@@ -20,18 +19,14 @@ import com.project.gamersgeek.R
 import com.project.gamersgeek.di.Injectable
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
 import com.project.gamersgeek.models.games.Results
-import com.project.gamersgeek.models.platforms.GenericPlatformDetails
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.paging.NetworkState
-import com.project.gamersgeek.utils.search.GameResultWrapper
+import com.project.gamersgeek.utils.search.SearchResultWrapper
 import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.gamersgeek.viewmodels.AllGamesPageViewModel
 import com.project.gamersgeek.views.recycler.AllGameResultAdapter
-import com.project.gamersgeek.views.recycler.PlatformIconAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_all_games_page.*
-import kotlinx.android.synthetic.main.fragment_platforms_page.*
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -119,7 +114,7 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
                 currentQuery?.let {
                     mLastQuery = it
                 }
-                val searchHelper = SearchHelper(mLastQuery, GameResultWrapper.SearchByType.NAME)
+                val searchHelper = SearchHelper(mLastQuery, SearchResultWrapper.SearchByType.NAME)
                 this@AllGamesPage.allGamesPageViewModel.onSearch(searchHelper)
                 this@AllGamesPage.allGamesPageViewModel.getResultLiveData()?.let {liveData->
                     liveData.observe(viewLifecycleOwner, Observer {
@@ -131,8 +126,8 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
             }
 
             override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
-               val wrapper: GameResultWrapper = searchSuggestion as GameResultWrapper
-               val searchHelper = SearchHelper(wrapper.searchBody, GameResultWrapper.SearchByType.NAME)
+               val wrapper: SearchResultWrapper = searchSuggestion as SearchResultWrapper
+               val searchHelper = SearchHelper(wrapper.searchBody, SearchResultWrapper.SearchByType.NAME)
                 this@AllGamesPage.allGamesPageViewModel.onSearch(searchHelper)
                 this@AllGamesPage.allGamesPageViewModel.getResultLiveData()?.let {liveData->
                     liveData.observe(viewLifecycleOwner, Observer {
@@ -158,14 +153,14 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
             all_game_recycler_view_id.translationY = it
         }
         all_game_search_view_id.setOnBindSuggestionCallback { suggestionView, leftIcon, textView, item, itemPosition ->
-            val gameResultWrapper: GameResultWrapper = item as GameResultWrapper
+            val searchResultWrapper: SearchResultWrapper = item as SearchResultWrapper
             val isNightModeOn: Boolean = this@AllGamesPage.allGamesPageViewModel.getIsNightModeOn()
             if (isNightModeOn) {
                 suggestionView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.black))
             } else {
                 suggestionView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
             }
-            if (gameResultWrapper.isHistory) {
+            if (searchResultWrapper.isHistory) {
                 leftIcon.alpha = 1.0f
                 leftIcon.setImageDrawable(ResourcesCompat.getDrawable(context?.resources!!, R.drawable.ic_history_gray_24dp, null))
             } else {

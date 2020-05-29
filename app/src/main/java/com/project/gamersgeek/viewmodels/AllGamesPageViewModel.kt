@@ -12,7 +12,7 @@ import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.utils.Constants
-import com.project.gamersgeek.utils.search.GameResultWrapper
+import com.project.gamersgeek.utils.search.SearchResultWrapper
 import com.project.gamersgeek.utils.search.GamersGeekSearchSuggestion
 import com.project.gamersgeek.utils.search.IGamersGeekSearchSuggestion
 import com.project.gamersgeek.utils.search.SearchHelper
@@ -21,9 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import org.threeten.bp.OffsetDateTime
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -78,11 +75,11 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     fun findSuggestions(query: String, searchView: FloatingSearchView?) {
         searchView?.showProgress()
         this.searchSuggestion.findSuggestions(query, 5, object : GamersGeekSearchSuggestion.SearchSuggestionListener{
-            override fun onSearchResult(results: List<GameResultWrapper>) {
+            override fun onSearchResult(results: List<SearchResultWrapper>) {
                 searchView?.swapSuggestions(results)
                 searchView?.hideProgress()
             }
-        })
+        }, Constants.SEARCH_FOR_ALL_GAMES)
     }
 
     fun onSearch(searchHelper: SearchHelper) {
@@ -96,7 +93,7 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
 
     private fun saveSearchResult(searchHelper: SearchHelper) {
         val date: OffsetDateTime = Constants.getCurrentTime()
-        val suggestionHistory = GameResultWrapper(0, searchHelper.searchBody, true, date)
+        val suggestionHistory = SearchResultWrapper(0, searchHelper.searchBody, true, date, Constants.SEARCH_FOR_ALL_GAMES)
         this.searchSuggestion.saveSuggestion(suggestionHistory)
     }
 
@@ -105,7 +102,7 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     }
 
     fun setupSearchHistory(allGameSearchViewId: FloatingSearchView?) {
-        val suggestionHistories: List<GameResultWrapper>? = this.searchSuggestion.getHistory()
+        val suggestionHistories: List<SearchResultWrapper>? = this.searchSuggestion.getHistory(Constants.SEARCH_FOR_ALL_GAMES)
         suggestionHistories?.let { historyList ->
             allGameSearchViewId?.swapSuggestions(historyList)
         }

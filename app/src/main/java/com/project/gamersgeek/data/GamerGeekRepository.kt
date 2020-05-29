@@ -17,7 +17,6 @@ import com.project.gamersgeek.data.remote.IRawgGameDbApi
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.utils.paging.NetworkState
-import com.project.gamersgeek.utils.search.GameResultWrapper
 import com.project.gamersgeek.utils.search.SearchHelper
 import java.lang.IllegalArgumentException
 import java.util.concurrent.Executor
@@ -99,7 +98,9 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
                 boundaryCallBack.paginHelper.isAllRetryFailed()
             },
             search = {
-                onSearch(it)
+                onSearch(it, getDataSource = {
+                    this.iGameResultDao.getGamesByName(it.searchBody) as DataSource.Factory<Int, S>
+                })
             },
             refresh = {
                 triggerRefresh.value = null
@@ -109,15 +110,8 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
     }
 
     @SuppressLint("RestrictedApi")
-    private fun onSearch(it: SearchHelper): LiveData<PagedList<Results>> {
-        val selectGameDataSource: DataSource.Factory<Int, Results> = when (it.searchByType) {
-            GameResultWrapper.SearchByType.NAME -> {
-                this.iGameResultDao.getGamesByName(it.searchBody)
-            }
-            GameResultWrapper.SearchByType.PLATFORM -> {
-                this.iGameResultDao.getGamesByName(it.searchBody)
-            }
-        }
+    private fun <T> onSearch(it: SearchHelper, getDataSource: () -> DataSource.Factory<Int, T>): LiveData<PagedList<T>> {
+        val selectGameDataSource: DataSource.Factory<Int, T> = getDataSource()
         val fetchExecutor: Executor = ArchTaskExecutor.getIOThreadExecutor()
         return LivePagedListBuilder(selectGameDataSource, pageListConfig(30, ALL_GAMES_INITIAL_LOAD_SIZE))
             .setFetchExecutor(fetchExecutor)
@@ -139,7 +133,9 @@ class GamerGeekRepository @Inject constructor(): IGamerGeekRepository {
                 boundaryCallBack.helper.isAllRetryFailed()
             },
             search = {
-                onSearch(it)
+                onSearch(it, getDataSource = {
+                    this.iPlatformDetailsDao.searchPlatformByName(it.searchBody) as DataSource.Factory<Int, S>
+                })
             },
             refresh = {
                 triggerRefresh.value = null

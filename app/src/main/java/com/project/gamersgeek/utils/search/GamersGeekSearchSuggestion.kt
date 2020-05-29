@@ -3,8 +3,6 @@ package com.project.gamersgeek.utils.search
 import android.widget.Filter
 import com.project.gamersgeek.data.local.IGameResultRepo
 import com.project.gamersgeek.data.local.ISuggestionRepo
-import com.project.gamersgeek.data.remote.GamersGeekRemoteRepo
-import com.project.gamersgeek.data.remote.IRawgGameDbApi
 import com.project.gamersgeek.data.remote.IRawgGamerGeekApiHelper
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.games.Results
@@ -25,15 +23,15 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
     lateinit var iGamersGeekRemoteRepo: IRawgGamerGeekApiHelper
 
 
-    override fun findSuggestions(query: String, limit: Int, searchSuggestionListener: SearchSuggestionListener) {
+    override fun findSuggestions(query: String, limit: Int, searchSuggestionListener: SearchSuggestionListener, searchFor: String) {
         object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val suggestionList: MutableList<GameResultWrapper> = arrayListOf()
+                val suggestionList: MutableList<SearchResultWrapper> = arrayListOf()
                 if (!(constraint == null || constraint.isEmpty()) && constraint.length >= 3) {
                     getSuggestionList(constraint)?.let { list ->
                         for (gameResult: Results in list) {
                             if (gameResult.name!!.startsWith(constraint.toString(), true)) {
-                                val resultWrapper = GameResultWrapper(0, gameResult.name!!, false, null)
+                                val resultWrapper = SearchResultWrapper(0, gameResult.name!!, false, null, searchFor)
                                 suggestionList.add(resultWrapper)
                                 if (limit != -1 && suggestionList.size == limit) {
                                     break
@@ -53,17 +51,17 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                searchSuggestionListener.onSearchResult(results?.values as MutableList<GameResultWrapper>)
+                searchSuggestionListener.onSearchResult(results?.values as MutableList<SearchResultWrapper>)
             }
         }.filter(query)
     }
 
-    override fun saveSuggestion(suggestionHistory: GameResultWrapper) {
+    override fun saveSuggestion(suggestionHistory: SearchResultWrapper) {
         this.suggestionRepo.saveSearchResult(suggestionHistory)
     }
 
-    override fun getHistory(): List<GameResultWrapper>? {
-        return this.suggestionRepo.getSearchHistory()
+    override fun getHistory(searchFor: String): List<SearchResultWrapper>? {
+        return this.suggestionRepo.getSearchHistory(searchFor)
     }
 
     private fun getSuggestionList(value: CharSequence): List<Results>? {
@@ -72,7 +70,7 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
     }
 
     interface SearchSuggestionListener {
-        fun onSearchResult(results: List<GameResultWrapper>)
+        fun onSearchResult(results: List<SearchResultWrapper>)
 
     }
     override val coroutineContext: CoroutineContext

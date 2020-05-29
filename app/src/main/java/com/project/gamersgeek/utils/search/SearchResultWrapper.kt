@@ -12,7 +12,7 @@ import org.threeten.bp.OffsetDateTime
 
 @Entity(tableName = "suggestion_history", indices = [Index(value = ["suggestion"], unique = true)])
 @Parcelize
-data class GameResultWrapper(
+data class SearchResultWrapper(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int,
@@ -21,7 +21,9 @@ data class GameResultWrapper(
     @ColumnInfo(name = "is_history")
     var isHistory: Boolean,
     @ColumnInfo(name = "date")
-    var date: OffsetDateTime?
+    var date: OffsetDateTime?,
+    @ColumnInfo(name = "searchFor")
+    var searchFor: String
 ): Parcelable, SearchSuggestion {
     override fun getBody(): String {
         return this.searchBody
