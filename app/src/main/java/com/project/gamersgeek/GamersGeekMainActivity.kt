@@ -144,14 +144,18 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
     override fun onNavItemClicked(itemType: String) {
         when (itemType) {
             "Publisher" -> {
-                if (navigation_drawer_layout_id.isDrawerOpen(GravityCompat.START)) {
-                    navigation_drawer_layout_id.closeDrawer(GravityCompat.START)
-                }
+                closeDrawer()
                 this.navController.navigateUriWithDefaultOptions(Uri.parse(Constants.PUBLISHER_PAGE_NAV_URI))
             }
             "Developer" -> {
-                Timber.e("Developer")
+                closeDrawer()
+                this.navController.navigateUriWithDefaultOptions(Uri.parse(Constants.DEVELOPER_PAGE_NAV_URI))
             }
+        }
+    }
+    private fun closeDrawer() {
+        if (navigation_drawer_layout_id.isDrawerOpen(GravityCompat.START)) {
+            navigation_drawer_layout_id.closeDrawer(GravityCompat.START)
         }
     }
 }

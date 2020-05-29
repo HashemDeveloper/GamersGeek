@@ -83,4 +83,14 @@
             app:uri="gamersgeek://publisherpage"
             />
     </fragment>
+    <fragment
+        android:id="@+id/developerPage"
+        android:name="com.project.gamersgeek.views.DeveloperPage"
+        android:label="fragment_developer_page"
+        tools:layout="@layout/fragment_developer_page">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="gamersgeek://developerpage"
+            />
+    </fragment>
 </navigation>
