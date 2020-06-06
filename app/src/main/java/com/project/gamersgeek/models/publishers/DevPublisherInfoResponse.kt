@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class DevPublisherInfo(
+data class DevPublisherInfoResponse(
     @SerializedName("count")
     @Expose
     var count: Int,

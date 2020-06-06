@@ -7,6 +7,7 @@ import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformRes
+import com.project.gamersgeek.models.publishers.DevPublisherInfoResponse
 import com.project.gamersgeek.utils.ResultHandler
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -40,6 +41,18 @@ class GamersGeekRemoteRepo @Inject constructor(): IRawgGamerGeekApiHelper, BaseD
     override suspend fun getGamePlatformDetails(id: Int): ResultHandler<PlatformDetails> {
         return getResult {
             this.rawgGameDbApi.getPlatformDetails(id)
+        }
+    }
+
+    override suspend fun fetchAllDevInfo(): ResultHandler<DevPublisherInfoResponse> {
+        return getResult {
+            this.rawgGameDbApi.getAllDevelopers()
+        }
+    }
+
+    override suspend fun fetchAllPubInfo(): ResultHandler<DevPublisherInfoResponse> {
+        return getResult {
+            this.rawgGameDbApi.getAllPublishers()
         }
     }
 

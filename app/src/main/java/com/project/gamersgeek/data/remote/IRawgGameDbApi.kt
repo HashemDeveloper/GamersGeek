@@ -4,7 +4,7 @@ import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.platforms.PlatformRes
-import com.project.gamersgeek.models.publishers.DevPublisherInfo
+import com.project.gamersgeek.models.publishers.DevPublisherInfoResponse
 import com.project.gamersgeek.models.stores.GameStoreToBuy
 import retrofit2.Response
 import retrofit2.http.GET
@@ -33,10 +33,10 @@ interface IRawgGameDbApi {
     suspend fun searchGames(@Query("search") value: String): Response<GameListRes>
     @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
     @GET("api/publishers")
-    suspend fun getAllPublishers(): Response<DevPublisherInfo>
+    suspend fun getAllPublishers(): Response<DevPublisherInfoResponse>
     @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
     @GET
-    suspend fun getAllDevelopers(): Response<DevPublisherInfo>
+    suspend fun getAllDevelopers(): Response<DevPublisherInfoResponse>
 
     companion object {
         private const val APP_NAME = "GamersGeek"
