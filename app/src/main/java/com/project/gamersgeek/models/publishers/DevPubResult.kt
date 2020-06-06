@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class PublisherResult(
+data class DevPubResult(
     @SerializedName("id")
     @Expose
     var id: Int,

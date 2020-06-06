@@ -18,5 +18,5 @@ data class DevPublisherInfoResponse(
     var previous: String,
     @SerializedName("results")
     @Expose
-    var resultList: List<PublisherResult> = arrayListOf()
+    var resultList: List<DevPubResult> = arrayListOf()
 ): Parcelable
