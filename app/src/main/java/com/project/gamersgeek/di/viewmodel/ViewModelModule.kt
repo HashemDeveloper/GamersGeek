@@ -32,4 +32,8 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SavedGamesViewModel::class)
     internal abstract fun provideSavedGameViewModel(savedGamesViewModel: SavedGamesViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(DeveloperPageViewModel::class)
+    internal abstract fun provideDeveloperPageViewModel(publisherPageViewModel: DeveloperPageViewModel): ViewModel
 }

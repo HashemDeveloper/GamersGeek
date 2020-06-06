@@ -35,7 +35,7 @@ interface IRawgGameDbApi {
     @GET("api/publishers")
     suspend fun getAllPublishers(): Response<DevPublisherInfoResponse>
     @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
-    @GET
+    @GET("api/developers")
     suspend fun getAllDevelopers(): Response<DevPublisherInfoResponse>
 
     companion object {
