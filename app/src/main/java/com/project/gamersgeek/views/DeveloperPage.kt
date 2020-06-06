@@ -41,7 +41,11 @@ class DeveloperPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.developerPageViewModel.getDevelopersList()
-        this.developerPageViewModel.developerListLiveData?.observe(viewLifecycleOwner, Observer {
+        this.developerPageViewModel.developerListLiveData?.observe(viewLifecycleOwner, developerListObserver())
+    }
+
+    private fun developerListObserver(): Observer<ResultHandler<DevPublisherInfoResponse>> {
+        return Observer {
             when (it.status) {
                 ResultHandler.Status.LOADING -> {
                     Timber.e("Loading")
@@ -57,6 +61,6 @@ class DeveloperPage : Fragment() {
                     Timber.e("$error")
                 }
             }
-        })
+        }
     }
 }

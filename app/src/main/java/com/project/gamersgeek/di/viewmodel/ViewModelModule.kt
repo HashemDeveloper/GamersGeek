@@ -35,5 +35,9 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(DeveloperPageViewModel::class)
-    internal abstract fun provideDeveloperPageViewModel(publisherPageViewModel: DeveloperPageViewModel): ViewModel
+    internal abstract fun provideDeveloperPageViewModel(developerPageViewModel: DeveloperPageViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(PublisherPageViewModel::class)
+    internal abstract fun providePublihserPageViewModel(publihserPageViewModel: PublisherPageViewModel): ViewModel
 }
