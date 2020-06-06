@@ -14,7 +14,8 @@ import com.project.gamersgeek.utils.typeconverters.*
 @Database(entities = [PlatformDetails::class, Results::class, SaveGames::class, SearchResultWrapper::class], version = 1, exportSchema = false)
 @TypeConverters(PlatformGameTypeConverter::class, GameRatingTypeConverter::class,
     AddedByStatusTypeConverter::class, CategorizedGamePlatformsConverter::class, GameGenericPlatformConverter::class,
-    GameGenreConverter::class, StoreConverter::class, VideoClipConverter::class, ShortScreenShotConverter::class, TimeConverter::class, GameResultsConverter::class)
+    GameGenreConverter::class, StoreConverter::class, VideoClipConverter::class,
+    ShortScreenShotConverter::class, TimeConverter::class, GameResultsConverter::class, PublisherGameConverter::class)
 abstract class GamerGeeksLocalDb: RoomDatabase() {
 
     abstract fun getPlatformDetailsDao(): IPlatformDetailsDao

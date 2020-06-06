@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import com.project.gamersgeek.models.developer.Developer
 import com.project.gamersgeek.models.platforms.CategorizedGamePlatforms
 import com.project.gamersgeek.models.platforms.GameGenericPlatform
-import com.project.gamersgeek.models.publishers.Publisher
+import com.project.gamersgeek.models.publishers.PublisherResult
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
@@ -158,7 +158,7 @@ data class GamesRes(
     var tags: @RawValue List<Tag>?= arrayListOf(),
     @SerializedName("publishers")
     @Expose
-    var publishers: @RawValue List<Publisher>?= arrayListOf(),
+    var publisherResults: @RawValue List<PublisherResult>?= arrayListOf(),
     @SerializedName("esrb_rating")
     @Expose
     var esrbRating: @RawValue EsRbRating?,
