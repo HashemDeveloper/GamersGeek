@@ -9,7 +9,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_publisher_page_recycler_view_id"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
         app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"

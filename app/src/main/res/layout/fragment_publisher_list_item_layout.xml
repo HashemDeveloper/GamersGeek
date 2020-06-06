@@ -6,17 +6,17 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/fragment_publisher_page_image_view_id"
-        android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
-        app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
-        app:layout_constraintStart_toStartOf="@+id/leftGuideLine"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/topGuideLine" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/fragment_publisher_page_title_view_id"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bungee_inline"
         android:text="@string/game_title"

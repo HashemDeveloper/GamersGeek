@@ -8,18 +8,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
+import com.project.gamersgeek.models.publishers.DevPubResult
 import com.project.gamersgeek.models.publishers.DevPublisherInfoResponse
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.DeveloperPageViewModel
+import com.project.gamersgeek.views.recycler.DevPubPageAdapter
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_developer_page.*
 import timber.log.Timber
 import javax.inject.Inject
 
 class DeveloperPage : Fragment() {
-
+    private var adapter: DevPubPageAdapter?= null
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val developerPageViewModel: DeveloperPageViewModel by activityViewModels {
@@ -40,6 +44,9 @@ class DeveloperPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.adapter = DevPubPageAdapter()
+        fragment_developer_page_recycler_view_id?.layoutManager = LinearLayoutManager(this.context)
+        fragment_developer_page_recycler_view_id?.adapter = this.adapter
         this.developerPageViewModel.getDevelopersList()
         this.developerPageViewModel.developerListLiveData?.observe(viewLifecycleOwner, developerListObserver())
     }
@@ -53,7 +60,9 @@ class DeveloperPage : Fragment() {
                 ResultHandler.Status.SUCCESS -> {
                     val data: DevPublisherInfoResponse? = it.data as DevPublisherInfoResponse
                     data?.let { d ->
-                        Timber.e("${d.count}")
+                        val list: MutableList<DevPubResult> = arrayListOf()
+                        list.addAll(d.resultList)
+                        this.adapter?.setData(list)
                     }
                 }
                 ResultHandler.Status.ERROR -> {

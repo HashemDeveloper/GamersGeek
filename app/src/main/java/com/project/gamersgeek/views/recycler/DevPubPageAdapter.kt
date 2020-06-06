@@ -13,7 +13,7 @@ import com.project.gamersgeek.models.publishers.DevPubResult
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.GlideApp
 
-class PublisherPageAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
+class DevPubPageAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
     private var data: MutableList<DevPubResult> = arrayListOf()
 
     fun setData(list: List<DevPubResult>) {

@@ -15,14 +15,14 @@ import com.project.gamersgeek.models.publishers.DevPubResult
 import com.project.gamersgeek.models.publishers.DevPublisherInfoResponse
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.PublisherPageViewModel
-import com.project.gamersgeek.views.recycler.PublisherPageAdapter
+import com.project.gamersgeek.views.recycler.DevPubPageAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_publisher_list_layout.*
 import timber.log.Timber
 import javax.inject.Inject
 
 class PublisherPage : Fragment() {
-    private var pubPageAdapter: PublisherPageAdapter?= null
+    private var pubPageAdapter: DevPubPageAdapter?= null
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val publisherPageViewModel: PublisherPageViewModel by activityViewModels {
@@ -43,7 +43,7 @@ class PublisherPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.pubPageAdapter = PublisherPageAdapter()
+        this.pubPageAdapter = DevPubPageAdapter()
         fragment_publisher_page_recycler_view_id?.layoutManager = LinearLayoutManager(this.context)
         fragment_publisher_page_recycler_view_id.adapter = this.pubPageAdapter
         this.publisherPageViewModel.fetchPublisherList()
