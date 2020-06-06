@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Publisher(
+data class PublisherResult(
     @SerializedName("id")
     @Expose
     var id: Int,
@@ -21,5 +21,8 @@ data class Publisher(
     var gamesCount: Int,
     @SerializedName("image_background")
     @Expose
-    var imageBackground: String
+    var imageBackground: String,
+    @SerializedName("games")
+    @Expose
+    var games: List<PublisherGame> = arrayListOf()
 ): Parcelable
