@@ -22,4 +22,4 @@ data class CreatorResults(
     @SerializedName("games")
     @Expose
     var gameList: List<CreatorsGame> ?= arrayListOf()
-): Parcelable, BaseBasicInfoModel(id_, slug_, name_)
+): Parcelable, BaseBasicInfoModel()

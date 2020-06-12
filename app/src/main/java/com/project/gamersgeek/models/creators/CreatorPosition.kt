@@ -9,4 +9,4 @@ data class CreatorPosition(
     override var id_: Int?,
     override var slug_: String?,
     override var name_: String?
-): Parcelable, BaseBasicInfoModel(id_, slug_, name_)
+): Parcelable, BaseBasicInfoModel()

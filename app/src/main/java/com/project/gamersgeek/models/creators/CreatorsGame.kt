@@ -14,4 +14,4 @@ data class CreatorsGame(
     @SerializedName("added")
     @Expose
     var added: Int
-): Parcelable, BaseBasicInfoModel(id_, slug_, name_)
+): Parcelable, BaseBasicInfoModel()
