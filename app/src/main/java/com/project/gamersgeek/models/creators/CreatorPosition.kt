@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class CreatorPosition(
-    override var id: Int?,
-    override var slug: String?,
-    override var name: String?
-): Parcelable, BaseBasicInfoModel(id, slug, name)
+    override var id_: Int?,
+    override var slug_: String?,
+    override var name_: String?
+): Parcelable, BaseBasicInfoModel(id_, slug_, name_)

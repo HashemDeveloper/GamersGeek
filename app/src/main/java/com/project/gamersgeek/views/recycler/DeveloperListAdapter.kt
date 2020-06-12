@@ -37,7 +37,7 @@ class DeveloperListAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         }
         override fun bindView(item: Developer) {
             this.devNameView?.let {
-                it.text = item.name
+                it.text = item.name_
             }
         }
     }

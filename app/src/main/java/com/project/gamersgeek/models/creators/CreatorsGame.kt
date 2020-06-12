@@ -8,10 +8,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class CreatorsGame(
-    override var id: Int?,
-    override var slug: String?,
-    override var name: String?,
+    override var id_: Int?,
+    override var slug_: String?,
+    override var name_: String?,
     @SerializedName("added")
     @Expose
     var added: Int
-): Parcelable, BaseBasicInfoModel(id, slug, name)
+): Parcelable, BaseBasicInfoModel(id_, slug_, name_)
