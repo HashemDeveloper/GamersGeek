@@ -3,11 +3,13 @@ package com.project.gamersgeek.data.remote
 import com.project.gamersgeek.data.BaseDataSource
 import com.project.gamersgeek.data.local.IGameResultDao
 import com.project.gamersgeek.models.base.BaseResModel
+import com.project.gamersgeek.models.creators.CreatorResults
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.PlatformDetails
 import com.project.gamersgeek.models.publishers.DevPubResult
+import com.project.gamersgeek.models.stores.StoreResult
 import com.project.gamersgeek.utils.ResultHandler
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -72,6 +74,19 @@ class GamersGeekRemoteRepo @Inject constructor(): IRawgGamerGeekApiHelper, BaseD
         }
         return gameListRes
     }
+
+    override suspend fun fetchGameCreators(): ResultHandler<BaseResModel<CreatorResults>> {
+        return getResult {
+            this.rawgGameDbApi.getGameCreators()
+        }
+    }
+
+    override suspend fun fetchGameStores(): ResultHandler<BaseResModel<StoreResult>> {
+        return getResult {
+            this.rawgGameDbApi.getGameStores()
+        }
+    }
+
     private suspend fun searchAllGames(value: String): GameListRes? {
         return rawgGameDbApi.searchGames(value).body()
     }
