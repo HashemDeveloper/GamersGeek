@@ -8,8 +8,8 @@ import androidx.paging.PagedList
 import com.project.gamersgeek.data.fetchAndSaveData
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
 import com.project.gamersgeek.data.remote.IRawgGameDbApi
+import com.project.gamersgeek.models.base.BaseResModel
 import com.project.gamersgeek.models.platforms.PlatformDetails
-import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.utils.paging.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -80,7 +80,7 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
         return networkState
     }
 
-    private fun setupPageCount(it: PlatformRes) {
+    private fun setupPageCount(it: BaseResModel<PlatformDetails>) {
         var nextUrl: String? = ""
         it.next?.let {url ->
             nextUrl = url

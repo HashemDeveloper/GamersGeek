@@ -1,9 +1,13 @@
 package com.project.gamersgeek.models.base
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
-abstract class BaseResModel <T> constructor (
+@Parcelize
+open class BaseResModel <T> constructor (
     @SerializedName("count")
     @Expose
     open var count: Int?,
@@ -15,5 +19,5 @@ abstract class BaseResModel <T> constructor (
     open var previous: String?,
     @SerializedName("results")
     @Expose
-    open var results: List<T>?= arrayListOf()
-)
+    open var results: @RawValue List<T>?= arrayListOf()
+): Parcelable
