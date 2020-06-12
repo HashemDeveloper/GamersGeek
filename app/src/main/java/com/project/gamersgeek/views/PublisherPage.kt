@@ -43,11 +43,17 @@ class PublisherPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupListeners()
         this.pubPageAdapter = DevPubPageAdapter()
         fragment_publisher_page_recycler_view_id?.layoutManager = LinearLayoutManager(this.context)
         fragment_publisher_page_recycler_view_id.adapter = this.pubPageAdapter
         this.publisherPageViewModel.fetchPublisherList()
         this.publisherPageViewModel.publisherLiveData?.observe(viewLifecycleOwner, developerListObserver())
+    }
+    private fun setupListeners() {
+        fragment_pub_page_back_bt?.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
     private fun developerListObserver(): Observer<ResultHandler<DevPublisherInfoResponse>> {
         return Observer {

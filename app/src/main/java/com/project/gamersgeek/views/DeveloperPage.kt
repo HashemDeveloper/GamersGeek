@@ -44,12 +44,20 @@ class DeveloperPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupListeners()
         this.adapter = DevPubPageAdapter()
         fragment_developer_page_recycler_view_id?.layoutManager = LinearLayoutManager(this.context)
         fragment_developer_page_recycler_view_id?.adapter = this.adapter
         this.developerPageViewModel.getDevelopersList()
         this.developerPageViewModel.developerListLiveData?.observe(viewLifecycleOwner, developerListObserver())
     }
+
+    private fun setupListeners() {
+        fragment_dev_page_back_bt_id?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+    }
+
 
     private fun developerListObserver(): Observer<ResultHandler<DevPublisherInfoResponse>> {
         return Observer {
