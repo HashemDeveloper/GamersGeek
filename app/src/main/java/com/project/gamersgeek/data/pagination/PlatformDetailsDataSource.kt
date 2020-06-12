@@ -41,7 +41,9 @@ class PlatformDetailsDataSource(
             fetchAndSaveData(call = {
                 rawgGameDbApi.getAllListOfVideoGamePlatform(page, pageSize, "id")
             }, onSuccess = {
-                saveData(it.listOfResult)
+                it.results?.let { r ->
+                    saveData(r)
+                }
             }, onError = {
                 if (BuildConfig.DEBUG) {
                     Timber.d(TAG, "Failed to fetch platform data: $it")

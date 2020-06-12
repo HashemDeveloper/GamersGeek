@@ -47,7 +47,9 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
                     fetchAndSaveData(call = {
                         rawgGameDbApi.getAllListOfVideoGamePlatform(pageCount, PAGE_SIZE, "id")
                     }, onSuccess = {
-                        saveData(it.listOfResult, requestCallback)
+                        it.results?.let { r ->
+                            saveData(r, requestCallback)
+                        }
                         setupPageCount(it)
                     }, onError = {
                         requestCallback.recordFailure(it)
@@ -67,7 +69,9 @@ class PlatformDetailBoundaryCallBack @Inject constructor(private val iPlatformDe
             }, onSuccess = {
                 networkState.postValue(NetworkState.LOADED)
                 setupPageCount(it)
-                updateData(it.listOfResult)
+                it.results?.let { r ->
+                    updateData(r)
+                }
             }, onError = {
                 networkState.postValue(NetworkState.error(it))
                 Timber.d(TAG, "Failed to fetch platform data: $it")

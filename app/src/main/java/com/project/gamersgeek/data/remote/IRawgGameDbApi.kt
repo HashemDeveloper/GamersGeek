@@ -1,5 +1,6 @@
 package com.project.gamersgeek.data.remote
 
+import com.project.gamersgeek.models.creators.CreatorsResponse
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.games.GamesRes
 import com.project.gamersgeek.models.platforms.PlatformDetails
@@ -37,6 +38,8 @@ interface IRawgGameDbApi {
     @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
     @GET("api/developers")
     suspend fun getAllDevelopers(): Response<DevPublisherInfoResponse>
+    @GET("api/creators")
+    suspend fun getGameCreators(): Response<CreatorsResponse>
 
     companion object {
         private const val APP_NAME = "GamersGeek"
