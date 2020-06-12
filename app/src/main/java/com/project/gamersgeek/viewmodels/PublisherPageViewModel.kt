@@ -3,7 +3,8 @@ package com.project.gamersgeek.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.project.gamersgeek.data.remote.IRawgGamerGeekApiHelper
-import com.project.gamersgeek.models.publishers.DevPublisherInfoResponse
+import com.project.gamersgeek.models.base.BaseResModel
+import com.project.gamersgeek.models.publishers.DevPubResult
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.utils.gamersGeekLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +17,7 @@ class PublisherPageViewModel @Inject constructor(): ViewModel(), CoroutineScope 
     private var job = Job()
     @Inject
     lateinit var api: IRawgGamerGeekApiHelper
-    var publisherLiveData: LiveData<ResultHandler<DevPublisherInfoResponse>>?= null
+    var publisherLiveData: LiveData<ResultHandler<BaseResModel<DevPubResult>>>?= null
 
     fun fetchPublisherList() {
         this.publisherLiveData = gamersGeekLiveData {

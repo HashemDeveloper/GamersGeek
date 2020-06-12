@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.project.gamersgeek.R
 import com.project.gamersgeek.di.viewmodel.ViewModelFactory
+import com.project.gamersgeek.models.base.BaseResModel
 import com.project.gamersgeek.models.publishers.DevPubResult
-import com.project.gamersgeek.models.publishers.DevPublisherInfoResponse
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.PublisherPageViewModel
 import com.project.gamersgeek.views.recycler.DevPubPageAdapter
@@ -43,23 +43,31 @@ class PublisherPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupListeners()
         this.pubPageAdapter = DevPubPageAdapter()
         fragment_publisher_page_recycler_view_id?.layoutManager = LinearLayoutManager(this.context)
         fragment_publisher_page_recycler_view_id.adapter = this.pubPageAdapter
         this.publisherPageViewModel.fetchPublisherList()
         this.publisherPageViewModel.publisherLiveData?.observe(viewLifecycleOwner, developerListObserver())
     }
-    private fun developerListObserver(): Observer<ResultHandler<DevPublisherInfoResponse>> {
+    private fun setupListeners() {
+        fragment_pub_page_back_bt?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+    }
+    private fun developerListObserver(): Observer<ResultHandler<BaseResModel<DevPubResult>>> {
         return Observer {
             when (it.status) {
                 ResultHandler.Status.LOADING -> {
                     Timber.e("Loading")
                 }
                 ResultHandler.Status.SUCCESS -> {
-                    val data: DevPublisherInfoResponse? = it.data as DevPublisherInfoResponse
+                    val data: BaseResModel<DevPubResult>? = it.data as BaseResModel<DevPubResult>
                     data?.let { d ->
                         val list: MutableList<DevPubResult> = arrayListOf()
-                        list.addAll(d.resultList)
+                        d.results?.let {r ->
+                            list.addAll(r)
+                        }
                         this.pubPageAdapter?.setData(list)
                     }
                 }

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.data.remote.IRawgGamerGeekApiHelper
 import com.project.gamersgeek.models.platforms.PlatformDetails
-import com.project.gamersgeek.models.platforms.PlatformRes
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.utils.gamersGeekLiveData
 import kotlinx.coroutines.CoroutineScope

@@ -1,4 +1,4 @@
-package com.project.gamersgeek.models.developer
+package com.project.gamersgeek.models.stores
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
@@ -7,12 +7,11 @@ import com.project.gamersgeek.models.base.BaseBasicInfoModel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Developer(
+data class StoreGames(
     override var id_: Int?,
-    override var name_: String?,
     override var slug_: String?,
-    override var imageBackground: String?,
-    @SerializedName("games_count")
+    override var name_: String?,
+    @SerializedName("added")
     @Expose
-    var gamesCount: Int
+    var added: Int
 ): Parcelable, BaseBasicInfoModel()

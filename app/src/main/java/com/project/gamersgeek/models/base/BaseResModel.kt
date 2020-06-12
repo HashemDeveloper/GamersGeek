@@ -1,22 +1,23 @@
-package com.project.gamersgeek.models.publishers
+package com.project.gamersgeek.models.base
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 @Parcelize
-data class DevPublisherInfoResponse(
+open class BaseResModel <T> constructor (
     @SerializedName("count")
     @Expose
-    var count: Int,
+    open var count: Int?,
     @SerializedName("next")
     @Expose
-    var next: String,
+    open var next: String?,
     @SerializedName("previous")
     @Expose
-    var previous: String,
+    open var previous: String?,
     @SerializedName("results")
     @Expose
-    var resultList: List<DevPubResult> = arrayListOf()
+    open var results: @RawValue List<T>?= arrayListOf()
 ): Parcelable
