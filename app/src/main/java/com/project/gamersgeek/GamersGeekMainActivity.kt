@@ -90,10 +90,14 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
         navigation_view_menu_item_view_id.adapter = navItemAdapter
         val backgroundImage: String = this.platformPageViewModel.getNavBackgroundImage()
         val navHeader = NavigationHeaderItems("", backgroundImage, "HashemDev")
+        val creators = NavigationItems(R.drawable.ic_game_creators_24, "Creators")
+        val stores = NavigationItems(R.drawable.ic_shopping_cart_gray_24dp, "Stores")
         val publisher = NavigationItems(R.drawable.game_publisher_icon, "Publisher")
         val developer = NavigationItems(R.drawable.game_developer_icon_black, "Developer")
         val navMenuList: MutableList<Any> = arrayListOf()
         navMenuList.add(navHeader)
+        navMenuList.add(creators)
+        navMenuList.add(stores)
         navMenuList.add(publisher)
         navMenuList.add(developer)
         this.navItemAdapter?.setData(navMenuList)
@@ -142,6 +146,12 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
 
     override fun onNavItemClicked(itemType: String) {
         when (itemType) {
+            "Creators" -> {
+                closeDrawer()
+            }
+            "Stores" -> {
+                closeDrawer()
+            }
             "Publisher" -> {
                 closeDrawer()
                 this.navController.navigateUriWithDefaultOptions(Uri.parse(Constants.PUBLISHER_PAGE_NAV_URI))

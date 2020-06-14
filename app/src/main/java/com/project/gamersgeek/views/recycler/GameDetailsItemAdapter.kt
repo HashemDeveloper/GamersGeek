@@ -18,6 +18,7 @@ import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.EsrbRatingType
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.views.recycler.items.*
+import com.stfalcon.frescoimageviewer.ImageViewer
 import uk.co.deanwild.flowtextview.FlowTextView
 
 
@@ -122,6 +123,14 @@ class GameDetailsItemAdapter(
                     GlideApp.with(this.view).load(desc.additionalImage)
                         .placeholder(circularProgressDrawable)
                         .into(it)
+                }
+                val imageList: Array<String> = arrayOf(desc.additionalImage)
+                val enlargeImage: ImageViewer.Builder<String> = ImageViewer.Builder<String>(this.context, imageList)
+                this.bgImageView?.setOnClickListener {
+                    enlargeImage
+                        .allowZooming(true)
+                        .allowSwipeToDismiss(true)
+                        .show()
                 }
             }
         }

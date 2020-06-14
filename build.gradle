@@ -79,6 +79,9 @@ ext {
     flowableTextView = '2.0.5'
     youtubePlayerVersion = '10.0.5'
     threeTenAbpVersion = '1.0.5'
+    stfalconImageViewer = '0.5.0'
+    frescoVersion = '1.2.0'
+    frescoProcessor = '2.0.0'
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
