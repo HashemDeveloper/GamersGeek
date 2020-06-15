@@ -60,6 +60,7 @@ class ScreenShotAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
             val enlargeImage: ImageViewer.Builder<String> = ImageViewer.Builder<String>(this.context, imageList)
             this.screenShotImageView?.setOnClickListener {
                 enlargeImage
+                    .setStartPosition(adapterPosition)
                     .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
                     .allowZooming(true)
                     .allowSwipeToDismiss(true)
