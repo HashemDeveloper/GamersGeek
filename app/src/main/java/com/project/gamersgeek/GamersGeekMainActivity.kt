@@ -148,6 +148,7 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
         when (itemType) {
             "Creators" -> {
                 closeDrawer()
+                this.navController.navigateUriWithDefaultOptions(Uri.parse(Constants.CREATOR_PAGE_NAV_URI))
             }
             "Stores" -> {
                 closeDrawer()
