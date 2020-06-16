@@ -31,7 +31,7 @@ class PlatformDetailsPage: Fragment(), Injectable {
         this.viewModelFactory
     }
     private val platformDetails by lazy {
-        fromBundle(arguments!!).platformPage
+        fromBundle(requireArguments()).platformPage
     }
     private var platformDetailsAdapter: PlatformDetailsAdapter?= null
     private var isNightModeOn: Boolean = false
@@ -53,7 +53,7 @@ class PlatformDetailsPage: Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         this.isNightModeOn = this.detailPageViewModel.isNightModeOne()
         this.platformDetailsAdapter = PlatformDetailsAdapter(this.isNightModeOn)
-        fragment_platform_details_page_recycler_view_id.layoutManager = LinearLayoutManager(this.context!!)
+        fragment_platform_details_page_recycler_view_id.layoutManager = LinearLayoutManager(requireContext())
         fragment_platform_details_page_recycler_view_id?.adapter = this.platformDetailsAdapter
         val id: Int = this.platformDetails.id
         val gameListWrapper = GameListWrapper(this.platformDetails.games)

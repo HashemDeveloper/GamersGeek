@@ -169,4 +169,8 @@ dependencies {
     implementation "com.pierfrancescosoffritti.androidyoutubeplayer:core:$youtubePlayerVersion"
     //threeten
     implementation "com.jakewharton.threetenabp:threetenabp:$threeTenAbpVersion"
+    // full screen image viewer
+    implementation "com.github.stfalcon:frescoimageviewer:$stfalconImageViewer"
+    implementation "com.facebook.fresco:fresco:$frescoVersion"
+    implementation "jp.wasabeef:fresco-processors:$frescoProcessor"
 }

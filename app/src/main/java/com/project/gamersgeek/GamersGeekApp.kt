@@ -4,6 +4,9 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.imagepipeline.core.ImagePipelineConfig
+import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig
 import com.facebook.stetho.Stetho
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.project.gamersgeek.di.ApplicationInjector
@@ -28,6 +31,12 @@ class GamersGeekApp: Application(), HasActivityInjector {
         }
         ThemeHelper.applyTheme(ThemeHelper.DEFAULT_MODE)
         AndroidThreeTen.init(this)
+        val config: ImagePipelineConfig = ImagePipelineConfig.newBuilder(this)
+            .setProgressiveJpegConfig(SimpleProgressiveJpegConfig())
+            .setResizeAndRotateEnabledForNetwork(true)
+            .setDownsampleEnabled(true)
+            .build()
+        Fresco.initialize(this, config)
     }
 
     override fun attachBaseContext(base: Context?) {

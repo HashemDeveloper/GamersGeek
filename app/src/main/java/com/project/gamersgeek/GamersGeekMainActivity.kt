@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.gamersgeek.data.local.ISharedPrefService
@@ -59,9 +60,8 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamers_geek_main_activity)
         this.navController = Navigation.findNavController(this, R.id.container)
-        this.navController.setGraph(R.navigation.gamers_geek_nav_layout)
-        bottom_nav_bar_id?.setupWithNavController(this.navController)
-        navigation_view_id?.setupWithNavController(this.navController)
+        NavigationUI.setupWithNavController(bottom_nav_bar_id, this.navController)
+        NavigationUI.setupWithNavController(navigation_view_id, this.navController)
     }
 
     override fun onStart() {
@@ -90,10 +90,14 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
         navigation_view_menu_item_view_id.adapter = navItemAdapter
         val backgroundImage: String = this.platformPageViewModel.getNavBackgroundImage()
         val navHeader = NavigationHeaderItems("", backgroundImage, "HashemDev")
+        val creators = NavigationItems(R.drawable.ic_game_creators_24, "Creators")
+        val stores = NavigationItems(R.drawable.ic_shopping_cart_gray_24dp, "Stores")
         val publisher = NavigationItems(R.drawable.game_publisher_icon, "Publisher")
         val developer = NavigationItems(R.drawable.game_developer_icon_black, "Developer")
         val navMenuList: MutableList<Any> = arrayListOf()
         navMenuList.add(navHeader)
+        navMenuList.add(creators)
+        navMenuList.add(stores)
         navMenuList.add(publisher)
         navMenuList.add(developer)
         this.navItemAdapter?.setData(navMenuList)
@@ -142,6 +146,13 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
 
     override fun onNavItemClicked(itemType: String) {
         when (itemType) {
+            "Creators" -> {
+                closeDrawer()
+                this.navController.navigateUriWithDefaultOptions(Uri.parse(Constants.CREATOR_PAGE_NAV_URI))
+            }
+            "Stores" -> {
+                closeDrawer()
+            }
             "Publisher" -> {
                 closeDrawer()
                 this.navController.navigateUriWithDefaultOptions(Uri.parse(Constants.PUBLISHER_PAGE_NAV_URI))

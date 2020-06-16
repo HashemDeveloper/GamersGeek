@@ -8,16 +8,18 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.games.ShortScreenShot
 import com.project.gamersgeek.utils.GlideApp
+import com.stfalcon.frescoimageviewer.ImageViewer
 
 class ScreenShotAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
     private val mutableList: MutableList<ShortScreenShot> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.game_details_screenshots_items, parent, false)
-        return ItemViewHolder(parent.context, itemView)
+        return ItemViewHolder(parent.context, itemView, this.mutableList)
     }
 
     override fun getItemCount(): Int {
@@ -34,7 +36,7 @@ class ScreenShotAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
         notifyDataSetChanged()
     }
 
-    inner class ItemViewHolder(private val context: Context, private val view: View): BaseViewHolder<ShortScreenShot>(view) {
+    inner class ItemViewHolder(private val context: Context, private val view: View, private val screenShotList: MutableList<ShortScreenShot>?): BaseViewHolder<ShortScreenShot>(view) {
         private var screenShotImageView: AppCompatImageView?= null
 
         init {
@@ -51,6 +53,29 @@ class ScreenShotAdapter: RecyclerView.Adapter<BaseViewHolder<*>>() {
                     .placeholder(circularProgressDrawable)
                     .into(it)
             }
+            val hierarchyBuilder: GenericDraweeHierarchyBuilder =
+                GenericDraweeHierarchyBuilder.newInstance(this.context.resources)
+                    .setProgressBarImage(circularProgressDrawable)
+            val imageList: List<String>? = getListOfImages()
+            val enlargeImage: ImageViewer.Builder<String> = ImageViewer.Builder<String>(this.context, imageList)
+            this.screenShotImageView?.setOnClickListener {
+                enlargeImage
+                    .setStartPosition(adapterPosition)
+                    .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
+                    .allowZooming(true)
+                    .allowSwipeToDismiss(true)
+                    .show()
+            }
+        }
+
+        private fun getListOfImages(): List<String>? {
+            val list: MutableList<String> = arrayListOf()
+            this.screenShotList?.let {shortScreens ->
+                for (screenShots: ShortScreenShot in shortScreens) {
+                    list.add(screenShots.image)
+                }
+            }
+            return list
         }
     }
 }

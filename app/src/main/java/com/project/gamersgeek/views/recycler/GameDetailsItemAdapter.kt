@@ -1,7 +1,6 @@
 package com.project.gamersgeek.views.recycler
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.project.gamersgeek.R
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.CategorizedGamePlatforms
@@ -18,6 +18,7 @@ import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.EsrbRatingType
 import com.project.gamersgeek.utils.GlideApp
 import com.project.gamersgeek.views.recycler.items.*
+import com.stfalcon.frescoimageviewer.ImageViewer
 import uk.co.deanwild.flowtextview.FlowTextView
 
 
@@ -122,6 +123,18 @@ class GameDetailsItemAdapter(
                     GlideApp.with(this.view).load(desc.additionalImage)
                         .placeholder(circularProgressDrawable)
                         .into(it)
+                }
+                val hierarchyBuilder: GenericDraweeHierarchyBuilder =
+                    GenericDraweeHierarchyBuilder.newInstance(this.context.resources)
+                        .setProgressBarImage(circularProgressDrawable)
+                val imageList: Array<String> = arrayOf(desc.additionalImage)
+                val enlargeImage: ImageViewer.Builder<String> = ImageViewer.Builder<String>(this.context, imageList)
+                this.bgImageView?.setOnClickListener {
+                    enlargeImage
+                        .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
+                        .allowZooming(true)
+                        .allowSwipeToDismiss(true)
+                        .show()
                 }
             }
         }

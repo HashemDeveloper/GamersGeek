@@ -39,7 +39,7 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
     }
     private var isNetConnected: Boolean = false
     private val globalLoadingBar: GlobalLoadingBar by lazy {
-        GlobalLoadingBar(platform_page_loading_view_id!!, activity!!)
+        GlobalLoadingBar(platform_page_loading_view_id!!, requireActivity())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +61,7 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
 
     private fun setupPlatformViewList() {
         val adapter = PlatformAdapter(this)
-        platform_page_recycler_view_id.layoutManager = LinearLayoutManager(context!!)
+        platform_page_recycler_view_id.layoutManager = LinearLayoutManager(requireContext())
         platform_page_recycler_view_id.adapter = adapter
         this.platformPageViewModel.platformDetailsLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
@@ -106,7 +106,7 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
 
     private fun setupDarkMode() {
         val isNightModeOn: Boolean = this.platformPageViewModel.getIsNightModeOn()
-        platform_page_search_id?.setBackgroundColor(if (isNightModeOn) ContextCompat.getColor(this.context!!, R.color.black) else ContextCompat.getColor(this.context!!, R.color.white))
+        platform_page_search_id?.setBackgroundColor(if (isNightModeOn) ContextCompat.getColor(requireContext(), R.color.black) else ContextCompat.getColor(requireContext(), R.color.white))
     }
 
     private fun swipeToRefresh() {

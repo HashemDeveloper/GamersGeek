@@ -20,4 +20,6 @@ abstract class FragmentBuilderModule {
     abstract fun contributePublisherPageFragment(): PublisherPage
     @ContributesAndroidInjector
     abstract fun contributeDeveloperPage(): DeveloperPage
+    @ContributesAndroidInjector
+    abstract fun contributeCreatorPage(): CreatorsPage
 }
