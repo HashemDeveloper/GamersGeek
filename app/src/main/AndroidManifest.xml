@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".broadcast.GamersGeekBroadcastReceiver"></receiver>
+        <receiver android:name=".broadcast.GamersGeekBroadcastReceiver"/>
 
         <meta-data
             android:name="preloaded_fonts"

@@ -42,7 +42,7 @@ import kotlin.math.roundToInt
 
 class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetailsClickListener {
     private val gameDetails by lazy {
-        fromBundle(arguments!!).gameDetailsPage
+        fromBundle(requireArguments()).gameDetailsPage
     }
     var alertDialog: AlertDialog?= null
     @Inject
@@ -67,7 +67,7 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(fragment_video_player_view_id)
-        game_details_information_recyclerview_id.layoutManager = LinearLayoutManager(this.context!!)
+        game_details_information_recyclerview_id.layoutManager = LinearLayoutManager(requireContext())
         this.gameDetailsItemAdapter = GameDetailsItemAdapter(this, this.gameDetails)
         game_details_information_recyclerview_id.adapter = this.gameDetailsItemAdapter
         setupGameData()
@@ -97,7 +97,7 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
         }
         this.gameDetailsViewModel.getGameDetailsLiveData()?.let {
             it.observe(viewLifecycleOwner) {resultHandler ->
-                val circularProgressDrawable = CircularProgressDrawable(this.context!!)
+                val circularProgressDrawable = CircularProgressDrawable(requireContext())
                 when (resultHandler.status) {
                    ResultHandler.Status.LOADING -> {
                        description_view_loading_bar_id.visibility = View.VISIBLE

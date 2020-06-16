@@ -63,9 +63,9 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
     private fun setupDarkMode() {
         val isNightMode: Boolean = this.allGamesPageViewModel.getIsNightModeOn()
         if (isNightMode) {
-            all_game_search_view_id.setBackgroundColor(ContextCompat.getColor(this.context!!, R.color.black))
+            all_game_search_view_id.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
         } else {
-            all_game_search_view_id.setBackgroundColor(ContextCompat.getColor(this.context!!, R.color.white))
+            all_game_search_view_id.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         }
     }
     private fun setupVideoRecyclerView() {
@@ -155,9 +155,9 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
             val searchResultWrapper: SearchResultWrapper = item as SearchResultWrapper
             val isNightModeOn: Boolean = this@AllGamesPage.allGamesPageViewModel.getIsNightModeOn()
             if (isNightModeOn) {
-                suggestionView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.black))
+                suggestionView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
             } else {
-                suggestionView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+                suggestionView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
             }
             if (searchResultWrapper.isHistory) {
                 leftIcon.alpha = 1.0f

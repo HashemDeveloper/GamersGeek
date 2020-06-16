@@ -70,7 +70,7 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
         this.isNightMode = this.savedGamesViewModel.getIsNightModeOn()
         this.savedGameAdapter = SavedGamesAdapter(this, this)
         this.savedGameAdapter?.setIsNightMode(this.isNightMode)
-        fragment_saved_game_recycler_id.layoutManager = LinearLayoutManager(this.context!!)
+        fragment_saved_game_recycler_id.layoutManager = LinearLayoutManager(requireContext())
         fragment_saved_game_recycler_id.adapter = this.savedGameAdapter
         val platformHeader: GameProfileHeader? = this.savedGamesViewModel.getPlatformImage()
         if (platformHeader == null) {
@@ -155,8 +155,8 @@ class SavedGamesPage : Fragment(), Injectable, SavedGamesAdapter.SavedGamePageLi
     override fun onShopBtClicked(storeList: List<Store>?) {
         storeList?.let { list ->
             this.gamersGeekBottomSheet = GamersGeekBottomSheet(list, this.isNightMode)
-            this.gamersGeekBottomSheet?.show(this.activity!!.supportFragmentManager, this.gamersGeekBottomSheet?.tag)
-            this.gamersGeekBottomSheet?.getClickObserver()?.observe(activity!!, shopListClickListener())
+            this.gamersGeekBottomSheet?.show(requireActivity().supportFragmentManager, this.gamersGeekBottomSheet?.tag)
+            this.gamersGeekBottomSheet?.getClickObserver()?.observe(requireActivity(), shopListClickListener())
         }
     }
 
