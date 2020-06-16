@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.gamersgeek.data.local.ISharedPrefService
@@ -59,9 +60,8 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamers_geek_main_activity)
         this.navController = Navigation.findNavController(this, R.id.container)
-        this.navController.setGraph(R.navigation.gamers_geek_nav_layout)
-        bottom_nav_bar_id?.setupWithNavController(this.navController)
-        navigation_view_id?.setupWithNavController(this.navController)
+        NavigationUI.setupWithNavController(bottom_nav_bar_id, this.navController)
+        NavigationUI.setupWithNavController(navigation_view_id, this.navController)
     }
 
     override fun onStart() {

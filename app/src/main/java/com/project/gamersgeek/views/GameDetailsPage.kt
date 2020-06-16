@@ -55,6 +55,7 @@ class GameDetailsPage : Fragment(), Injectable, GameDetailsItemAdapter.GameDetai
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
+        retainInstance = true
     }
 
     override fun onCreateView(
