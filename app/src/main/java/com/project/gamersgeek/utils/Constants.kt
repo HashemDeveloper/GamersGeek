@@ -36,6 +36,7 @@ class Constants {
         const val PUBLISHER_PAGE_NAV_URI = "gamersgeek://publisherpage"
         const val DEVELOPER_PAGE_NAV_URI = "gamersgeek://developerpage"
         const val CREATOR_PAGE_NAV_URI = "gamersgeek://createrpage"
+        const val STORE_PAGE_NAV_URI = "gamersgeek://storepage"
 
         fun changeIconColor(context: Context, iconId: Int, iconColor: Int) {
             val drawable: Drawable? = ContextCompat.getDrawable(context, iconId)?.mutate()

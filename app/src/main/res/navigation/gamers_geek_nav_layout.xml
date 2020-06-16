@@ -103,4 +103,14 @@
             app:uri="gamersgeek://createrpage"
             />
     </fragment>
+    <fragment
+        android:id="@+id/storePage"
+        android:name="com.project.gamersgeek.views.StorePage"
+        android:label="fragment_store_page"
+        tools:layout="@layout/fragment_store_page">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="gamersgeek://storepage"
+            />
+    </fragment>
 </navigation>
