@@ -40,4 +40,8 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PublisherPageViewModel::class)
     internal abstract fun providePublihserPageViewModel(publihserPageViewModel: PublisherPageViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreatorPageViewModel::class)
+    internal abstract fun provideCreatorPageViewModel(creatorPageViewModel: CreatorPageViewModel): ViewModel
 }
