@@ -7,9 +7,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.*
 import android.text.style.StyleSpan
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -20,6 +18,7 @@ import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.format.DateTimeFormatter
+import java.lang.StringBuilder
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,6 +35,7 @@ class Constants {
         const val PUBLISHER_PAGE_NAV_URI = "gamersgeek://publisherpage"
         const val DEVELOPER_PAGE_NAV_URI = "gamersgeek://developerpage"
         const val CREATOR_PAGE_NAV_URI = "gamersgeek://createrpage"
+        const val STORE_PAGE_NAV_URI = "gamersgeek://storepage"
 
         fun changeIconColor(context: Context, iconId: Int, iconColor: Int) {
             val drawable: Drawable? = ContextCompat.getDrawable(context, iconId)?.mutate()
@@ -104,6 +104,29 @@ class Constants {
         fun hideKeyboard(activity: FragmentActivity?) {
             val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm?.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
+        }
+
+        fun removeLastUnwantedChar(value: String, char: Char): String? {
+            var v: String? = value
+            if (v != null && v.isNotEmpty() && v[v.length - 1] == char) {
+                v = v.substring(0, v.length - 1)
+            }
+            return v
+        }
+        fun capitalizeFirstCharInWord(value: String?, target: Char): String? {
+            val sb = StringBuilder(value?.length!!)
+            var isCapital = true
+            for (i in value.indices) {
+                var char: Char = value[i]
+                if (char == target) {
+                    isCapital = true
+                } else if (isCapital) {
+                    char = char.toUpperCase()
+                    isCapital = false
+                }
+                sb.append(char)
+            }
+            return sb.toString()
         }
     }
 }

@@ -22,4 +22,6 @@ abstract class FragmentBuilderModule {
     abstract fun contributeDeveloperPage(): DeveloperPage
     @ContributesAndroidInjector
     abstract fun contributeCreatorPage(): CreatorsPage
+    @ContributesAndroidInjector
+    abstract fun contributeStorePage(): StorePage
 }

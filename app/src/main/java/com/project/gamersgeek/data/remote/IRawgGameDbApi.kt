@@ -39,10 +39,10 @@ interface IRawgGameDbApi {
     @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
     @GET("api/developers")
     suspend fun getAllDevelopers(): Response<BaseResModel<DevPubResult>>
-    @Headers("Content-Type: application/json,", "User-Agent: $APP_NAME")
+    @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
     @GET("api/creators")
     suspend fun getGameCreators(): Response<BaseResModel<CreatorResults>>
-    @Headers("Content-Type: application/json,", "User-Agent: $APP_NAME")
+    @Headers("Content-Type: application/json", "User-Agent: $APP_NAME")
     @GET("api/stores")
     suspend fun getGameStores(): Response<BaseResModel<StoreResult>>
     companion object {

@@ -8,11 +8,20 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class CreatorResults(
-    override var id_: Int?,
-    override var slug_: String?,
-    override var name_: String?,
-    override var image_: String?= null,
-    override var imageBackground: String?= null,
+    @SerializedName("id")
+    @Expose
+    var id_: Int?,
+    @SerializedName("slug")
+    @Expose
+    var slug_: String?,
+    @SerializedName("name")
+    @Expose
+    var name_: String?,
+    @SerializedName("image")
+    @Expose
+    var image_: String?= null,
+    @SerializedName("image_background")
+    var imageBackground: String?= null,
     @SerializedName("games_count")
     @Expose
     var gamesCount: Int?,
@@ -22,4 +31,4 @@ data class CreatorResults(
     @SerializedName("games")
     @Expose
     var gameList: List<CreatorsGame> ?= arrayListOf()
-): Parcelable, BaseBasicInfoModel()
+): Parcelable
