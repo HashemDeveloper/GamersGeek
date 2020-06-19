@@ -22,6 +22,8 @@ data class SearchResultWrapper(
     var isHistory: Boolean,
     @ColumnInfo(name = "date")
     var date: OffsetDateTime?,
+    @ColumnInfo(name = "time_ms")
+    var timeMs:Long?,
     @ColumnInfo(name = "searchFor")
     var searchFor: String
 ): Parcelable, SearchSuggestion {

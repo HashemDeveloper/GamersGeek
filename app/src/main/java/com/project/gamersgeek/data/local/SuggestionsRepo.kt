@@ -113,6 +113,25 @@ class SuggestionsRepo @Inject constructor(): ISuggestionRepo, CoroutineScope {
         }
     }
 
+    override fun deleteOldRecords(expiredTime: Long) {
+        launch {
+            val delete: Flow<Int>? = deleteOldRec(expiredTime)
+            delete?.collect { value ->
+                val id: Int?= value
+                if (id != null) {
+                    if (BuildConfig.DEBUG) {
+                        Timber.d("Delete old history $id")
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun deleteOldRec(expiredTime: Long): Flow<Int> = flow {
+        val value: Int = iSuggestionsDao.deleteOldRecords(expiredTime)
+        emit(value)
+    }
+
     override val coroutineContext: CoroutineContext
         get() = this.job + Dispatchers.IO
 }

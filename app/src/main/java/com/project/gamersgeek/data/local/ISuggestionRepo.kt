@@ -8,4 +8,5 @@ interface ISuggestionRepo {
     fun deleteSearchHistory(searchFor: String)
     fun deleteByName(search: String)
     fun deleteOldHistory(searchFor: String)
+    fun deleteOldRecords(expiredTime: Long)
 }

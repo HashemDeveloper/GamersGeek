@@ -31,7 +31,7 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
                     getSuggestionList(constraint)?.let { list ->
                         for (gameResult: Results in list) {
                             if (gameResult.name!!.startsWith(constraint.toString(), true)) {
-                                val resultWrapper = SearchResultWrapper(0, gameResult.name!!, false, null, searchFor)
+                                val resultWrapper = SearchResultWrapper(0, gameResult.name!!, false, null, null, searchFor)
                                 suggestionList.add(resultWrapper)
                                 if (limit != -1 && suggestionList.size == limit) {
                                     break

@@ -15,4 +15,6 @@ interface ISuggestionsDao {
     suspend fun deleteHistoryByName(name: String): Int
     @Delete()
     suspend fun deleteOldHistory(suggestionList: List<SearchResultWrapper>?): Int
+    @Transaction @Query("delete from suggestion_history where time_ms < :expiredTime")
+    suspend fun deleteOldRecords(expiredTime: Long): Int
 }

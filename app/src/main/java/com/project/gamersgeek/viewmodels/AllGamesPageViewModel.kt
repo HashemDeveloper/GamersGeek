@@ -12,15 +12,17 @@ import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.utils.Constants
-import com.project.gamersgeek.utils.search.SearchResultWrapper
 import com.project.gamersgeek.utils.search.GamersGeekSearchSuggestion
 import com.project.gamersgeek.utils.search.IGamersGeekSearchSuggestion
 import com.project.gamersgeek.utils.search.SearchHelper
+import com.project.gamersgeek.utils.search.SearchResultWrapper
 import com.project.neardoc.rxeventbus.IRxEventBus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import org.threeten.bp.OffsetDateTime
+import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -92,8 +94,9 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     }
 
     private fun saveSearchResult(searchHelper: SearchHelper) {
+        val expiredTimeMs: Long = Constants.getExpirationTime(Constants.Companion.ExpirationType.MINUTES, 1)
         val date: OffsetDateTime = Constants.getCurrentTime()
-        val suggestionHistory = SearchResultWrapper(0, searchHelper.searchBody, true, date, Constants.SEARCH_FOR_ALL_GAMES)
+        val suggestionHistory = SearchResultWrapper(0, searchHelper.searchBody, true, date, expiredTimeMs, Constants.SEARCH_FOR_ALL_GAMES)
         this.searchSuggestion.saveSuggestion(suggestionHistory)
     }
 

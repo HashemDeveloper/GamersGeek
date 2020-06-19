@@ -22,6 +22,7 @@ import java.lang.StringBuilder
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class Constants {
@@ -127,6 +128,37 @@ class Constants {
                 sb.append(char)
             }
             return sb.toString()
+        }
+
+        fun getExpirationTime(type: ExpirationType, expireTime: Long): Long {
+            var result: Long = 0
+            val now = Date()
+            when (type) {
+                ExpirationType.DEFAULT -> {
+                    result = now.time - TimeUnit.HOURS.toMillis(6)
+                }
+                ExpirationType.MINUTES -> {
+                    result = now.time - TimeUnit.MINUTES.toMillis(expireTime)
+                }
+                ExpirationType.HOURS -> {
+                    result = now.time - TimeUnit.HOURS.toMillis(expireTime)
+                }
+                ExpirationType.DAY -> {
+                    result = now.time - TimeUnit.DAYS.toMillis(expireTime)
+                }
+                ExpirationType.NEVER -> {
+                    result = 0
+                }
+            }
+            return result
+        }
+
+        enum class ExpirationType {
+            DEFAULT,
+            MINUTES,
+            HOURS,
+            DAY,
+            NEVER
         }
     }
 }
