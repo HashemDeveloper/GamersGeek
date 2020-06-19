@@ -6,6 +6,7 @@ import com.project.gamersgeek.data.local.ISuggestionRepo
 import com.project.gamersgeek.data.remote.IRawgGamerGeekApiHelper
 import com.project.gamersgeek.models.games.GameListRes
 import com.project.gamersgeek.models.games.Results
+import com.project.gamersgeek.utils.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -62,6 +63,14 @@ class GamersGeekSearchSuggestion @Inject constructor(): IGamersGeekSearchSuggest
 
     override fun getHistory(searchFor: String): List<SearchResultWrapper>? {
         return this.suggestionRepo.getSearchHistory(searchFor)
+    }
+
+    override fun removeOldSuggestionHistory(
+        type: Constants.Companion.ExpirationType,
+        expiredTime: Long
+    ) {
+        val time: Long = Constants.getExpirationTime(type, expiredTime)
+        this.suggestionRepo.deleteOldRecords(time)
     }
 
     private fun getSuggestionList(value: CharSequence): List<Results>? {

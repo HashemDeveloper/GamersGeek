@@ -59,6 +59,7 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
         super.onResume()
         setupDrawer()
         setupDarkMode()
+        refresh()
     }
     private fun setupDarkMode() {
         val isNightMode: Boolean = this.allGamesPageViewModel.getIsNightModeOn()
@@ -67,6 +68,9 @@ class AllGamesPage: Fragment(), Injectable, AllGameResultAdapter.GameResultClick
         } else {
             all_game_search_view_id.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         }
+    }
+    private fun refresh() {
+        this.allGamesPageViewModel.clearOldSuggestionHistory()
     }
     private fun setupVideoRecyclerView() {
         all_game_swipe_refresh_layout_id?.isRefreshing = true

@@ -94,9 +94,9 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     }
 
     private fun saveSearchResult(searchHelper: SearchHelper) {
-        val expiredTimeMs: Long = Constants.getExpirationTime(Constants.Companion.ExpirationType.MINUTES, 1)
         val date: OffsetDateTime = Constants.getCurrentTime()
-        val suggestionHistory = SearchResultWrapper(0, searchHelper.searchBody, true, date, expiredTimeMs, Constants.SEARCH_FOR_ALL_GAMES)
+        val time = Date()
+        val suggestionHistory = SearchResultWrapper(0, searchHelper.searchBody, true, date, time.time, Constants.SEARCH_FOR_ALL_GAMES)
         this.searchSuggestion.saveSuggestion(suggestionHistory)
     }
 
@@ -114,6 +114,10 @@ class AllGamesPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     override fun onCleared() {
         super.onCleared()
         this.job.cancel()
+    }
+
+    fun clearOldSuggestionHistory() {
+        this.searchSuggestion.removeOldSuggestionHistory(Constants.Companion.ExpirationType.DEFAULT, 0)
     }
 
     override val coroutineContext: CoroutineContext
