@@ -1,5 +1,6 @@
 package com.project.gamersgeek.viewmodels
 
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.project.gamersgeek.data.remote.IRawgGamerGeekApiHelper
@@ -23,6 +24,14 @@ class PublisherPageViewModel @Inject constructor(): ViewModel(), CoroutineScope 
         this.publisherLiveData = gamersGeekLiveData {
             this.api.fetchAllPubInfo()
         }
+    }
+
+    fun toggleDrawer() {
+
+    }
+
+    fun setupNavDrawer(navigationDrawerLayoutId: DrawerLayout?) {
+
     }
 
     override val coroutineContext: CoroutineContext

@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import org.threeten.bp.LocalDate
@@ -151,6 +153,15 @@ class Constants {
                 }
             }
             return result
+        }
+        fun toggleDrawer(drawerLayout: DrawerLayout?) {
+           drawerLayout?.let { drawer ->
+                if (!drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.openDrawer(GravityCompat.START)
+                } else {
+                    drawer.closeDrawer(GravityCompat.START)
+                }
+            }
         }
 
         enum class ExpirationType {

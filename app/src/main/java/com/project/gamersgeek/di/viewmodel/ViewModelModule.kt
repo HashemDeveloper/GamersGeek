@@ -44,4 +44,8 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreatorPageViewModel::class)
     internal abstract fun provideCreatorPageViewModel(creatorPageViewModel: CreatorPageViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(SharedViewModel::class)
+    internal abstract fun provideSharedViewModel(sharedViewModel: SharedViewModel): ViewModel
 }

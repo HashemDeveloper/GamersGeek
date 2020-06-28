@@ -13,6 +13,7 @@ import com.project.gamersgeek.data.local.ISharedPrefService
 import com.project.gamersgeek.events.NetworkStateEvent
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.PlatformDetails
+import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.neardoc.rxeventbus.IRxEventBus
 import kotlinx.coroutines.*
@@ -112,13 +113,7 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     }
 
     fun openDrawer() {
-        this.drawerLayout?.let { drawer ->
-            if (!drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.openDrawer(GravityCompat.START)
-            } else {
-                drawer.closeDrawer(GravityCompat.START)
-            }
-        }
+        Constants.toggleDrawer(this.drawerLayout)
     }
 
     fun setupNetConnection(networkStateEvent: NetworkStateEvent) {

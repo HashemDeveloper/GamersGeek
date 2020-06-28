@@ -15,6 +15,7 @@ import com.project.gamersgeek.models.base.BaseResModel
 import com.project.gamersgeek.models.publishers.DevPubResult
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.PublisherPageViewModel
+import com.project.gamersgeek.viewmodels.SharedViewModel
 import com.project.gamersgeek.views.recycler.DevPubPageAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_publisher_list_layout.*
@@ -26,6 +27,9 @@ class PublisherPage : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val publisherPageViewModel: PublisherPageViewModel by activityViewModels {
+        this.viewModelFactory
+    }
+    private val sharedViewModel: SharedViewModel by activityViewModels {
         this.viewModelFactory
     }
 
@@ -51,8 +55,8 @@ class PublisherPage : Fragment() {
         this.publisherPageViewModel.publisherLiveData?.observe(viewLifecycleOwner, developerListObserver())
     }
     private fun setupListeners() {
-        fragment_pub_page_back_bt?.setOnClickListener {
-            activity?.onBackPressed()
+        fragment_pub_page_menu_bt?.setOnClickListener {
+            this.sharedViewModel.toggleDrawer()
         }
     }
     private fun developerListObserver(): Observer<ResultHandler<BaseResModel<DevPubResult>>> {
