@@ -23,6 +23,7 @@ import com.project.gamersgeek.utils.paging.NetworkState
 import com.project.gamersgeek.utils.search.SearchResultWrapper
 import com.project.gamersgeek.utils.search.SearchHelper
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
+import com.project.gamersgeek.viewmodels.SharedViewModel
 import com.project.gamersgeek.views.recycler.PlatformAdapter
 import com.project.gamersgeek.views.widgets.GlobalLoadingBar
 import dagger.android.support.AndroidSupportInjection
@@ -35,6 +36,9 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val platformPageViewModel: PlatformPageViewModel by activityViewModels {
+        this.viewModelFactory
+    }
+    private val sharedViewModel: SharedViewModel by activityViewModels {
         this.viewModelFactory
     }
     private var isNetConnected: Boolean = false
@@ -118,7 +122,9 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
         }
     }
     private fun setupDrawer() {
-        this.platformPageViewModel.setupDrawer(platform_page_search_id)
+        fragment_platform_page_menu_bt_id?.setOnClickListener { bt->
+            this.sharedViewModel.toggleDrawer()
+        }
     }
 
     override fun onPlatformViewClicked(platformDetails: PlatformDetails) {

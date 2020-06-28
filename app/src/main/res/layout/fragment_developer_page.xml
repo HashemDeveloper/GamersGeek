@@ -13,17 +13,17 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine"
         app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
         app:layout_constraintStart_toStartOf="@+id/leftGuideLine"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_dev_page_back_bt_id" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_dev_page_menu_bt_id" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/fragment_dev_page_back_bt_id"
+        android:id="@+id/fragment_dev_page_menu_bt_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:padding="4dp"
         app:layout_constraintStart_toStartOf="@+id/leftGuideLine"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
+        app:srcCompat="@drawable/ic_menu_gray_24dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideLine"

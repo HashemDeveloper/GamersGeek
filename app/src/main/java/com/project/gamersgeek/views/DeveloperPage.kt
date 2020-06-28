@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -16,6 +15,7 @@ import com.project.gamersgeek.models.base.BaseResModel
 import com.project.gamersgeek.models.publishers.DevPubResult
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.DeveloperPageViewModel
+import com.project.gamersgeek.viewmodels.SharedViewModel
 import com.project.gamersgeek.views.recycler.DevPubPageAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_developer_page.*
@@ -27,6 +27,9 @@ class DeveloperPage : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val developerPageViewModel: DeveloperPageViewModel by activityViewModels {
+        this.viewModelFactory
+    }
+    private val sharedViewModel: SharedViewModel by activityViewModels {
         this.viewModelFactory
     }
 
@@ -53,8 +56,8 @@ class DeveloperPage : Fragment() {
     }
 
     private fun setupListeners() {
-        fragment_dev_page_back_bt_id?.setOnClickListener {
-            activity?.onBackPressed()
+        fragment_dev_page_menu_bt_id?.setOnClickListener {
+            this.sharedViewModel.toggleDrawer()
         }
     }
 

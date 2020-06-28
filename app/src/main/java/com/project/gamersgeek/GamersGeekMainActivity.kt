@@ -3,6 +3,7 @@ package com.project.gamersgeek
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -22,7 +23,10 @@ import com.project.gamersgeek.models.localobj.NavigationItems
 import com.project.gamersgeek.utils.Constants
 import com.project.gamersgeek.utils.navigateUriWithDefaultOptions
 import com.project.gamersgeek.utils.networkconnections.IConnectionStateMonitor
+import com.project.gamersgeek.viewmodels.DeveloperPageViewModel
 import com.project.gamersgeek.viewmodels.PlatformPageViewModel
+import com.project.gamersgeek.viewmodels.PublisherPageViewModel
+import com.project.gamersgeek.viewmodels.SharedViewModel
 import com.project.gamersgeek.views.recycler.NavItemAdapter
 import com.project.neardoc.rxeventbus.IRxEventBus
 import dagger.android.AndroidInjection
@@ -40,6 +44,9 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val platformPageViewModel: PlatformPageViewModel by viewModels {
+        this.viewModelFactory
+    }
+    private val sharedViewModel: SharedViewModel by viewModels {
         this.viewModelFactory
     }
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
@@ -111,6 +118,7 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
                 event?.floatingSearchView?.attachNavigationDrawerToMenuButton(navigation_drawer_layout_id)
                 setupNavBarItems()
             })
+        this.sharedViewModel.setupNavDrawer(navigation_drawer_layout_id)
     }
 
     override fun onBackPressed() {
