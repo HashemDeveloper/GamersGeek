@@ -18,6 +18,7 @@ import com.project.gamersgeek.models.base.BaseResModel
 import com.project.gamersgeek.models.creators.CreatorResults
 import com.project.gamersgeek.utils.ResultHandler
 import com.project.gamersgeek.viewmodels.CreatorPageViewModel
+import com.project.gamersgeek.viewmodels.SharedViewModel
 import com.project.gamersgeek.views.recycler.CreatorPageAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_creators_page.*
@@ -28,6 +29,9 @@ class CreatorsPage : Fragment(), CreatorPageAdapter.CreatorPageListener {
     @Inject
     lateinit var viewModelFactor: ViewModelFactory
     private val creatorPageViewModel: CreatorPageViewModel by activityViewModels {
+        this.viewModelFactor
+    }
+    private val sharedViewModel: SharedViewModel by activityViewModels {
         this.viewModelFactor
     }
     private var creatorPageAdapter: CreatorPageAdapter?= null
@@ -51,6 +55,12 @@ class CreatorsPage : Fragment(), CreatorPageAdapter.CreatorPageListener {
         fragment_creator_page_recycler_view_id?.adapter = this.creatorPageAdapter
         this.creatorPageViewModel.fetchCreatorsList()
         this.creatorPageViewModel.resultLiveData.observe(viewLifecycleOwner, creatorListObserver())
+        setupListeners()
+    }
+    private fun setupListeners() {
+        fragment_creator_page_menu_bt?.setOnClickListener {
+            this.sharedViewModel.toggleDrawer()
+        }
     }
     private fun creatorListObserver(): Observer<ResultHandler<BaseResModel<CreatorResults>>> {
         return Observer {handler ->
