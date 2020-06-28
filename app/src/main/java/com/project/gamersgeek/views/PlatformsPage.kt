@@ -118,7 +118,9 @@ class PlatformsPage : Fragment(), Injectable, PlatformAdapter.PlatformListener {
         }
     }
     private fun setupDrawer() {
-        this.platformPageViewModel.setupDrawer(platform_page_search_id)
+        fragment_platform_page_menu_bt_id?.setOnClickListener { bt->
+            this.platformPageViewModel.openDrawer()
+        }
     }
 
     override fun onPlatformViewClicked(platformDetails: PlatformDetails) {

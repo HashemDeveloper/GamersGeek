@@ -3,6 +3,7 @@ package com.project.gamersgeek
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -111,6 +112,7 @@ class GamersGeekMainActivity : AppCompatActivity(), HasSupportFragmentInjector, 
                 event?.floatingSearchView?.attachNavigationDrawerToMenuButton(navigation_drawer_layout_id)
                 setupNavBarItems()
             })
+        this.platformPageViewModel.setupNavDrawer(navigation_drawer_layout_id)
     }
 
     override fun onBackPressed() {

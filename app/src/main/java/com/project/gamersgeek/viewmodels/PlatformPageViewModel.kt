@@ -1,5 +1,8 @@
 package com.project.gamersgeek.viewmodels
 
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.*
 import androidx.paging.PagedList
 import com.arlib.floatingsearchview.FloatingSearchView
@@ -7,7 +10,6 @@ import com.project.gamersgeek.data.IGamerGeekRepository
 import com.project.gamersgeek.data.local.IGameResultDao
 import com.project.gamersgeek.data.local.IPlatformDetailsDao
 import com.project.gamersgeek.data.local.ISharedPrefService
-import com.project.gamersgeek.events.HamburgerEvent
 import com.project.gamersgeek.events.NetworkStateEvent
 import com.project.gamersgeek.models.games.Results
 import com.project.gamersgeek.models.platforms.PlatformDetails
@@ -31,6 +33,8 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     lateinit var iSharedPrefService: ISharedPrefService
     val textFilterLiveData: MutableLiveData<SearchHelper> = MutableLiveData()
     private var searchResultLiveData: LiveData<PagedList<PlatformDetails>>?= null
+    private var openDrawer: Boolean?= null
+    private var drawerLayout: DrawerLayout?= null
     private val job = Job()
 
     private val platformDetailsList by lazy {
@@ -107,8 +111,14 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
         return platformDetailsDao.getPlatformDetails()
     }
 
-    fun setupDrawer(platformPageSearchId: FloatingSearchView?) {
-        this.iRxEventBus.post(HamburgerEvent(platformPageSearchId!!))
+    fun openDrawer() {
+        this.drawerLayout?.let { drawer ->
+            if (!drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.openDrawer(GravityCompat.START)
+            } else {
+                drawer.closeDrawer(GravityCompat.START)
+            }
+        }
     }
 
     fun setupNetConnection(networkStateEvent: NetworkStateEvent) {
@@ -129,6 +139,10 @@ class PlatformPageViewModel @Inject constructor(): ViewModel(), CoroutineScope {
         this.searchResultLiveData = Transformations.switchMap(this.textFilterLiveData) { input ->
             platformDetailsList.search(input)
         }
+    }
+
+    fun setupNavDrawer(drawerLayout: DrawerLayout?) {
+        this.drawerLayout = drawerLayout
     }
 
     override val coroutineContext: CoroutineContext

@@ -12,6 +12,15 @@
         android:layout_height="match_parent"
         tools:context=".views.PlatformsPage">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/fragment_platform_page_menu_bt_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/platform_page_recycler_view_id"
+            app:layout_constraintStart_toStartOf="@+id/leftGuideLine"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_menu_gray_24dp"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/platform_page_recycler_view_id"
             android:layout_width="0dp"
